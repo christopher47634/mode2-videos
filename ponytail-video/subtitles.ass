@@ -1,0 +1,30 @@
+﻿[Script Info]
+Title: ponytail
+ScriptType: v4.00+
+WrapStyle: 0
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,ZCOOL KuaiLe,58,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,3,2,2,20,20,393,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.17,Default,,0,0,0,,ponytail，
+Dialogue: 0,0:00:01.17,0:00:02.35,Default,,0,0,0,,本周GitHub最有趣的项目，
+Dialogue: 0,0:00:02.35,0:00:03.52,Default,,0,0,0,,一千星
+Dialogue: 0,0:00:03.52,0:00:05.28,Default,,0,0,0,,它把一个扎马尾辫的老程序员
+Dialogue: 0,0:00:05.28,0:00:07.03,Default,,0,0,0,,塞进了你的AI助手
+Dialogue: 0,0:00:07.03,0:00:09.37,Default,,0,0,0,,你要一个日期选择器，
+Dialogue: 0,0:00:09.37,0:00:11.70,Default,,0,0,0,,AI装了依赖写了封装加了样式
+Dialogue: 0,0:00:11.70,0:00:13.60,Default,,0,0,0,,ponytail只说了一句，
+Dialogue: 0,0:00:13.60,0:00:15.50,Default,,0,0,0,,浏览器自带的，一行搞定
+Dialogue: 0,0:00:15.50,0:00:17.37,Default,,0,0,0,,六步决策，
+Dialogue: 0,0:00:17.37,0:00:19.23,Default,,0,0,0,,需要存在吗，标准库能做吗，
+Dialogue: 0,0:00:19.23,0:00:21.09,Default,,0,0,0,,原生支持吗，一行够吗
+Dialogue: 0,0:00:21.09,0:00:23.36,Default,,0,0,0,,实测代码量减少百分之八十到九十四，
+Dialogue: 0,0:00:23.36,0:00:25.63,Default,,0,0,0,,速度快了三到六倍
+Dialogue: 0,0:00:25.63,0:00:27.13,Default,,0,0,0,,你没写的代码，
+Dialogue: 0,0:00:27.13,0:00:28.63,Default,,0,0,0,,零bug零漏洞，无限扩展，
+Dialogue: 0,0:00:28.63,0:00:30.14,Default,,0,0,0,,MIT开源

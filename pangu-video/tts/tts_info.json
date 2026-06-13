@@ -1,0 +1,68 @@
+[
+  {
+    "id": "intro",
+    "text": "当中国AI不写诗聊天，而是开天辟地改变世界，这就是华为盘古大模型",
+    "duration": 6.184875,
+    "leading_trimmed": 0.2935
+  },
+  {
+    "id": "scene1",
+    "text": "别人的AI在聊天写故事，盘古在矿山、气象、药物研发的前线干活",
+    "duration": 6.232531,
+    "leading_trimmed": 0.292281
+  },
+  {
+    "id": "scene2",
+    "text": "盘古大模型的架构分三层，底层通用能力、中层行业模型、上层场景应用",
+    "duration": 6.544313,
+    "leading_trimmed": 0.143063
+  },
+  {
+    "id": "scene3",
+    "text": "最牛的是盘古气象大模型，论文发在Nature正刊，秒级完成全球气象预测",
+    "duration": 3.646344,
+    "leading_trimmed": 2.530188
+  },
+  {
+    "id": "scene4",
+    "text": "精度超越欧洲传统数值预报方法，台风路径预测准确率大幅提升",
+    "duration": 2.518406,
+    "leading_trimmed": 3.066
+  },
+  {
+    "id": "scene5",
+    "text": "在矿山领域，AI视觉识别煤层、预测设备故障，让矿工少下井",
+    "duration": 5.869469,
+    "leading_trimmed": 0.180219
+  },
+  {
+    "id": "scene6",
+    "text": "在药物研发领域，新药先导化合物发现周期从数年缩短到数月",
+    "duration": 6.074938,
+    "leading_trimmed": 0.194469
+  },
+  {
+    "id": "scene7",
+    "text": "最关键的是全栈自主可控，昇腾芯片加MindSpore框架加华为云",
+    "duration": 6.2395,
+    "leading_trimmed": 0.157625
+  },
+  {
+    "id": "scene8",
+    "text": "别人卡脖子的时候，盘古不受影响，因为从硬件到软件全是国产",
+    "duration": 5.732625,
+    "leading_trimmed": 0.107219
+  },
+  {
+    "id": "scene9",
+    "text": "通用AI写诗聊天，行业AI改变世界，盘古选择了后者",
+    "duration": 5.169063,
+    "leading_trimmed": 0.1135
+  },
+  {
+    "id": "outro",
+    "text": "盘古开天，AI落地，这就是中国AI的务实答案",
+    "duration": 4.376188,
+    "leading_trimmed": 0.186562
+  }
+]

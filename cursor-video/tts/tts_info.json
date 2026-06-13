@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro",
+    "text": "Cursor，一个月活破百万的AI编程工具，正在让程序员集体焦虑",
+    "duration": 5.350406,
+    "leading_trimmed": 0.106313
+  },
+  {
+    "id": "scene1",
+    "text": "你写了一百行的函数，Cursor三秒钟就给你生成了，而且质量比你写的还好",
+    "duration": 5.865469,
+    "leading_trimmed": 0.1485
+  },
+  {
+    "id": "scene2",
+    "text": "它不是简单的代码补全，它能读懂你整个项目的上下文，理解你到底想干什么",
+    "duration": 5.987344,
+    "leading_trimmed": 0.154344
+  },
+  {
+    "id": "scene3",
+    "text": "有人说开发效率提升了五到十倍，以前干一天的活现在两小时搞定",
+    "duration": 5.767656,
+    "leading_trimmed": 0.199875
+  },
+  {
+    "id": "scene4",
+    "text": "但也有人说，初级程序员的岗位正在被AI悄悄取代，这不是危言耸听",
+    "duration": 5.829281,
+    "leading_trimmed": 0.265969
+  },
+  {
+    "id": "scene5",
+    "text": "Cursor的核心不是替代你，而是让你变成一个十倍效率的超级个体",
+    "duration": 5.020875,
+    "leading_trimmed": 0.133969
+  },
+  {
+    "id": "outro",
+    "text": "AI不会取代程序员，但会用AI的程序员会取代不会用的",
+    "duration": 4.480906,
+    "leading_trimmed": 0.209531
+  }
+]

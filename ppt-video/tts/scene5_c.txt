@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/ppt-video/tts/scene5_trimmed.mp3'
+file '/home/chris47634/tmp_premium/ppt-video/tts/scene5_gap.mp3'

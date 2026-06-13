@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 6 - 不只是聊天</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 500px; height: 500px;
+  background: #76B900;
+  opacity: 0.2;
+  top: 500px; left: -100px;
+}
+.bg-orb.orb2 {
+  width: 400px; height: 400px;
+  background: #00D4FF;
+  opacity: 0.15;
+  top: 300px; right: -80px;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(118,185,0,0.03) 4px, rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none; z-index: 1;
+}
+.scene-content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 180px 80px;
+}
+.title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 80px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 6px;
+}
+.compare-area {
+  display: flex;
+  gap: 40px;
+  margin-top: 120px;
+  width: 100%;
+  justify-content: center;
+}
+.compare-card {
+  width: 440px;
+  padding: 50px 36px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.compare-card.left {
+  border: 1.5px solid rgba(255,80,80,0.3);
+}
+.compare-card.right {
+  border: 1.5px solid rgba(118,185,0,0.4);
+}
+.compare-card .icon { font-size: 80px; }
+.compare-card .badge {
+  font-size: 48px;
+  font-weight: bold;
+}
+.compare-card .badge.cross { color: #ff5050; }
+.compare-card .badge.check { color: #76B900; }
+.compare-card .card-title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+}
+.compare-card .card-desc {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 28px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  line-height: 1.6;
+}
+.vs-text {
+  font-family: 'InterDisplay-Bold', sans-serif;
+  font-size: 56px;
+  color: rgba(255,255,255,0.3);
+  align-self: center;
+  margin-top: 140px;
+}
+.bottom-tagline {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 44px;
+  color: #76B900;
+  margin-top: 80px;
+  letter-spacing: 4px;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title" id="title">不只是聊天</div>
+    <div class="compare-area" id="compareArea">
+      <div class="compare-card left" id="cardLeft">
+        <div class="icon">💬</div>
+        <div class="badge cross">✗</div>
+        <div class="card-title">传统聊天AI</div>
+        <div class="card-desc">只会文字对话<br>不理解物理世界</div>
+      </div>
+      <div class="vs-text" id="vsText">VS</div>
+      <div class="compare-card right" id="cardRight">
+        <div class="icon">🌐</div>
+        <div class="badge check">✓</div>
+        <div class="card-title">Cosmos 3</div>
+        <div class="card-desc">看听说动全模态<br>真正理解世界</div>
+      </div>
+    </div>
+    <div class="bottom-tagline" id="bottomTag">让AI真正理解这个世界</div>
+  </div>
+<script>
+(function() {
+  var D = 5.39;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var cardLeft = document.getElementById('cardLeft');
+  var cardRight = document.getElementById('cardRight');
+  var vsText = document.getElementById('vsText');
+  var bottomTag = document.getElementById('bottomTag');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translate(' + (p * 50) + 'px,' + (p * 30) + 'px)';
+    orb2.style.transform = 'translate(' + (-p * 40) + 'px,' + (-p * 25) + 'px)';
+
+    // Title 0-0.8s
+    var tA = Math.min(1, t / 0.8);
+    title.style.opacity = tA;
+    title.style.transform = 'translateY(' + (40 * (1 - tA)) + 'px)';
+
+    // Left card: slide in from left 0.8-1.8s
+    var lcP = Math.min(1, Math.max(0, (t - 0.8) / 0.8));
+    var lcE = 1 - Math.pow(1 - lcP, 3);
+    cardLeft.style.opacity = lcP;
+    cardLeft.style.transform = 'translateX(' + ((1 - lcE) * -500) + 'px)';
+
+    // VS text 1.3-1.8s
+    var vsA = Math.min(1, Math.max(0, (t - 1.3) / 0.4));
+    vsText.style.opacity = vsA;
+    vsText.style.transform = 'scale(' + (0.5 + 0.5 * vsA) + ')';
+
+    // Right card: slide in from right 1.5-2.5s
+    var rcP = Math.min(1, Math.max(0, (t - 1.5) / 0.8));
+    var rcE = 1 - Math.pow(1 - rcP, 3);
+    cardRight.style.opacity = rcP;
+    cardRight.style.transform = 'translateX(' + ((1 - rcE) * 500) + 'px)';
+
+    // Bottom tagline 3.5-4.5s
+    var bA = Math.min(1, Math.max(0, (t - 3.5) / 0.8));
+    bottomTag.style.opacity = bA;
+    bottomTag.style.transform = 'translateY(' + (30 * (1 - bA)) + 'px)';
+  };
+})();
+</script>
+</body>
+</html>

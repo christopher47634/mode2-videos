@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro",
+    "text": "六分四十六秒，小米SU7 Ultra刷新纽北最速四门车纪录，然后争议来了",
+    "duration": 6.968313,
+    "leading_trimmed": 0.148625
+  },
+  {
+    "id": "scene1",
+    "text": "海外车手和媒体直接质疑，说你这轮胎不是原厂的，成绩有水分",
+    "duration": 5.644313,
+    "leading_trimmed": 0.11425
+  },
+  {
+    "id": "scene2",
+    "text": "社交媒体炸了锅，有人说是作弊，有人说中国车企就会吹牛",
+    "duration": 3.730156,
+    "leading_trimmed": 1.935531
+  },
+  {
+    "id": "scene3",
+    "text": "小米的回应很简单，接受任何检验，换回原厂轮胎重新跑",
+    "duration": 4.961656,
+    "leading_trimmed": 0.158344
+  },
+  {
+    "id": "scene4",
+    "text": "结果呢，原厂胎照样跑出相近成绩，质疑者集体沉默",
+    "duration": 4.723469,
+    "leading_trimmed": 0.129531
+  },
+  {
+    "id": "scene5",
+    "text": "保时捷Taycan的纪录被一个中国品牌打破了，这是事实",
+    "duration": 4.337781,
+    "leading_trimmed": 0.1785
+  },
+  {
+    "id": "outro",
+    "text": "最快的路，是让质疑者无话可说的路",
+    "duration": 3.133906,
+    "leading_trimmed": 0.140125
+  }
+]

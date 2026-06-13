@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 4 - 全能</title>
+<style>
+@font-face {
+  font-family: 'ZCOOL KuaiLe';
+  src: url('file:///home/chris47634/.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype');
+  font-weight: normal; font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1920px; background: #06101F; overflow: hidden; position: relative; font-family: 'NotoSansCJK', sans-serif; }
+
+.bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.25; }
+.orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, #8B5CF6, transparent 70%); top: 500px; left: -150px; animation: of1 8s ease-in-out infinite; }
+.orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #00D4FF, transparent 70%); bottom: 500px; right: -100px; animation: of2 10s ease-in-out infinite; }
+@keyframes of1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
+@keyframes of2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-30px)} }
+.scanline { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(139,92,246,0.03) 3px, rgba(139,92,246,0.03) 4px); z-index: 1; }
+
+.content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; align-items: center; padding-top: 320px; }
+
+.scene-title { font-family: 'ZCOOL KuaiLe', cursive; font-size: 68px; color: #fff; letter-spacing: 6px; opacity: 0; margin-bottom: 120px; text-shadow: 0 0 30px rgba(139,92,246,0.4); }
+
+.cards { display: flex; flex-direction: column; gap: 50px; align-items: center; }
+
+.card {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 30px;
+  padding: 40px 70px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  display: flex; align-items: center; gap: 30px;
+  width: 700px;
+  opacity: 0;
+}
+.card:nth-child(2) { border-color: rgba(0, 212, 255, 0.2); background: rgba(0, 212, 255, 0.08); }
+.card:nth-child(3) { border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); }
+
+.card-icon { font-size: 72px; flex-shrink: 0; width: 80px; text-align: center; }
+.card-content { display: flex; flex-direction: column; gap: 8px; }
+.card-title { font-family: 'NotoSansCJK', sans-serif; font-weight: bold; font-size: 44px; color: #fff; letter-spacing: 4px; }
+.card-desc { font-size: 30px; color: rgba(255,255,255,0.5); }
+
+.bottom-text { font-family: 'ZCOOL KuaiLe', cursive; font-size: 48px; color: #8B5CF6; margin-top: 60px; opacity: 0; text-shadow: 0 0 20px rgba(139,92,246,0.3); }
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="scanline"></div>
+</div>
+
+<div class="content">
+  <div class="scene-title" id="title">开源模型里基本无敌</div>
+  <div class="cards">
+    <div class="card" id="c1">
+      <div class="card-icon">&#x1F4BB;</div>
+      <div class="card-content">
+        <div class="card-title">写代码</div>
+        <div class="card-desc">Code生成 · Debug · 重构</div>
+      </div>
+    </div>
+    <div class="card" id="c2">
+      <div class="card-icon">&#x1F4D0;</div>
+      <div class="card-content">
+        <div class="card-title">做数学</div>
+        <div class="card-desc">推理 · 证明 · 计算</div>
+      </div>
+    </div>
+    <div class="card" id="c3">
+      <div class="card-icon">&#x1F9EE;</div>
+      <div class="card-content">
+        <div class="card-title">搞推理</div>
+        <div class="card-desc">逻辑 · 分析 · 决策</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-text" id="bottom">手机到服务器都能跑</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const easeOutBack=t=>{const c=1.70158;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  function flipIn(el, t, start, dur) {
+    if (!el) return;
+    const p = easeOutBack(progress(t, start, dur));
+    const rotY = mix(90, 0, p);
+    el.style.opacity = clamp(p * 3);
+    el.style.transform = 'perspective(800px) rotateY(' + rotY + 'deg)';
+  }
+
+  function fadeUp(el, t, start, dur) {
+    if (!el) return;
+    const p = easeOutQuart(progress(t, start, dur));
+    el.style.opacity = p;
+    el.style.transform = 'translateY(' + mix(30, 0, p) + 'px)';
+  }
+
+  function seekTo(t) {
+    fadeUp(document.getElementById('title'), t, 0, 0.6);
+    flipIn(document.getElementById('c1'), t, 0.8, 0.6);
+    flipIn(document.getElementById('c2'), t, 1.5, 0.6);
+    flipIn(document.getElementById('c3'), t, 2.2, 0.6);
+    fadeUp(document.getElementById('bottom'), t, 3.2, 0.5);
+
+    // Fade out
+    if (t >= 4.2) {
+      const fp = Math.min((t - 4.2) / 0.65, 1);
+      document.querySelector('.content').style.opacity = 1 - fp;
+    }
+  }
+
+  window.seekTo = seekTo;
+  window.__mode2Duration = 4.85;
+  window.__mode2Ready = true;
+  seekTo(0);
+})();
+</script>
+</body>
+</html>

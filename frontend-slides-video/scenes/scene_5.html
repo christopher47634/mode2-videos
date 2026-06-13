@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'InterDisplay';src:url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'Inter';src:url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'NotoSansCJK';src:url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');font-weight:bold;font-style:normal;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1920px;background:#1A1B26;overflow:hidden;position:relative;}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;pointer-events:none;}
+.glow1{width:500px;height:500px;background:#E0AF68;top:300px;left:200px;}
+.glow2{width:400px;height:400px;background:#7AA2F7;bottom:300px;right:150px;}
+.scanline{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(224,175,104,0.03) 4px,rgba(224,175,104,0.03) 5px);pointer-events:none;z-index:1;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;}
+.title{position:absolute;top:280px;width:100%;text-align:center;font-family:'InterDisplay',sans-serif;font-size:96px;color:#E0AF68;}
+.flow-row{position:absolute;top:580px;width:100%;display:flex;align-items:center;justify-content:center;gap:30px;}
+.file-box{width:260px;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.file-icon{font-size:100px;margin-bottom:16px;}
+.file-ext{font-family:'Inter',monospace;font-size:32px;color:rgba(255,255,255,0.8);}
+.file-label{font-family:'NotoSansCJK','Inter',sans-serif;font-size:24px;color:rgba(255,255,255,0.5);margin-top:8px;}
+.arrow{font-size:80px;color:#E0AF68;}
+.bottom-feat{position:absolute;top:980px;width:100%;text-align:center;font-family:'NotoSansCJK','Inter',sans-serif;font-size:42px;color:rgba(255,255,255,0.7);}
+.feat-tags{margin-top:20px;display:flex;justify-content:center;gap:20px;}
+.feat-tag{display:inline-block;padding:10px 28px;border-radius:20px;font-size:32px;}
+.ft1{background:rgba(122,162,247,0.15);color:#7AA2F7;}
+.ft2{background:rgba(158,206,106,0.15);color:#9ECE6A;}
+</style>
+</head><body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="scanline"></div>
+<div id="title" class="title">PPT转HTML</div>
+<div class="flow-row">
+  <div id="leftFile" class="file-box glass">
+    <div class="file-icon">📊</div>
+    <div class="file-ext">.pptx</div>
+    <div class="file-label">演示文稿</div>
+  </div>
+  <div id="arrow" class="arrow">→</div>
+  <div id="rightFile" class="file-box glass">
+    <div class="file-icon">💻</div>
+    <div class="file-ext">.html</div>
+    <div class="file-label">网页演示</div>
+  </div>
+</div>
+<div id="bottom" class="bottom-feat">
+  演讲者模式 + 逐字稿
+  <div class="feat-tags">
+    <span class="feat-tag ft1">Speaker View</span>
+    <span class="feat-tag ft2">脚本模式</span>
+  </div>
+</div>
+<script>
+window.__mode2Duration=4.48;
+function seekTo(t){
+  var dur=4.48;
+  var title=document.getElementById('title');
+  var leftFile=document.getElementById('leftFile');
+  var arrow=document.getElementById('arrow');
+  var rightFile=document.getElementById('rightFile');
+  var bottom=document.getElementById('bottom');
+  // Title 0-0.6
+  var tp=Math.min(Math.max(t/0.6,0),1);
+  title.style.opacity=tp;
+  title.style.transform='translateY('+(50-50*tp)+'px)';
+  // Left file pop in 0.5-1.2
+  var lp=Math.min(Math.max((t-0.5)/0.7,0),1);
+  leftFile.style.transform='scale('+(0.3+0.7*lp)+')';
+  leftFile.style.opacity=lp;
+  // Arrow draw 1.2-2.0 (grow from 0 width)
+  var ap=Math.min(Math.max((t-1.2)/0.8,0),1);
+  arrow.style.opacity=ap;
+  arrow.style.transform='scaleX('+ap+')';
+  // Right file pop 2.0-2.7
+  var rp=Math.min(Math.max((t-2.0)/0.7,0),1);
+  var bounceR=rp<0.7?(rp/0.7)*1.1:1.1-0.1*((rp-0.7)/0.3);
+  rightFile.style.transform='scale('+(0.3+0.7*bounceR)+')';
+  rightFile.style.opacity=rp;
+  // Bottom 3.0-3.8
+  var bp=Math.min(Math.max((t-3.0)/0.6,0),1);
+  bottom.style.opacity=bp;
+  bottom.style.transform='translateY('+(30-30*bp)+'px)';
+}
+window.__mode2Ready=true;
+seekTo(0);
+</script>
+</body></html>

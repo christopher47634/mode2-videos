@@ -1,0 +1,34 @@
+﻿[Script Info]
+Title: enableMacosAI
+ScriptType: v4.00+
+WrapStyle: 0
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,ZCOOL KuaiLe,58,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,3,2,2,20,20,393,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.54,Default,,0,0,0,,enableMacosAI，
+Dialogue: 0,0:00:01.54,0:00:03.09,Default,,0,0,0,,八百四十二星，
+Dialogue: 0,0:00:03.09,0:00:04.63,Default,,0,0,0,,国行Mac用户的福音
+Dialogue: 0,0:00:04.63,0:00:06.26,Default,,0,0,0,,你花了两万买的MacBook，
+Dialogue: 0,0:00:06.26,0:00:07.89,Default,,0,0,0,,Apple Intelligence
+Dialogue: 0,0:00:07.89,0:00:09.51,Default,,0,0,0,,却用不了，因为你是国行
+Dialogue: 0,0:00:09.51,0:00:11.27,Default,,0,0,0,,原因很简单，
+Dialogue: 0,0:00:11.27,0:00:13.02,Default,,0,0,0,,苹果检查了一个区域码，
+Dialogue: 0,0:00:13.02,0:00:14.77,Default,,0,0,0,,国行是CH，直接给你关了
+Dialogue: 0,0:00:14.77,0:00:16.74,Default,,0,0,0,,这个项目是一个极简内核扩展，
+Dialogue: 0,0:00:16.74,0:00:18.71,Default,,0,0,0,,在系统源头把CH改成LL，
+Dialogue: 0,0:00:18.71,0:00:20.68,Default,,0,0,0,,全系统生效
+Dialogue: 0,0:00:20.68,0:00:22.95,Default,,0,0,0,,写作工具、图乐园、Genmoji、
+Dialogue: 0,0:00:22.95,0:00:25.23,Default,,0,0,0,,ChatGPT扩展，
+Dialogue: 0,0:00:25.23,0:00:27.50,Default,,0,0,0,,端侧加云端全功能解锁
+Dialogue: 0,0:00:27.50,0:00:28.98,Default,,0,0,0,,一键安装，
+Dialogue: 0,0:00:28.98,0:00:30.46,Default,,0,0,0,,sudo点一个脚本就搞定，
+Dialogue: 0,0:00:30.46,0:00:31.93,Default,,0,0,0,,还带体检和诊断功能
+Dialogue: 0,0:00:31.93,0:00:33.57,Default,,0,0,0,,你的硬件你的AI，
+Dialogue: 0,0:00:33.57,0:00:35.21,Default,,0,0,0,,不应该被区域码锁住，
+Dialogue: 0,0:00:35.21,0:00:36.85,Default,,0,0,0,,GitHub链接在评论区

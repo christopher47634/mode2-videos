@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro",
+    "text": "noop，本周GitHub最火的硬件项目，一千五百星",
+    "duration": 4.125438,
+    "leading_trimmed": 0.263156
+  },
+  {
+    "id": "scene1",
+    "text": "你花三百刀买了个WHOOP手环，每个月还要交三十刀订阅费才能看自己的数据",
+    "duration": 5.973375,
+    "leading_trimmed": 0.203156
+  },
+  {
+    "id": "scene2",
+    "text": "noop说不用了，蓝牙直连你的手环，数据全部存本地，不经过任何云端",
+    "duration": 6.158094,
+    "leading_trimmed": 0.146125
+  },
+  {
+    "id": "scene3",
+    "text": "恢复值、压力、心率变异性、睡眠，全部在你的设备上算",
+    "duration": 5.683563,
+    "leading_trimmed": 0.109844
+  },
+  {
+    "id": "scene4",
+    "text": "不需要账号，不需要订阅，不需要网络，免费永久免费",
+    "duration": 4.774906,
+    "leading_trimmed": 0.205781
+  },
+  {
+    "id": "scene5",
+    "text": "macOS安卓iOS全平台支持，还带AI教练，用自己的API key就行",
+    "duration": 6.306531,
+    "leading_trimmed": 0.218281
+  },
+  {
+    "id": "outro",
+    "text": "你的手环，你的数据，你的机器，开源万岁",
+    "duration": 3.8695,
+    "leading_trimmed": 0.135969
+  }
+]

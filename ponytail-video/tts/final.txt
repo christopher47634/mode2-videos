@@ -1,0 +1,7 @@
+file '/home/chris47634/tmp_premium/ponytail-video/tts/intro_seg.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene1_seg.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene2_seg.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene3_seg.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene4_seg.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene5_seg.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/outro_seg.mp3'

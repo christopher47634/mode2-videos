@@ -1,0 +1,32 @@
+﻿[Script Info]
+Title: MiMoCode
+ScriptType: v4.00+
+WrapStyle: 0
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,ZCOOL KuaiLe,58,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,3,2,2,20,20,393,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.83,Default,,0,0,0,,本周最火的开源项目
+Dialogue: 0,0:00:01.83,0:00:03.66,Default,,0,0,0,,小米MiMo团队的MiMoCode
+Dialogue: 0,0:00:03.66,0:00:05.49,Default,,0,0,0,,三天拿下七千四百星
+Dialogue: 0,0:00:05.49,0:00:08.43,Default,,0,0,0,,终端原生AI编程助手
+Dialogue: 0,0:00:08.43,0:00:11.38,Default,,0,0,0,,能读写代码 能跑命令 能管Git
+Dialogue: 0,0:00:11.38,0:00:13.52,Default,,0,0,0,,跨会话持久记忆
+Dialogue: 0,0:00:13.52,0:00:15.66,Default,,0,0,0,,上个session聊的项目架构
+Dialogue: 0,0:00:15.66,0:00:17.80,Default,,0,0,0,,下次打开它还记得
+Dialogue: 0,0:00:17.80,0:00:20.04,Default,,0,0,0,,上下文快满了怎么办
+Dialogue: 0,0:00:20.04,0:00:22.28,Default,,0,0,0,,自动从检查点重建
+Dialogue: 0,0:00:22.28,0:00:24.51,Default,,0,0,0,,关键信息压缩注入 不丢进度
+Dialogue: 0,0:00:24.51,0:00:26.63,Default,,0,0,0,,Dream和Distill
+Dialogue: 0,0:00:26.63,0:00:28.74,Default,,0,0,0,,扫描历史提取知识
+Dialogue: 0,0:00:28.74,0:00:30.85,Default,,0,0,0,,重复工作流打包成可复用技能
+Dialogue: 0,0:00:30.85,0:00:33.71,Default,,0,0,0,,三种模式随便切
+Dialogue: 0,0:00:33.71,0:00:36.57,Default,,0,0,0,,build搞开发 plan做分析
+Dialogue: 0,0:00:36.57,0:00:39.43,Default,,0,0,0,,compose从规格到交付代码
+Dialogue: 0,0:00:39.43,0:00:41.57,Default,,0,0,0,,MIT开源 代码全开放
+Dialogue: 0,0:00:41.57,0:00:43.72,Default,,0,0,0,,链接在评论区 去看看

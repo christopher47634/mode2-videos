@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 5 - 物理AI基础设施</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 500px; height: 500px;
+  background: #76B900;
+  opacity: 0.2;
+  top: 400px; right: -100px;
+}
+.bg-orb.orb2 {
+  width: 350px; height: 350px;
+  background: #00D4FF;
+  opacity: 0.12;
+  top: 200px; left: -80px;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(118,185,0,0.03) 4px, rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none; z-index: 1;
+}
+.scene-content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200px 80px;
+}
+.title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 76px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 6px;
+}
+.cards-col {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 100px;
+  width: 100%;
+  align-items: center;
+}
+.glass-card {
+  width: 880px;
+  padding: 50px 50px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(118,185,0,0.2);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.glass-card .emoji { font-size: 64px; }
+.glass-card .info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.glass-card .card-title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+.glass-card .card-desc {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 28px;
+  color: rgba(255,255,255,0.5);
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title" id="title">物理AI基础设施</div>
+    <div class="cards-col">
+      <div class="glass-card" id="card0">
+        <div class="emoji">🚗</div>
+        <div class="info">
+          <div class="card-title">自动驾驶</div>
+          <div class="card-desc">世界模型驱动的端到端智驾</div>
+        </div>
+      </div>
+      <div class="glass-card" id="card1">
+        <div class="emoji">🤖</div>
+        <div class="info">
+          <div class="card-title">机器人</div>
+          <div class="card-desc">理解物理世界的具身智能</div>
+        </div>
+      </div>
+      <div class="glass-card" id="card2">
+        <div class="emoji">🏗️</div>
+        <div class="info">
+          <div class="card-title">智能基建</div>
+          <div class="card-desc">数字孪生与工业仿真</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var D = 3.62;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var cards = [
+    document.getElementById('card0'),
+    document.getElementById('card1'),
+    document.getElementById('card2')
+  ];
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translate(' + (p * 50) + 'px,' + (p * 30) + 'px)';
+    orb2.style.transform = 'translate(' + (-p * 40) + 'px,' + (-p * 25) + 'px)';
+
+    // Title 0-0.7s
+    var tA = Math.min(1, t / 0.7);
+    title.style.opacity = tA;
+    title.style.transform = 'translateY(' + (40 * (1 - tA)) + 'px)';
+
+    // Cards: staggered bounce in
+    for (var i = 0; i < 3; i++) {
+      var delay = 0.6 + i * 0.5;
+      var cP = Math.min(1, Math.max(0, (t - delay) / 0.6));
+      // Bounce ease
+      var ease = 1 - Math.pow(1 - cP, 3);
+      var scale = 0.3 + 0.7 * ease;
+      cards[i].style.opacity = cP;
+      cards[i].style.transform = 'scale(' + scale + ') translateY(' + ((1 - ease) * 80) + 'px)';
+    }
+  };
+})();
+</script>
+</body>
+</html>

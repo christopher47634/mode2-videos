@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Cosmos 3 - Intro</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.3;
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 600px; height: 600px;
+  background: #76B900;
+  top: -200px; left: -100px;
+}
+.bg-orb.orb2 {
+  width: 500px; height: 500px;
+  background: #00D4FF;
+  bottom: -150px; right: -100px;
+  opacity: 0.15;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    rgba(118,185,0,0.03) 4px,
+    rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.scene-content {
+  position: relative;
+  z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+}
+.title-cosmos {
+  font-family: 'InterDisplay-Bold', sans-serif;
+  font-size: 160px;
+  font-weight: bold;
+  color: #76B900;
+  letter-spacing: 8px;
+  line-height: 1.1;
+}
+.subtitle {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 42px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 40px;
+  letter-spacing: 6px;
+}
+.hook {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 56px;
+  color: #FFFFFF;
+  text-align: center;
+  margin-top: 200px;
+  line-height: 1.6;
+  letter-spacing: 4px;
+}
+.glass-line {
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, #76B900, transparent);
+  margin-top: 60px;
+  opacity: 0.6;
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title-cosmos" id="title">Cosmos 3</div>
+    <div class="subtitle" id="subtitle">NVIDIA · 全模态 · 世界模型</div>
+    <div class="hook" id="hook">当AI学会<br>看听说动...</div>
+    <div class="glass-line" id="glassLine"></div>
+  </div>
+<script>
+(function() {
+  var D = 4.0;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var subtitle = document.getElementById('subtitle');
+  var hook = document.getElementById('hook');
+  var glassLine = document.getElementById('glassLine');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    // Background orbs drift
+    orb1.style.transform = 'translate(' + (p * 80) + 'px, ' + (p * 60) + 'px)';
+    orb1.style.opacity = 0.2 + 0.15 * Math.sin(p * Math.PI);
+    orb2.style.transform = 'translate(' + (-p * 60) + 'px, ' + (-p * 40) + 'px)';
+    orb2.style.opacity = 0.1 + 0.1 * Math.sin(p * Math.PI * 1.5);
+
+    // Title: 0-1.2s scale from 0.3 to 1 + typewriter effect
+    var tShow = Math.min(1, t / 1.2);
+    var ease = 1 - Math.pow(1 - tShow, 3);
+    var scaleVal = 0.3 + 0.7 * ease;
+    title.style.transform = 'scale(' + scaleVal + ')';
+    title.style.opacity = tShow;
+
+    // Typewriter effect on title
+    var fullText = 'Cosmos 3';
+    var charCount = Math.floor(tShow * fullText.length);
+    charCount = Math.min(charCount, fullText.length);
+    title.textContent = fullText.substring(0, charCount);
+
+    // Subtitle: 1.0-2.0s fade in
+    var subAlpha = 0;
+    if (t > 1.0) subAlpha = Math.min(1, (t - 1.0) / 1.0);
+    subtitle.style.opacity = subAlpha;
+    subtitle.style.transform = 'translateY(' + (30 * (1 - subAlpha)) + 'px)';
+
+    // Hook: 2.0-3.5s typewriter + fade
+    var hookAlpha = 0;
+    if (t > 2.0) hookAlpha = Math.min(1, (t - 2.0) / 0.8);
+    hook.style.opacity = hookAlpha;
+    hook.style.transform = 'translateY(' + (40 * (1 - hookAlpha)) + 'px)';
+    // Typewriter on hook
+    var hookFull = '当AI学会看听说动...';
+    var hookClean = hookFull;
+    var hookChars = 0;
+    if (t > 2.2) hookChars = Math.floor((t - 2.2) / 0.08);
+    hookChars = Math.min(hookChars, hookClean.length);
+    var hookDisplay = hookClean.substring(0, hookChars);
+    if (hookChars < hookClean.length) hookDisplay += '▌';
+    hook.innerHTML = hookDisplay.substring(0, hookDisplay.indexOf('看') > -1 ? hookDisplay.indexOf('看') : hookDisplay.length) +
+      (hookDisplay.indexOf('看') > -1 ? '<br>' + hookDisplay.substring(hookDisplay.indexOf('看')) : '');
+    // Simpler approach
+    var halfLen = Math.ceil(hookClean.length / 2);
+    var line1Chars = Math.min(hookChars, halfLen);
+    var line2Chars = Math.max(0, hookChars - halfLen);
+    var line1 = hookClean.substring(0, line1Chars);
+    var line2 = hookClean.substring(halfLen, halfLen + line2Chars);
+    var cursor = hookChars < hookClean.length ? '▌' : '';
+    hook.innerHTML = line1 + (line2Chars > 0 ? '<br>' + line2 : (hookChars <= halfLen ? cursor : ''));
+
+    // Glass line
+    var glAlpha = 0;
+    if (t > 2.8) glAlpha = Math.min(1, (t - 2.8) / 0.6);
+    glassLine.style.opacity = 0.6 * glAlpha;
+    glassLine.style.transform = 'scaleX(' + glAlpha + ')';
+  };
+})();
+</script>
+</body>
+</html>

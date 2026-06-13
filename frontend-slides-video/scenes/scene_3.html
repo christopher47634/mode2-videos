@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'InterDisplay';src:url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'Inter';src:url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'NotoSansCJK';src:url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');font-weight:bold;font-style:normal;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1920px;background:#1A1B26;overflow:hidden;position:relative;}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;pointer-events:none;}
+.glow1{width:500px;height:500px;background:#9ECE6A;top:200px;left:300px;}
+.glow2{width:400px;height:400px;background:#7AA2F7;bottom:400px;right:100px;}
+.scanline{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(158,206,106,0.03) 4px,rgba(158,206,106,0.03) 5px);pointer-events:none;z-index:1;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;}
+.title{position:absolute;top:300px;width:100%;text-align:center;font-family:'InterDisplay',sans-serif;font-size:96px;color:#9ECE6A;}
+.icons-row{position:absolute;top:550px;width:100%;display:flex;justify-content:center;gap:40px;}
+.icon-card{width:200px;height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.icon-emoji{font-size:80px;margin-bottom:16px;}
+.icon-label{font-family:'NotoSansCJK','Inter',sans-serif;font-size:28px;color:rgba(255,255,255,0.8);text-align:center;}
+.bottom{position:absolute;bottom:250px;width:100%;text-align:center;font-family:'NotoSansCJK','Inter',sans-serif;font-size:42px;color:rgba(255,255,255,0.5);}
+</style>
+</head><body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="scanline"></div>
+<div id="title" class="title">交互体验</div>
+<div class="icons-row">
+  <div id="ic0" class="icon-card glass"><div class="icon-emoji">⌨️</div><div class="icon-label">键盘翻页</div></div>
+  <div id="ic1" class="icon-card glass"><div class="icon-emoji">👆</div><div class="icon-label">触摸滑动</div></div>
+  <div id="ic2" class="icon-card glass"><div class="icon-emoji">📊</div><div class="icon-label">进度条</div></div>
+  <div id="ic3" class="icon-card glass"><div class="icon-emoji">✨</div><div class="icon-label">动画入场</div></div>
+</div>
+<div id="bottom" class="bottom">浏览器直接演示</div>
+<script>
+window.__mode2Duration=4.91;
+function seekTo(t){
+  var dur=4.91;
+  var title=document.getElementById('title');
+  var bottom=document.getElementById('bottom');
+  // Title 0-0.7
+  var tp=Math.min(Math.max(t/0.7,0),1);
+  title.style.opacity=tp;
+  title.style.transform='translateY('+(50-50*tp)+'px)';
+  // Icons bounce in one by one
+  for(var i=0;i<4;i++){
+    var ic=document.getElementById('ic'+i);
+    var startT=0.8+i*0.4;
+    var ip=Math.min(Math.max((t-startT)/0.5,0),1);
+    // bounce ease
+    var eased=ip<0.6?(ip/0.6)*1.1:1.1-0.1*((ip-0.6)/0.4);
+    var scale=eased;
+    var ty=(1-ip)*80;
+    ic.style.transform='translateY('+ty+'px) scale('+scale+')';
+    ic.style.opacity=ip;
+  }
+  // Bottom 3.5-4.2
+  var bp=Math.min(Math.max((t-3.5)/0.7,0),1);
+  bottom.style.opacity=bp;
+  bottom.style.transform='translateY('+(30-30*bp)+'px)';
+}
+window.__mode2Ready=true;
+seekTo(0);
+</script>
+</body></html>

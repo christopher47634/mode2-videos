@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 1 - 痛点</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+:root { --bg:#06101F;--cyan:#00D4FF;--green:#18C98B;--red:#FF3B5C;--blue:#0088CC;--purple:#6B3FA0;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5);--silver:#C0C0C0; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:0.1}
+.bg-orb-1{width:600px;height:600px;background:var(--red);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--purple);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:350px;height:350px;background:var(--blue);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.3)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--cyan);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:10%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:25%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:40%;animation-duration:12s;animation-delay:4s}
+.particle:nth-child(4){left:55%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:70%;animation-duration:13s;animation-delay:3s}
+.particle:nth-child(6){left:85%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:95%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.12;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:100px 80px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--red);box-shadow:0 0 20px var(--red)}
+.light-dot-2{bottom:12%;right:12%;width:8px;height:8px;background:var(--red);box-shadow:0 0 20px var(--red)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.macbook-svg {
+  width: 360px; height: 280px; opacity: 0;
+  margin-bottom: 60px; position: relative;
+}
+.macbook-svg svg { width: 100%; height: 100%; }
+.x-overlay {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 180px; color: var(--red); font-weight: bold;
+  opacity: 0; text-shadow: 0 0 60px rgba(255,59,92,0.6);
+  z-index: 5;
+}
+.price-text {
+  font-size: 52px; font-weight: bold; opacity: 0;
+  color: var(--text); margin-bottom: 40px;
+  text-align: center;
+}
+.ai-label {
+  font-size: 56px; font-weight: bold; opacity: 0;
+  color: var(--cyan); margin-bottom: 16px;
+  text-align: center;
+  text-shadow: 0 0 30px rgba(0,212,255,0.3);
+  position: relative;
+}
+.ai-strike {
+  position: absolute; top: 50%; left: -20px; right: -20px;
+  height: 4px; background: var(--red);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  box-shadow: 0 0 15px var(--red);
+}
+.locked-text {
+  font-size: 48px; font-weight: bold; opacity: 0;
+  color: var(--red); text-align: center;
+  text-shadow: 0 0 30px rgba(255,59,92,0.4);
+}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="macbook-svg" data-el="macbook">
+    <svg viewBox="0 0 360 280" fill="none">
+      <!-- MacBook body -->
+      <rect x="40" y="20" width="280" height="180" rx="12" stroke="#C0C0C0" stroke-width="2" fill="rgba(192,192,192,0.05)"/>
+      <!-- Screen -->
+      <rect x="55" y="35" width="250" height="150" rx="4" fill="rgba(0,212,255,0.08)" stroke="#C0C0C0" stroke-width="1"/>
+      <!-- Apple logo on screen -->
+      <text x="180" y="120" text-anchor="middle" fill="rgba(192,192,192,0.3)" font-size="40" font-weight="bold">🍎</text>
+      <!-- Base -->
+      <path d="M20 200 L40 200 L320 200 L340 200 L330 220 Q320 230 180 230 Q40 230 30 220 Z" stroke="#C0C0C0" stroke-width="2" fill="rgba(192,192,192,0.05)"/>
+      <!-- Trackpad notch -->
+      <path d="M150 200 Q180 195 210 200" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+    </svg>
+    <div class="x-overlay" data-el="xmark">✕</div>
+  </div>
+  <div class="price-text" data-el="price">你花了两万买的Mac</div>
+  <div class="ai-label" data-el="ailabel">
+    Apple Intelligence
+    <div class="ai-strike" data-el="strike"></div>
+  </div>
+  <div class="locked-text" data-el="locked">国行 = 被锁</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const easeOutExpo=t=>t>=1?1:1-Math.pow(2,-10*t);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    reveal(document.querySelector('[data-el="macbook"]'),t,{start:0.1,duration:0.8,y:50,scale:0.9,blur:16});
+    reveal(document.querySelector('[data-el="price"]'),t,{start:0.8,duration:0.6,y:30,blur:10});
+    reveal(document.querySelector('[data-el="ailabel"]'),t,{start:1.6,duration:0.6,y:30,blur:10});
+    reveal(document.querySelector('[data-el="locked"]'),t,{start:3.5,duration:0.6,y:30,blur:10});
+
+    // X mark fade in with scale
+    const xp=easeOutExpo(progress(t,2.5,0.5));
+    const xmark=document.querySelector('[data-el="xmark"]');
+    if(xmark){
+      xmark.style.opacity=xp;
+      xmark.style.transform=`translate(-50%,-50%) scale(${mix(1.5,1,xp)})`;
+    }
+
+    // Strike through animation
+    const sp=easeOutExpo(progress(t,2.8,0.8));
+    const strike=document.querySelector('[data-el="strike"]');
+    if(strike) strike.style.transform=`translateY(-50%) scaleX(${sp})`;
+
+    // Shake effect on macbook when X appears
+    const shakeP=progress(t,2.4,0.6);
+    const macbook=document.querySelector('[data-el="macbook"]');
+    if(macbook && shakeP>0 && shakeP<1){
+      const shake=Math.sin(shakeP*Math.PI*8)*mix(8,0,shakeP);
+      macbook.style.transform=`translate3d(${shake}px,0,0) scale(1)`;
+    }
+
+    const cp=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-tl"]').style.opacity=cp;
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=5.61;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,5.61));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

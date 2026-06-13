@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'InterDisplay';src:url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'Inter';src:url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'NotoSansCJK';src:url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');font-weight:bold;font-style:normal;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1920px;background:#1A1B26;overflow:hidden;position:relative;}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;pointer-events:none;}
+.glow1{width:600px;height:600px;background:#E0AF68;top:400px;left:250px;}
+.glow2{width:400px;height:400px;background:#BB9AF7;bottom:300px;right:200px;}
+.scanline{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(224,175,104,0.03) 4px,rgba(224,175,104,0.03) 5px);pointer-events:none;z-index:1;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;}
+.quote-wrap{position:absolute;top:600px;width:100%;display:flex;justify-content:center;}
+.quote-card{width:800px;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.quote{font-family:'InterDisplay',sans-serif;font-size:80px;background:linear-gradient(135deg,#E0AF68,#BB9AF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;line-height:1.4;}
+.url{position:absolute;bottom:300px;width:100%;text-align:center;font-family:'Inter',monospace;font-size:36px;color:rgba(255,255,255,0.5);}
+.cursor{display:inline-block;width:4px;height:50px;background:#E0AF68;margin-left:4px;vertical-align:middle;}
+</style>
+</head><body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="scanline"></div>
+<div class="quote-wrap">
+  <div id="quoteCard" class="quote-card glass">
+    <div id="quote" class="quote">做演示的正确方式。</div>
+  </div>
+</div>
+<div id="url" class="url">github.com搜 frontend-slides</div>
+<script>
+window.__mode2Duration=3.0;
+function seekTo(t){
+  var dur=3.0;
+  var quoteCard=document.getElementById('quoteCard');
+  var quote=document.getElementById('quote');
+  var url=document.getElementById('url');
+  // Quote card fade in 0-0.5
+  var cp=Math.min(Math.max(t/0.5,0),1);
+  quoteCard.style.transform='scale('+(0.9+0.1*cp)+')';
+  quoteCard.style.opacity=cp;
+  // Typewriter on quote 0.3-2.0
+  var fullText='做演示的正确方式。';
+  var tp=Math.min(Math.max((t-0.3)/1.5,0),1);
+  var charCount=Math.floor(tp*fullText.length);
+  var displayText=fullText.substring(0,charCount);
+  if(tp<1){
+    quote.innerHTML=displayText+'<span class="cursor"></span>';
+  }else{
+    quote.textContent=fullText;
+  }
+  // URL fade in 1.8-2.5
+  var up=Math.min(Math.max((t-1.8)/0.7,0),1);
+  url.style.opacity=up;
+  url.style.transform='translateY('+(20-20*up)+'px)';
+}
+window.__mode2Ready=true;
+seekTo(0);
+</script>
+</body></html>

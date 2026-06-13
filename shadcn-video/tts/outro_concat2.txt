@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/shadcn-video/tts/outro_trimmed.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/outro_gap2.mp3'

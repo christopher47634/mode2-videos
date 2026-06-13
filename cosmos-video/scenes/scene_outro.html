@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Cosmos 3 - Outro</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(150px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 700px; height: 700px;
+  background: #76B900;
+  opacity: 0.15;
+  top: 300px; left: 50%;
+  transform: translateX(-50%);
+}
+.bg-orb.orb2 {
+  width: 500px; height: 500px;
+  background: #00D4FF;
+  opacity: 0.08;
+  top: 600px; left: 50%;
+  transform: translateX(-30%);
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(118,185,0,0.03) 4px, rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none; z-index: 1;
+}
+.scene-content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 80px;
+}
+.quote {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 60px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 1.8;
+  letter-spacing: 4px;
+}
+.quote .highlight {
+  color: #76B900;
+}
+.url {
+  font-family: 'Inter-Regular', monospace;
+  font-size: 32px;
+  color: #00D4FF;
+  margin-top: 120px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+.glass-line {
+  width: 160px; height: 2px;
+  background: linear-gradient(90deg, transparent, #76B900, transparent);
+  margin-top: 60px;
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="quote" id="quote"></div>
+    <div class="glass-line" id="glassLine"></div>
+    <div class="url" id="url">github.com/NVIDIA/cosmos</div>
+  </div>
+<script>
+(function() {
+  var D = 3.0;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var quote = document.getElementById('quote');
+  var glassLine = document.getElementById('glassLine');
+  var url = document.getElementById('url');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  var quoteText = '英伟达的野心，让AI理解世界。';
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translateX(-50%) translate(' + (p * 30) + 'px,' + (p * 20) + 'px)';
+    orb2.style.transform = 'translateX(-30%) translate(' + (-p * 20) + 'px,' + (-p * 15) + 'px)';
+
+    // Quote typewriter 0-2.0s
+    var typeP = Math.min(1, t / 2.0);
+    var charCount = Math.floor(typeP * quoteText.length);
+    charCount = Math.min(charCount, quoteText.length);
+    var displayed = quoteText.substring(0, charCount);
+    // Highlight "英伟达" and "AI理解世界"
+    var formatted = displayed;
+    formatted = formatted.replace('英伟达', '<span class="highlight">英伟达</span>');
+    formatted = formatted.replace('AI理解世界', '<span class="highlight">AI理解世界</span>');
+    if (charCount < quoteText.length) {
+      formatted += '▌';
+    }
+    quote.innerHTML = formatted;
+    quote.style.opacity = charCount > 0 ? 1 : 0;
+
+    // Glass line 1.5-2.0s
+    var glA = Math.min(1, Math.max(0, (t - 1.5) / 0.4));
+    glassLine.style.opacity = 0.5 * glA;
+    glassLine.style.transform = 'scaleX(' + glA + ')';
+
+    // URL fade in 2.0-2.8s
+    var urlA = Math.min(1, Math.max(0, (t - 2.0) / 0.6));
+    url.style.opacity = 0.8 * urlA;
+    url.style.transform = 'translateY(' + (20 * (1 - urlA)) + 'px)';
+  };
+})();
+</script>
+</body>
+</html>

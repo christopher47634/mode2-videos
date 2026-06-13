@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 4 - 执行与审查</title>
+<style>
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+:root {
+  --bg: #06101F;
+  --cyan: #00D4FF;
+  --blue: #0088CC;
+  --purple: #6B3FA0;
+  --text: #E8ECF1;
+  --text-dim: rgba(255,255,255,0.5);
+  --green: #22C55E;
+  --red: #EF4444;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width: 1080px; height: 1920px;
+  background: var(--bg);
+  font-family: 'NotoSansCJK', 'Noto Sans CJK SC', sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+}
+
+.bg-orb { position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:.1; }
+.bg-orb-1 { width:600px;height:600px;background:var(--blue);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite; }
+.bg-orb-2 { width:450px;height:450px;background:var(--purple);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite; }
+.bg-orb-3 { width:350px;height:350px;background:var(--cyan);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite; }
+@keyframes orbFloat1 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(120px,80px)} 66%{transform:translate(-60px,150px)} }
+@keyframes orbFloat2 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(-100px,-60px)} 66%{transform:translate(50px,-120px)} }
+@keyframes orbFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.3)} }
+
+.particles { position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden; }
+.particle { position:absolute;width:3px;height:3px;background:var(--cyan);border-radius:50%;opacity:0;animation:particleRise linear infinite; }
+.particle:nth-child(1){left:8%;animation-duration:14s} .particle:nth-child(2){left:22%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:38%;animation-duration:12s;animation-delay:4s} .particle:nth-child(4){left:52%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:68%;animation-duration:13s;animation-delay:3s} .particle:nth-child(6){left:82%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:92%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise { 0%{transform:translateY(1920px);opacity:0} 10%{opacity:.6} 90%{opacity:.6} 100%{transform:translateY(-20px);opacity:0} }
+
+.scanline { position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.12;z-index:0;animation:scanDown 8s linear infinite; }
+@keyframes scanDown { 0%{top:-2px} 100%{top:1920px} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.content { position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:100px 80px 180px 80px;height:100%; }
+
+.corner { position:absolute;width:50px;height:50px;z-index:2;opacity:0; }
+.corner-tl { top:60px;left:60px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan); }
+.corner-br { bottom:240px;right:60px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan); }
+
+.light-dot { position:absolute;border-radius:50%;z-index:2;opacity:0; }
+.light-dot-1 { top:12%;left:8%;width:6px;height:6px;background:var(--cyan);box-shadow:0 0 20px var(--cyan); }
+.light-dot-2 { bottom:22%;right:12%;width:8px;height:8px;background:var(--purple);box-shadow:0 0 20px var(--purple); }
+
+.title {
+  font-size: 72px; font-weight: bold; text-align: center; margin-bottom: 56px;
+  background: linear-gradient(135deg, #00D4FF, #0099FF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  opacity: 0;
+}
+
+/* === Flow Diagram === */
+.flow { display: flex; flex-direction: column; align-items: center; gap: 0; width: 100%; max-width: 860px; }
+
+.flow-step {
+  background: rgba(10, 20, 40, 0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(0, 212, 255, 0.12);
+  border-radius: 20px;
+  padding: 32px 40px;
+  width: 100%;
+  display: flex; align-items: center; gap: 24px;
+  position: relative; overflow: hidden;
+  opacity: 0;
+}
+.flow-step::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);
+}
+
+.flow-icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.flow-icon svg { width: 30px; height: 30px; }
+
+.flow-text .flow-title { font-size: 36px; font-weight: bold; color: var(--text); }
+.flow-text .flow-desc { font-size: 26px; color: var(--text-dim); margin-top: 4px; }
+
+.icon-plan { background: rgba(96,165,250,0.15); color: #60A5FA; }
+.icon-exec { background: rgba(251,191,36,0.15); color: #FBBF24; }
+.icon-review { background: rgba(168,85,247,0.15); color: #A855F7; }
+.icon-approve { background: rgba(34,197,94,0.15); color: #22C55E; }
+
+.flow-arrow {
+  width: 3px; height: 40px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  opacity: 0;
+}
+
+/* === Review Card === */
+.review-card {
+  margin-top: 48px;
+  background: rgba(10, 20, 40, 0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 24px;
+  padding: 44px;
+  width: 100%; max-width: 860px;
+  position: relative; overflow: hidden;
+  opacity: 0;
+}
+.review-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(168,85,247,0.4),transparent);
+}
+.review-header {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+}
+.review-header svg { width: 28px; height: 28px; color: #A855F7; }
+.review-header .rh-title { font-size: 36px; font-weight: bold; color: #A855F7; }
+
+.review-items { display: flex; flex-direction: column; gap: 14px; }
+.review-item {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 28px; color: var(--text-dim);
+}
+.review-item .ri-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #A855F7; flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles">
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div>
+</div>
+<div class="scanline"></div>
+
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="title" data-el="title">执行与审查</div>
+
+  <div class="flow">
+    <div class="flow-step" data-el="step-0">
+      <div class="flow-icon icon-plan">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+      </div>
+      <div class="flow-text">
+        <div class="flow-title">Plan</div>
+        <div class="flow-desc">贵模型写方案</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow" data-el="arrow-0"></div>
+
+    <div class="flow-step" data-el="step-1">
+      <div class="flow-icon icon-exec">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+      </div>
+      <div class="flow-text">
+        <div class="flow-title">隔离执行</div>
+        <div class="flow-desc">便宜模型在 worktree 执行</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow" data-el="arrow-1"></div>
+
+    <div class="flow-step" data-el="step-2">
+      <div class="flow-icon icon-review">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div class="flow-text">
+        <div class="flow-title">审查 Diff</div>
+        <div class="flow-desc">检查改动范围和验证结果</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow" data-el="arrow-2"></div>
+
+    <div class="flow-step" data-el="step-3">
+      <div class="flow-icon icon-approve">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <div class="flow-text">
+        <div class="flow-title">Approve / 打回</div>
+        <div class="flow-desc">通过则 git commit 标记</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-card" data-el="review">
+    <div class="review-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <div class="rh-title">Tech Lead 审查</div>
+    </div>
+    <div class="review-items">
+      <div class="review-item"><div class="ri-dot"></div>检查 scope 是否越界</div>
+      <div class="review-item"><div class="ri-dot"></div>重跑验证门命令</div>
+      <div class="review-item"><div class="ri-dot"></div>确认 diff 符合方案</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp = (v, min=0, max=1) => Math.min(max, Math.max(min, v));
+  const mix = (a, b, t) => a + (b - a) * t;
+  const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+  const progress = (time, start, dur) => clamp((time - start) / Math.max(dur, 0.0001));
+
+  function reveal(el, time, opts) {
+    const { start=0, duration=0.65, x=0, y=42, scale=0.96, blur=14 } = opts;
+    const p = easeOutQuart(progress(time, start, duration));
+    el.style.opacity = p;
+    el.style.transform = `translate3d(${mix(x,0,p)}px, ${mix(y,0,p)}px, 0) scale(${mix(scale,1,p)})`;
+    el.style.filter = `blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    const title = document.querySelector('[data-el="title"]');
+    const review = document.querySelector('[data-el="review"]');
+    const cornerTL = document.querySelector('[data-el="corner-tl"]');
+    const cornerBR = document.querySelector('[data-el="corner-br"]');
+    const dot1 = document.querySelector('[data-el="dot1"]');
+    const dot2 = document.querySelector('[data-el="dot2"]');
+
+    reveal(title, t, { start: 0.1, duration: 0.6, y: 30, blur: 10 });
+
+    for (let i = 0; i < 4; i++) {
+      const step = document.querySelector(`[data-el="step-${i}"]`);
+      reveal(step, t, { start: 0.7 + i * 0.35, duration: 0.55, y: 30, scale: 0.97, blur: 8 });
+
+      if (i < 3) {
+        const arrow = document.querySelector(`[data-el="arrow-${i}"]`);
+        const ap = easeOutQuart(progress(t, 0.7 + i * 0.35 + 0.3, 0.3));
+        arrow.style.opacity = ap;
+        arrow.style.transform = `scaleY(${ap})`;
+      }
+    }
+
+    reveal(review, t, { start: 2.8, duration: 0.7, y: 40, scale: 0.96, blur: 12 });
+
+    cornerTL.style.opacity = easeOutQuart(progress(t, 0.3, 0.5));
+    cornerBR.style.opacity = easeOutQuart(progress(t, 0.5, 0.5));
+    dot1.style.opacity = easeOutQuart(progress(t, 0.4, 0.5));
+    dot2.style.opacity = easeOutQuart(progress(t, 0.6, 0.5));
+  }
+
+  window.seekTo = seekTo;
+  window.__mode2Duration = 7;
+  window.__mode2Ready = true;
+
+  let startTime = performance.now();
+  let autoRun = true;
+  let _origSeekTo = seekTo;
+  window.seekTo = function(t) { autoRun = false; _origSeekTo(t); };
+  function animate() {
+    if (!autoRun) return;
+    _origSeekTo(Math.min((performance.now() - startTime) / 1000, 7));
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 2 - 640B参数</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 550px; height: 550px;
+  background: #76B900;
+  opacity: 0.18;
+  top: 200px; left: -150px;
+}
+.bg-orb.orb2 {
+  width: 450px; height: 450px;
+  background: #00D4FF;
+  opacity: 0.12;
+  bottom: 100px; right: -100px;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(118,185,0,0.03) 4px, rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none; z-index: 1;
+}
+.scene-content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140px 60px;
+}
+.title {
+  font-family: 'InterDisplay-Bold', sans-serif;
+  font-size: 120px;
+  font-weight: bold;
+  color: #76B900;
+  text-align: center;
+  letter-spacing: 4px;
+}
+.title-sub {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 40px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 16px;
+  letter-spacing: 6px;
+}
+.arch-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+  width: 100%;
+  gap: 40px;
+}
+.side-card {
+  width: 340px;
+  padding: 40px 30px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(118,185,0,0.2);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.side-card .emoji { font-size: 72px; }
+.side-card .name {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+.side-card .desc {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 28px;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+}
+.center-arch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 240px;
+}
+.mot-block {
+  width: 200px; height: 80px;
+  border-radius: 16px;
+  border: 2px solid #76B900;
+  background: rgba(118,185,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'InterDisplay-Bold', sans-serif;
+  font-size: 32px;
+  color: #76B900;
+}
+.mot-label {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 24px;
+  color: rgba(255,255,255,0.5);
+}
+.connector-line {
+  width: 2px; height: 40px;
+  background: linear-gradient(180deg, #76B900, #00D4FF);
+  opacity: 0.6;
+}
+.bottom-bar {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 36px;
+  color: rgba(255,255,255,0.7);
+  margin-top: 80px;
+  text-align: center;
+  letter-spacing: 3px;
+}
+.glass-bg {
+  position: absolute;
+  width: 900px; height: 500px;
+  border-radius: 40px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(118,185,0,0.08);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title" id="title">640B</div>
+    <div class="title-sub" id="titleSub">参数 · MoT架构</div>
+    <div style="position:relative; margin-top: 100px;">
+      <div class="glass-bg" id="glassBg"></div>
+      <div class="arch-area">
+        <div class="side-card" id="leftCard">
+          <div class="emoji">🧠</div>
+          <div class="name">Reasoner</div>
+          <div class="desc">理解世界</div>
+        </div>
+        <div class="center-arch" id="centerArch">
+          <div class="mot-label">MoT</div>
+          <div class="mot-block" id="motBlock">640B</div>
+          <div class="connector-line" id="line1"></div>
+          <div class="connector-line" id="line2"></div>
+          <div class="mot-label">Mixture of Transducers</div>
+        </div>
+        <div class="side-card" id="rightCard">
+          <div class="emoji">🎨</div>
+          <div class="name">Generator</div>
+          <div class="desc">生成内容</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-bar" id="bottomBar">图片 · 视频 · 音频 · 动作<br>全打通</div>
+  </div>
+<script>
+(function() {
+  var D = 7.02;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var titleSub = document.getElementById('titleSub');
+  var leftCard = document.getElementById('leftCard');
+  var rightCard = document.getElementById('rightCard');
+  var centerArch = document.getElementById('centerArch');
+  var motBlock = document.getElementById('motBlock');
+  var line1 = document.getElementById('line1');
+  var line2 = document.getElementById('line2');
+  var bottomBar = document.getElementById('bottomBar');
+  var glassBg = document.getElementById('glassBg');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translate(' + (p * 50) + 'px,' + (p * 40) + 'px)';
+    orb2.style.transform = 'translate(' + (-p * 40) + 'px,' + (-p * 30) + 'px)';
+
+    // Title 0-1s
+    var tA = Math.min(1, t / 1.0);
+    title.style.opacity = tA;
+    title.style.transform = 'scale(' + (0.5 + 0.5 * tA) + ')';
+    titleSub.style.opacity = Math.min(1, Math.max(0, (t - 0.5) / 0.8));
+    titleSub.style.transform = 'translateY(' + (20 * (1 - Math.min(1, Math.max(0, (t - 0.5) / 0.8)))) + 'px)';
+
+    // Glass background
+    var gbA = Math.min(1, Math.max(0, (t - 1.0) / 0.8));
+    glassBg.style.opacity = gbA;
+    glassBg.style.transform = 'scale(' + (0.8 + 0.2 * gbA) + ')';
+
+    // Left card: fly in from left 1.2-2.2s
+    var lcP = Math.min(1, Math.max(0, (t - 1.2) / 0.8));
+    var lcE = 1 - Math.pow(1 - lcP, 3);
+    leftCard.style.opacity = lcP;
+    leftCard.style.transform = 'translateX(' + ((1 - lcE) * -400) + 'px)';
+
+    // Right card: fly in from right 1.6-2.6s
+    var rcP = Math.min(1, Math.max(0, (t - 1.6) / 0.8));
+    var rcE = 1 - Math.pow(1 - rcP, 3);
+    rightCard.style.opacity = rcP;
+    rightCard.style.transform = 'translateX(' + ((1 - rcE) * 400) + 'px)';
+
+    // Center 2.2-3.5s
+    var cP = Math.min(1, Math.max(0, (t - 2.2) / 0.8));
+    centerArch.style.opacity = cP;
+    centerArch.style.transform = 'scale(' + (0.3 + 0.7 * cP) + ')';
+    motBlock.style.opacity = cP;
+
+    // Connector lines 2.8-3.5s
+    var lA = Math.min(1, Math.max(0, (t - 2.8) / 0.6));
+    line1.style.opacity = lA;
+    line1.style.transform = 'scaleY(' + lA + ')';
+    line2.style.opacity = lA;
+    line2.style.transform = 'scaleY(' + lA + ')';
+
+    // Bottom 4.5-5.5s
+    var bA = Math.min(1, Math.max(0, (t - 4.5) / 0.8));
+    bottomBar.style.opacity = bA;
+    bottomBar.style.transform = 'translateY(' + (30 * (1 - bA)) + 'px)';
+  };
+})();
+</script>
+</body>
+</html>

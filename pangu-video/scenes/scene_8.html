@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 8 - 不受卡脖子</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+@font-face { font-family: 'ZCOOL KuaiLe'; src: url('file:///home/chris47634/.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype'); font-weight: normal; }
+:root { --bg:#06101F;--red:#CF0A2C;--blue:#00D4FF;--gold:#FFD700;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
+}
+.glass-accent {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(207,10,44,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.glass-badge {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.glass-item {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);opacity:0.08}
+.bg-orb-1{width:600px;height:600px;background:var(--red);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--gold);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:15%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:40%;animation-duration:12s;animation-delay:2s}
+.particle:nth-child(3){left:65%;animation-duration:16s;animation-delay:4s}
+.particle:nth-child(4){left:85%;animation-duration:13s;animation-delay:1s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.5}90%{opacity:0.5}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0.1;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:80px 60px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--red);border-right:2px solid var(--red)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--gold);box-shadow:0 0 20px var(--gold)}
+.light-dot-2{bottom:12%;right:8%;width:8px;height:8px;background:var(--red);box-shadow:0 0 20px var(--red)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.title{font-size:80px;font-weight:bold;opacity:0;text-align:center;color:var(--red);margin-bottom:60px;text-shadow:0 0 40px rgba(207,10,44,0.4);font-family:'ZCOOL KuaiLe',cursive}
+.chain-visual{opacity:0;text-align:center;margin-bottom:50px;padding:36px 40px}
+.chain{font-size:120px;display:flex;align-items:center;justify-content:center;gap:10px}
+.chain-left{color:rgba(255,255,255,0.2)}
+.chain-break{color:var(--gold);font-size:80px;text-shadow:0 0 30px rgba(255,215,0,0.5)}
+.chain-right{color:rgba(255,255,255,0.2)}
+.chain-label{font-size:28px;color:var(--gold);margin-top:16px;font-family:'NotoSansCJK',sans-serif;font-weight:bold}
+.items{display:flex;flex-direction:column;gap:20px;width:100%;margin-bottom:50px}
+.item{opacity:0;display:flex;align-items:center;gap:20px;padding:24px 28px}
+.item-icon{font-size:48px}
+.item-text{font-size:32px;font-weight:bold;color:var(--gold)}
+.bottom-tag{font-size:44px;opacity:0;color:var(--red);text-align:center;text-shadow:0 0 30px rgba(207,10,44,0.4);font-family:'ZCOOL KuaiLe',cursive}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="title" data-el="title">不受制于人</div>
+  <div class="chain-visual glass-item" data-el="chain">
+    <div class="chain">
+      <span class="chain-left">⛓️</span>
+      <span class="chain-break">💥</span>
+      <span class="chain-right">⛓️</span>
+    </div>
+    <div class="chain-label">封锁链断裂</div>
+  </div>
+  <div class="items">
+    <div class="item glass" data-el="i1"><div class="item-icon">🔲</div><div class="item-text">芯片 · 昇腾自研</div></div>
+    <div class="item glass" data-el="i2"><div class="item-icon">⚙️</div><div class="item-text">框架 · MindSpore</div></div>
+    <div class="item glass" data-el="i3"><div class="item-icon">☁️</div><div class="item-text">平台 · 华为云</div></div>
+  </div>
+  <div class="bottom-tag" data-el="tag">从硬件到软件全是国产</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  /* 锁链断裂效果：先聚拢再散开 */
+  function chainBreak(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.8,blur=12}=opts;
+    const p=progress(time,start,duration);
+    const ep=easeOutQuart(p);
+    /* 第一阶段(0~0.4)：聚拢；第二阶段(0.4~1)：散开 */
+    let offsetX,scaleVal;
+    if(p<0.4){
+      /* 聚拢：元素向中心缩小 */
+      const gather=p/0.4;
+      offsetX=mix(0,0,gather);
+      scaleVal=mix(1.0,0.85,gather);
+    } else {
+      /* 散开：弹出 */
+      const burst=(p-0.4)/0.6;
+      const burstP=easeOutQuart(burst);
+      scaleVal=mix(0.85,1.0,burstP);
+      offsetX=0;
+    }
+    el.style.opacity=ep;
+    el.style.transform='translate3d('+offsetX+'px,'+mix(30,0,ep)+'px,0) scale('+scaleVal+')';
+    el.style.filter='blur('+mix(blur,0,ep)+'px)';
+  }
+
+  /* 项自从两侧交错飞入 */
+  function staggerSlide(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.5,x=200,blur=8,fromRight=false}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    const dir=fromRight?1:-1;
+    el.style.opacity=p;
+    el.style.transform='translate3d('+mix(dir*x,0,p)+'px,0,0)';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  /* 通用reveal */
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    reveal(document.querySelector('[data-el="title"]'),t,{start:0.1,duration:0.6,y:40,blur:14});
+    chainBreak(document.querySelector('[data-el="chain"]'),t,{start:0.8,duration:0.8,blur:12});
+    staggerSlide(document.querySelector('[data-el="i1"]'),t,{start:2.0,duration:0.5,x:200,blur:8,fromRight:false});
+    staggerSlide(document.querySelector('[data-el="i2"]'),t,{start:2.5,duration:0.5,x:200,blur:8,fromRight:true});
+    staggerSlide(document.querySelector('[data-el="i3"]'),t,{start:3.2,duration:0.5,x:200,blur:8,fromRight:false});
+    reveal(document.querySelector('[data-el="tag"]'),t,{start:4.0,duration:0.5,y:20,blur:8});
+
+    document.querySelector('[data-el="corner-tl"]').style.opacity=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=6.03;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,6.03));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/ds4-video/tts/outro.mp3'
+file '/home/chris47634/tmp_premium/ds4-video/tts/outro_silence.mp3'

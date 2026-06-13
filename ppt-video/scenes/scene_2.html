@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 2 - 生图能力</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+:root { --bg:#06101F;--cyan:#00D4FF;--orange:#FF6B35;--red:#FF3B5C;--blue:#0088CC;--purple:#6B3FA0;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5);--silver:#C0C0C0; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:0.1}
+.bg-orb-1{width:600px;height:600px;background:var(--orange);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--cyan);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:350px;height:350px;background:var(--purple);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.3)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--cyan);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:10%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:25%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:40%;animation-duration:12s;animation-delay:4s}
+.particle:nth-child(4){left:55%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:70%;animation-duration:13s;animation-delay:3s}
+.particle:nth-child(6){left:85%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:95%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.12;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:100px 80px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--orange);box-shadow:0 0 20px var(--orange)}
+.light-dot-2{bottom:12%;right:12%;width:8px;height:8px;background:var(--cyan);box-shadow:0 0 20px var(--cyan)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.title{font-size:72px;font-weight:bold;opacity:0;text-align:center;color:var(--cyan);margin-bottom:60px;text-shadow:0 0 30px rgba(0,212,255,0.3)}
+.input-box{width:880px;border-radius:16px;padding:30px 40px;margin-bottom:60px;opacity:0;position:relative;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3)}
+.input-label{font-size:24px;color:var(--text-dim);margin-bottom:12px}
+.input-text{font-size:36px;color:var(--cyan);font-weight:bold}
+.input-cursor{display:inline-block;width:3px;height:36px;background:var(--cyan);margin-left:4px;animation:blink 1s step-end infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.ppt-grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;width:900px;margin-bottom:50px}
+.ppt-card{width:260px;height:380px;border-radius:12px;opacity:0;position:relative;overflow:hidden}
+.ppt-card::before{content:'';position:absolute;inset:0;border-radius:12px;border:1px solid rgba(255,107,53,0.3)}
+.ppt-card-1{background:linear-gradient(135deg,rgba(255,107,53,0.15),rgba(0,212,255,0.08))}
+.ppt-card-2{background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(107,63,160,0.08))}
+.ppt-card-3{background:linear-gradient(135deg,rgba(24,201,139,0.15),rgba(255,107,53,0.08))}
+.ppt-card-inner{padding:20px;display:flex;flex-direction:column;height:100%}
+.ppt-card-header{width:100%;height:8px;border-radius:4px;margin-bottom:16px}
+.ppt-card-title-line{width:70%;height:20px;border-radius:4px;margin-bottom:8px}
+.ppt-card-line{width:90%;height:8px;border-radius:4px;margin-bottom:6px}
+.ppt-card-line.short{width:60%}
+.ppt-card-bar{width:100%;height:60px;border-radius:8px;margin-top:auto}
+.ppt-card-1 .ppt-card-header{background:var(--orange)}
+.ppt-card-1 .ppt-card-title-line{background:rgba(255,107,53,0.4)}
+.ppt-card-1 .ppt-card-line{background:rgba(255,107,53,0.15)}
+.ppt-card-1 .ppt-card-bar{background:linear-gradient(90deg,var(--orange),rgba(255,107,53,0.3))}
+.ppt-card-2 .ppt-card-header{background:var(--cyan)}
+.ppt-card-2 .ppt-card-title-line{background:rgba(0,212,255,0.4)}
+.ppt-card-2 .ppt-card-line{background:rgba(0,212,255,0.15)}
+.ppt-card-2 .ppt-card-bar{background:linear-gradient(90deg,var(--cyan),rgba(0,212,255,0.3))}
+.ppt-card-3 .ppt-card-header{background:var(--green)}
+.ppt-card-3 .ppt-card-title-line{background:rgba(24,201,139,0.4)}
+.ppt-card-3 .ppt-card-line{background:rgba(24,201,139,0.15)}
+.ppt-card-3 .ppt-card-bar{background:linear-gradient(90deg,var(--green),rgba(24,201,139,0.3))}
+.arrow{font-size:60px;opacity:0;color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.5)}
+.bottom-text{font-size:48px;font-weight:bold;opacity:0;text-align:center;color:var(--orange);text-shadow:0 0 30px rgba(255,107,53,0.4)}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="title" data-el="title">GPT直接生图</div>
+  <div class="input-box" data-el="input">
+    <div class="input-label">💬 提示词</div>
+    <div class="input-text">生成一个10页豪华PPT<span class="input-cursor"></span></div>
+  </div>
+  <div class="arrow" data-el="arrow">↓</div>
+  <div class="ppt-grid">
+    <div class="ppt-card ppt-card-1" data-el="card1">
+      <div class="ppt-card-inner">
+        <div class="ppt-card-header"></div>
+        <div class="ppt-card-title-line"></div>
+        <div class="ppt-card-line"></div>
+        <div class="ppt-card-line short"></div>
+        <div class="ppt-card-line"></div>
+        <div class="ppt-card-bar"></div>
+      </div>
+    </div>
+    <div class="ppt-card ppt-card-2" data-el="card2">
+      <div class="ppt-card-inner">
+        <div class="ppt-card-header"></div>
+        <div class="ppt-card-title-line"></div>
+        <div class="ppt-card-line"></div>
+        <div class="ppt-card-line short"></div>
+        <div class="ppt-card-line"></div>
+        <div class="ppt-card-bar"></div>
+      </div>
+    </div>
+    <div class="ppt-card ppt-card-3" data-el="card3">
+      <div class="ppt-card-inner">
+        <div class="ppt-card-header"></div>
+        <div class="ppt-card-title-line"></div>
+        <div class="ppt-card-line"></div>
+        <div class="ppt-card-line short"></div>
+        <div class="ppt-card-line"></div>
+        <div class="ppt-card-bar"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-text" data-el="bottom">一句话 → 豪华PPT图片</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    reveal(document.querySelector('[data-el="title"]'),t,{start:0.1,duration:0.7,y:40,blur:14});
+    reveal(document.querySelector('[data-el="input"]'),t,{start:0.8,duration:0.6,y:30,scale:0.97,blur:10});
+    reveal(document.querySelector('[data-el="arrow"]'),t,{start:1.8,duration:0.4,y:20,blur:8});
+    reveal(document.querySelector('[data-el="card1"]'),t,{start:2.2,duration:0.5,y:50,scale:0.93,blur:12});
+    reveal(document.querySelector('[data-el="card2"]'),t,{start:2.6,duration:0.5,y:50,scale:0.93,blur:12});
+    reveal(document.querySelector('[data-el="card3"]'),t,{start:3.0,duration:0.5,y:50,scale:0.93,blur:12});
+    reveal(document.querySelector('[data-el="bottom"]'),t,{start:4.0,duration:0.7,y:30,blur:10});
+
+    const cp=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-tl"]').style.opacity=cp;
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=6.38;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,6.38));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

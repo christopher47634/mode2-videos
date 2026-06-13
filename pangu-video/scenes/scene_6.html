@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 6 - 药物研发</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+@font-face { font-family: 'ZCOOL KuaiLe'; src: url('file:///home/chris47634/.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype'); font-weight: normal; }
+:root { --bg:#06101F;--red:#CF0A2C;--blue:#00D4FF;--green:#10B981;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
+}
+.glass-accent {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(207,10,44,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.glass-badge {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.glass-item {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);opacity:0.08}
+.bg-orb-1{width:600px;height:600px;background:var(--green);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--blue);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--green);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:15%;animation-duration:15s;animation-delay:0s}
+.particle:nth-child(2){left:40%;animation-duration:13s;animation-delay:2s}
+.particle:nth-child(3){left:65%;animation-duration:17s;animation-delay:4s}
+.particle:nth-child(4){left:85%;animation-duration:11s;animation-delay:1s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.5}90%{opacity:0.5}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0.1;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:80px 60px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--green);border-left:2px solid var(--green)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--green);border-right:2px solid var(--green)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--green);box-shadow:0 0 20px var(--green)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.title{font-size:72px;font-weight:bold;opacity:0;text-align:center;color:var(--green);margin-bottom:60px;text-shadow:0 0 30px rgba(16,185,129,0.3);font-family:'ZCOOL KuaiLe',cursive;clip-path:inset(0 100% 0 0)}
+.molecule{opacity:0;text-align:center;margin-bottom:50px;padding:40px 50px}
+.molecule-visual{position:relative;width:300px;height:300px;margin:0 auto}
+.mol-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.2);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:36px;animation:spin3d 6s linear infinite}
+.mol-orbit{position:absolute;top:50%;left:50%;width:200px;height:200px;border:1px dashed rgba(16,185,129,0.2);border-radius:50%;transform:translate(-50%,-50%);animation:spin3d 8s linear infinite}
+.mol-atom{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--green);box-shadow:0 0 15px var(--green)}
+.mol-atom:nth-child(2){top:-15px;left:50%;transform:translateX(-50%)}
+.mol-atom:nth-child(3){bottom:-15px;left:50%;transform:translateX(-50%)}
+.mol-atom:nth-child(4){left:-15px;top:50%;transform:translateY(-50%)}
+.mol-atom:nth-child(5){right:-15px;top:50%;transform:translateY(-50%)}
+@keyframes spin3d{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.stats{display:flex;flex-direction:column;gap:24px;width:100%;margin-bottom:40px}
+.stat{opacity:0;display:flex;align-items:center;gap:20px;padding:24px 28px}
+.stat-icon{font-size:48px}
+.stat-text{font-size:30px;font-weight:bold;color:var(--green)}
+.bottom-tag{font-size:40px;opacity:0;color:var(--green);text-align:center;text-shadow:0 0 20px rgba(16,185,129,0.3);font-family:'ZCOOL KuaiLe',cursive;clip-path:inset(0 100% 0 0)}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+
+<div class="content">
+  <div class="title" data-el="title">🧬 AI加速生命科学</div>
+  <div class="molecule glass" data-el="molecule">
+    <div class="molecule-visual">
+      <div class="mol-center">💊</div>
+      <div class="mol-orbit">
+        <div class="mol-atom"></div>
+        <div class="mol-atom"></div>
+        <div class="mol-atom"></div>
+        <div class="mol-atom"></div>
+      </div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat glass" data-el="s1"><div class="stat-icon">🧪</div><div class="stat-text">分子结构预测</div></div>
+    <div class="stat glass" data-el="s2"><div class="stat-icon">⚡</div><div class="stat-text">靶点筛选加速</div></div>
+    <div class="stat glass" data-el="s3"><div class="stat-icon">📈</div><div class="stat-text">临床试验优化</div></div>
+  </div>
+  <div class="bottom-tag" data-el="tag">从数年缩短到数月</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  /* 打字机效果 */
+  function typewriterReveal(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=1.0,blur=12}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p>0.05?1:0;
+    el.style.clipPath='inset(0 '+(100-p*100)+'% 0 0)';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  /* 分子结构旋转入场 */
+  function moleculeSpinIn(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.7,scale=0.5,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    const rot=mix(360,0,p);
+    el.style.opacity=p;
+    el.style.transform='translate3d(0,'+mix(30,0,p)+'px,0) scale('+mix(scale,1,p)+') rotate('+rot+'deg)';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  /* 通用reveal */
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    typewriterReveal(document.querySelector('[data-el="title"]'),t,{start:0.1,duration:1.0,blur:12});
+    moleculeSpinIn(document.querySelector('[data-el="molecule"]'),t,{start:0.8,duration:0.7,scale:0.5,blur:14});
+    reveal(document.querySelector('[data-el="s1"]'),t,{start:2.0,duration:0.4,y:25,blur:8});
+    reveal(document.querySelector('[data-el="s2"]'),t,{start:2.8,duration:0.4,y:25,blur:8});
+    reveal(document.querySelector('[data-el="s3"]'),t,{start:3.6,duration:0.4,y:25,blur:8});
+    typewriterReveal(document.querySelector('[data-el="tag"]'),t,{start:4.5,duration:0.8,blur:8});
+
+    document.querySelector('[data-el="corner-tl"]').style.opacity=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=6.37;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,6.37));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

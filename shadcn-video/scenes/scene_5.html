@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 5 - 总结</title>
+<style>
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+:root {
+  --bg: #06101F;
+  --cyan: #00D4FF;
+  --blue: #0088CC;
+  --purple: #6B3FA0;
+  --text: #E8ECF1;
+  --text-dim: rgba(255,255,255,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width: 1080px; height: 1920px;
+  background: var(--bg);
+  font-family: 'NotoSansCJK', 'Noto Sans CJK SC', sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+}
+
+.bg-orb { position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:.1; }
+.bg-orb-1 { width:600px;height:600px;background:var(--blue);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite; }
+.bg-orb-2 { width:450px;height:450px;background:var(--purple);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite; }
+.bg-orb-3 { width:350px;height:350px;background:var(--cyan);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite; }
+@keyframes orbFloat1 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(120px,80px)} 66%{transform:translate(-60px,150px)} }
+@keyframes orbFloat2 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(-100px,-60px)} 66%{transform:translate(50px,-120px)} }
+@keyframes orbFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.3)} }
+
+.particles { position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden; }
+.particle { position:absolute;width:3px;height:3px;background:var(--cyan);border-radius:50%;opacity:0;animation:particleRise linear infinite; }
+.particle:nth-child(1){left:8%;animation-duration:14s} .particle:nth-child(2){left:22%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:38%;animation-duration:12s;animation-delay:4s} .particle:nth-child(4){left:52%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:68%;animation-duration:13s;animation-delay:3s} .particle:nth-child(6){left:82%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:92%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise { 0%{transform:translateY(1920px);opacity:0} 10%{opacity:.6} 90%{opacity:.6} 100%{transform:translateY(-20px);opacity:0} }
+
+.scanline { position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.12;z-index:0;animation:scanDown 8s linear infinite; }
+@keyframes scanDown { 0%{top:-2px} 100%{top:1920px} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.content { position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:120px 80px 180px 80px;height:100%; }
+
+.corner { position:absolute;width:50px;height:50px;z-index:2;opacity:0; }
+.corner-tl { top:60px;left:60px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan); }
+.corner-br { bottom:240px;right:60px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan); }
+
+.light-dot { position:absolute;border-radius:50%;z-index:2;opacity:0; }
+.light-dot-1 { top:12%;left:8%;width:6px;height:6px;background:var(--cyan);box-shadow:0 0 20px var(--cyan); }
+.light-dot-2 { bottom:22%;right:12%;width:8px;height:8px;background:var(--purple);box-shadow:0 0 20px var(--purple); }
+
+/* === Install Command === */
+.install-section { text-align: center; margin-bottom: 48px; opacity: 0; }
+.install-label {
+  font-size: 36px; color: var(--text-dim); margin-bottom: 20px;
+}
+.install-cmd {
+  display: inline-block;
+  background: rgba(10, 20, 40, 0.8);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 16px;
+  padding: 24px 48px;
+  font-family: 'Courier New', monospace;
+  font-size: 36px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.08);
+}
+
+/* === Feature Cards === */
+.feature-card {
+  background: rgba(10, 20, 40, 0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(0, 212, 255, 0.12);
+  border-radius: 24px;
+  padding: 40px 48px;
+  width: 100%; max-width: 920px;
+  margin-bottom: 32px;
+  position: relative; overflow: hidden;
+  opacity: 0;
+}
+.feature-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.3),transparent);
+}
+.feature-card .fc-row {
+  display: flex; align-items: center; gap: 20px;
+}
+.feature-card .fc-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--cyan);
+}
+.feature-card .fc-icon svg { width: 26px; height: 26px; }
+.feature-card .fc-text { font-size: 34px; color: var(--text); line-height: 1.5; }
+.feature-card .fc-text .hl { color: var(--cyan); font-weight: bold; }
+
+/* === Star Counter === */
+.star-section {
+  margin-top: 48px;
+  text-align: center;
+  opacity: 0;
+}
+.star-icon {
+  font-size: 72px; color: #FFD700;
+  filter: drop-shadow(0 0 20px rgba(255,215,0,0.4));
+  margin-bottom: 12px;
+}
+.star-count {
+  font-size: 100px; font-weight: bold;
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 4px;
+}
+.star-label {
+  font-size: 32px; color: var(--text-dim); margin-top: 8px;
+}
+
+/* === MIT Badge === */
+.mit-badge {
+  margin-top: 48px;
+  display: flex; align-items: center; gap: 16px;
+  opacity: 0;
+}
+.mit-badge .mit-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(139, 92, 246, 0.15);
+  color: #8B5CF6;
+  display: flex; align-items: center; justify-content: center;
+}
+.mit-badge .mit-icon svg { width: 24px; height: 24px; }
+.mit-badge .mit-text { font-size: 32px; color: #8B5CF6; font-weight: bold; letter-spacing: 4px; }
+</style>
+</head>
+<body>
+
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles">
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div>
+</div>
+<div class="scanline"></div>
+
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <!-- Install -->
+  <div class="install-section" data-el="install">
+    <div class="install-label">一行命令安装</div>
+    <div class="install-cmd">npx skills add shadcn/improve</div>
+  </div>
+
+  <!-- Feature 1 -->
+  <div class="feature-card" data-el="feat-0">
+    <div class="fc-row">
+      <div class="fc-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="fc-text"><span class="hl">计划不碰代码</span>，只输出方案</div>
+    </div>
+  </div>
+
+  <!-- Feature 2 -->
+  <div class="feature-card" data-el="feat-1">
+    <div class="fc-row">
+      <div class="fc-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+      </div>
+      <div class="fc-text"><span class="hl">执行在隔离环境</span>，不影响主分支</div>
+    </div>
+  </div>
+
+  <!-- Star Counter -->
+  <div class="star-section" data-el="stars">
+    <div class="star-icon">★</div>
+    <div class="star-count" data-el="star-num">0</div>
+    <div class="star-label">GitHub Stars · 3天达成</div>
+  </div>
+
+  <!-- MIT -->
+  <div class="mit-badge" data-el="mit">
+    <div class="mit-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="mit-text">MIT OPEN SOURCE</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp = (v, min=0, max=1) => Math.min(max, Math.max(min, v));
+  const mix = (a, b, t) => a + (b - a) * t;
+  const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+  const progress = (time, start, dur) => clamp((time - start) / Math.max(dur, 0.0001));
+
+  function reveal(el, time, opts) {
+    const { start=0, duration=0.65, x=0, y=42, scale=0.96, blur=14 } = opts;
+    const p = easeOutQuart(progress(time, start, duration));
+    el.style.opacity = p;
+    el.style.transform = `translate3d(${mix(x,0,p)}px, ${mix(y,0,p)}px, 0) scale(${mix(scale,1,p)})`;
+    el.style.filter = `blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    const install = document.querySelector('[data-el="install"]');
+    const feat0 = document.querySelector('[data-el="feat-0"]');
+    const feat1 = document.querySelector('[data-el="feat-1"]');
+    const stars = document.querySelector('[data-el="stars"]');
+    const starNum = document.querySelector('[data-el="star-num"]');
+    const mit = document.querySelector('[data-el="mit"]');
+    const cornerTL = document.querySelector('[data-el="corner-tl"]');
+    const cornerBR = document.querySelector('[data-el="corner-br"]');
+    const dot1 = document.querySelector('[data-el="dot1"]');
+    const dot2 = document.querySelector('[data-el="dot2"]');
+
+    reveal(install, t, { start: 0.1, duration: 0.7, y: 30, blur: 10 });
+    reveal(feat0, t, { start: 0.9, duration: 0.6, y: 35, scale: 0.97, blur: 8 });
+    reveal(feat1, t, { start: 1.5, duration: 0.6, y: 35, scale: 0.97, blur: 8 });
+    reveal(stars, t, { start: 2.2, duration: 0.7, y: 30, blur: 10 });
+    reveal(mit, t, { start: 3.5, duration: 0.6, y: 20, blur: 6 });
+
+    // Star counter animation
+    const counterP = easeOutQuart(progress(t, 2.5, 2.5));
+    const starValue = Math.round(mix(0, 2537, counterP));
+    starNum.textContent = starValue.toLocaleString();
+
+    cornerTL.style.opacity = easeOutQuart(progress(t, 0.3, 0.5));
+    cornerBR.style.opacity = easeOutQuart(progress(t, 0.5, 0.5));
+    dot1.style.opacity = easeOutQuart(progress(t, 0.4, 0.5));
+    dot2.style.opacity = easeOutQuart(progress(t, 0.6, 0.5));
+  }
+
+  window.seekTo = seekTo;
+  window.__mode2Duration = 7;
+  window.__mode2Ready = true;
+
+  let startTime = performance.now();
+  let autoRun = true;
+  let _origSeekTo = seekTo;
+  window.seekTo = function(t) { autoRun = false; _origSeekTo(t); };
+  function animate() {
+    if (!autoRun) return;
+    _origSeekTo(Math.min((performance.now() - startTime) / 1000, 7));
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>

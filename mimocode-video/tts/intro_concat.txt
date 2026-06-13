@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/mimocode-video/tts/intro.mp3'
+file '/home/chris47634/tmp_premium/mimocode-video/tts/intro_gap.mp3'

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "intro",
+    "text": "本周最火的开源项目，小米MiMo团队的MiMoCode，三天拿下七千四百星",
+    "duration": 6.013969
+  },
+  {
+    "id": "scene1",
+    "text": "它是一个终端原生的AI编程助手，能读写代码，能跑命令，能管Git",
+    "duration": 6.478375
+  },
+  {
+    "id": "scene2",
+    "text": "最厉害的是它有跨会话持久记忆，你上一个session聊的项目架构，下次打开它还记得",
+    "duration": 7.082094
+  },
+  {
+    "id": "scene3",
+    "text": "上下文快满了怎么办，它会自动从检查点重建，把关键信息压缩注入，不会丢掉任务进度",
+    "duration": 7.418781
+  },
+  {
+    "id": "scene4",
+    "text": "还有Dream和Distill，自动扫描历史session提取知识，把重复工作流打包成可复用技能",
+    "duration": 6.989219
+  },
+  {
+    "id": "scene5",
+    "text": "三种模式随便切，build搞开发，plan做分析，compose从规格到交付代码全流程串联",
+    "duration": 9.555031
+  },
+  {
+    "id": "outro",
+    "text": "MIT开源，代码全开放，链接在评论区，去看看",
+    "duration": 4.644
+  }
+]

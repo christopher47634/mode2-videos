@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 4 - 原厂胎 一样快</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+:root { --bg:#06101F;--orange:#FF6900;--red:#E63946;--cyan:#00D4FF;--green:#10B981;--gold:#FFD700;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:0.1}
+.bg-orb-1{width:600px;height:600px;background:var(--green);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--gold);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:350px;height:350px;background:var(--green);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.3)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--green);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:10%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:25%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:40%;animation-duration:12s;animation-delay:4s}
+.particle:nth-child(4){left:55%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:70%;animation-duration:13s;animation-delay:3s}
+.particle:nth-child(6){left:85%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:95%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:0.12;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:80px 60px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--green);border-left:2px solid var(--green)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--green);border-right:2px solid var(--green)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--green);box-shadow:0 0 20px var(--green)}
+.light-dot-2{bottom:12%;right:12%;width:8px;height:8px;background:var(--gold);box-shadow:0 0 20px var(--gold)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.title{font-size:68px;font-weight:bold;opacity:0;text-align:center;color:var(--green);margin-bottom:100px;text-shadow:0 0 40px rgba(16,185,129,0.4)}
+.compare-area{display:flex;gap:30px;width:100%;margin-bottom:80px}
+.compare-card{flex:1;border-radius:20px;padding:40px 24px;opacity:0;position:relative;overflow:hidden;text-align:center}
+.compare-card::before{content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none}
+.card-su7{background:rgba(16,185,129,0.08)}
+.card-su7::before{border:1px solid rgba(16,185,129,0.3)}
+.card-porsche{background:rgba(255,255,255,0.04)}
+.card-porsche::before{border:1px solid rgba(255,255,255,0.15)}
+.card-label{font-size:28px;font-weight:bold;margin-bottom:10px}
+.card-su7 .card-label{color:var(--green)}
+.card-porsche .card-label{color:var(--text-dim)}
+.card-car{font-size:32px;margin-bottom:16px}
+.card-time{font-size:72px;font-weight:bold;margin-bottom:8px}
+.card-su7 .card-time{color:var(--green)}
+.card-porsche .card-time{color:var(--text-dim)}
+.card-note{font-size:22px;color:var(--text-dim)}
+.winner-badge{position:absolute;top:-1px;right:20px;background:var(--green);color:#000;font-size:18px;font-weight:bold;padding:6px 16px;border-radius:0 0 10px 10px}
+.punchline{font-size:44px;font-weight:bold;opacity:0;text-align:center;color:var(--text-dim);text-shadow:0 0 20px rgba(255,255,255,0.1)}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="title" data-el="title">🏆 原厂胎 一样快</div>
+  <div class="compare-area">
+    <div class="compare-card card-su7" data-el="card-su7">
+      <div class="winner-badge">WINNER</div>
+      <div class="card-label">小米SU7 Ultra</div>
+      <div class="card-car">🏭 原厂轮胎</div>
+      <div class="card-time">6:46</div>
+      <div class="card-note">原厂胎重测成绩</div>
+    </div>
+    <div class="compare-card card-porsche" data-el="card-porsche">
+      <div class="card-label">保时捷 Taycan</div>
+      <div class="card-car">🏎️ 旗舰性能</div>
+      <div class="card-time">7:07</div>
+      <div class="card-note">Turbo GT 成绩</div>
+    </div>
+  </div>
+  <div class="punchline" data-el="punch">质疑者 集体沉默</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    reveal(document.querySelector('[data-el="title"]'),t,{start:0.1,duration:0.7,y:40,blur:14});
+    reveal(document.querySelector('[data-el="card-su7"]'),t,{start:1.0,duration:0.6,y:50,scale:0.95,blur:12});
+    reveal(document.querySelector('[data-el="card-porsche"]'),t,{start:2.0,duration:0.6,y:50,scale:0.95,blur:12});
+    reveal(document.querySelector('[data-el="punch"]'),t,{start:3.5,duration:0.7,y:30,blur:10});
+
+    const cp=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-tl"]').style.opacity=cp;
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=5.02;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,5.02));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro",
+    "text": "Gorden超级PPT技能，八百七十一星，AI做PPT的终极方案",
+    "duration": 5.343125,
+    "leading_trimmed": 0.241281
+  },
+  {
+    "id": "scene1",
+    "text": "你还在一页一页手搓PPT吗，现在告诉AI一个主题，它直接给你生成豪华图片版",
+    "duration": 6.716156,
+    "leading_trimmed": 0.145344
+  },
+  {
+    "id": "scene2",
+    "text": "然后用GPT的视觉能力，把图片拆成背景、框架、图标、文字四层",
+    "duration": 6.075938,
+    "leading_trimmed": 0.147031
+  },
+  {
+    "id": "scene3",
+    "text": "再自动拼装成完全可编辑的PPTX文件，不是截图，是真的可以改",
+    "duration": 5.600938,
+    "leading_trimmed": 0.111188
+  },
+  {
+    "id": "scene4",
+    "text": "三个独立技能，生成图片PPT、图片转可编辑、一键串联，按需选用",
+    "duration": 6.235656,
+    "leading_trimmed": 0.161469
+  },
+  {
+    "id": "scene5",
+    "text": "只支持Codex加GPT五点五模型，一张图大概消耗Plus订阅五小时额度的百分之十",
+    "duration": 7.595625,
+    "leading_trimmed": 0.159844
+  },
+  {
+    "id": "outro",
+    "text": "PPT从此告别手搓，GitHub链接在评论区",
+    "duration": 3.728531,
+    "leading_trimmed": 0.102781
+  }
+]

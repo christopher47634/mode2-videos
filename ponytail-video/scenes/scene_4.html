@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 4 - 六步决策阶梯</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+:root { --bg:#06101F;--cyan:#00D4FF;--blue:#0088CC;--purple:#6B3FA0;--green:#00FF88;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:0.1}
+.bg-orb-1{width:600px;height:600px;background:var(--blue);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--purple);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:350px;height:350px;background:var(--cyan);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.3)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--cyan);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:8%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:22%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:38%;animation-duration:12s;animation-delay:4s}
+.particle:nth-child(4){left:52%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:68%;animation-duration:13s;animation-delay:3s}
+.particle:nth-child(6){left:82%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:92%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.12;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:100px 60px 180px 60px;height:100%}
+.corner{position:absolute;width:50px;height:50px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.corner-br{bottom:240px;right:60px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--cyan);box-shadow:0 0 20px var(--cyan)}
+.light-dot-2{bottom:22%;right:12%;width:8px;height:8px;background:#ff0040;box-shadow:0 0 20px #ff0040}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* === Title === */
+.section-title {
+  font-size: 56px; font-weight: bold; color: var(--cyan);
+  letter-spacing: 6px; opacity: 0; margin-bottom: 12px;
+}
+.section-sub {
+  font-size: 32px; color: var(--text-dim); opacity: 0;
+  margin-bottom: 36px; letter-spacing: 2px;
+}
+/* === Staircase === */
+.staircase {
+  display: flex; flex-direction: column; gap: 12px;
+  width: 900px;
+}
+.stair-card {
+  display: flex; align-items: center; gap: 20px;
+  background: rgba(10,20,40,0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: 16px; padding: 24px 32px;
+  opacity: 0; position: relative; overflow: hidden;
+}
+.stair-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent);
+}
+/* Progressive indent for staircase effect */
+.stair-card[data-step="1"] { margin-left: 0px; }
+.stair-card[data-step="2"] { margin-left: 40px; width: 860px; }
+.stair-card[data-step="3"] { margin-left: 80px; width: 820px; }
+.stair-card[data-step="4"] { margin-left: 120px; width: 780px; }
+.stair-card[data-step="5"] { margin-left: 160px; width: 740px; }
+.stair-card[data-step="6"] { margin-left: 200px; width: 700px; }
+.stair-num {
+  width: 52px; height: 52px; border-radius: 12px;
+  background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: bold; color: var(--cyan);
+  flex-shrink: 0;
+}
+.stair-question {
+  font-size: 32px; color: var(--text); flex: 1;
+}
+.stair-arrow {
+  font-size: 28px; color: var(--text-dim); margin: 0 8px;
+}
+.stair-answer {
+  font-size: 30px; font-weight: bold; white-space: nowrap;
+}
+.stair-answer.skip { color: #FF6B6B; }
+.stair-answer.use { color: var(--green); }
+.stair-answer.one { color: #FFD700; }
+.stair-answer.min { color: var(--cyan); }
+/* Arrow connectors */
+.connector {
+  width: 2px; height: 12px; margin-left: 25px;
+  background: linear-gradient(to bottom, rgba(0,212,255,0.3), rgba(0,212,255,0.1));
+  opacity: 0;
+}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="section-title" data-el="title">六步决策阶梯</div>
+  <div class="section-sub" data-el="sub">ponytail 的思考方式</div>
+
+  <div class="staircase">
+    <div class="stair-card" data-el="s1" data-step="1">
+      <div class="stair-num">1</div>
+      <div class="stair-question">需要存在吗？</div>
+      <div class="stair-arrow">→</div>
+      <div class="stair-answer skip">SKIP</div>
+    </div>
+    <div class="stair-card" data-el="s2" data-step="2">
+      <div class="stair-num">2</div>
+      <div class="stair-question">标准库能做吗？</div>
+      <div class="stair-arrow">→</div>
+      <div class="stair-answer use">用它</div>
+    </div>
+    <div class="stair-card" data-el="s3" data-step="3">
+      <div class="stair-num">3</div>
+      <div class="stair-question">原生支持吗？</div>
+      <div class="stair-arrow">→</div>
+      <div class="stair-answer use">用它</div>
+    </div>
+    <div class="stair-card" data-el="s4" data-step="4">
+      <div class="stair-num">4</div>
+      <div class="stair-question">已有依赖吗？</div>
+      <div class="stair-arrow">→</div>
+      <div class="stair-answer use">用它</div>
+    </div>
+    <div class="stair-card" data-el="s5" data-step="5">
+      <div class="stair-num">5</div>
+      <div class="stair-question">一行够吗？</div>
+      <div class="stair-arrow">→</div>
+      <div class="stair-answer one">一行</div>
+    </div>
+    <div class="stair-card" data-el="s6" data-step="6">
+      <div class="stair-num">6</div>
+      <div class="stair-question">最少代码</div>
+      <div class="stair-arrow">→</div>
+      <div class="stair-answer min">MIN</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const easeOutBack=t=>{const c=1.70158;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+  function seekTo(t) {
+    reveal(document.querySelector('[data-el="title"]'),t,{start:0.1,duration:0.5,y:20,blur:8});
+    reveal(document.querySelector('[data-el="sub"]'),t,{start:0.3,duration:0.4,y:15,blur:6});
+    // Stagger staircase cards with drop animation
+    for(let i=1;i<=6;i++){
+      const el=document.querySelector(`[data-el="s${i}"]`);
+      if(el){
+        const delay=0.6+(i-1)*0.55;
+        const p=easeOutBack(progress(t,delay,0.45));
+        el.style.opacity=p;
+        el.style.transform=`translate3d(0, ${mix(-50,0,p)}px, 0) scale(${mix(0.92,1,p)})`;
+        el.style.filter=`blur(${mix(8,0,p)}px)`;
+      }
+    }
+    const cp=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-tl"]').style.opacity=cp;
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=6.42;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,6.42));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

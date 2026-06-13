@@ -1,0 +1,20 @@
+[Script Info]
+Title: Subtitles
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,Outline,Shadow,Bold,Alignment,MarginL,MarginR,MarginV
+Style: Default,ZCOOL KuaiLe,58,&H00FFFFFF,3,0,0,2,80,80,80
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.00,0:00:02.40,Default,,0,0,0,,Browser Use，让AI上网
+Dialogue: 0,0:00:02.40,0:00:04.80,Default,,0,0,0,,九万八千颗星，MIT开源
+Dialogue: 0,0:00:04.80,0:00:07.20,Default,,0,0,0,,Python加Playwright驱动
+Dialogue: 0,0:00:07.20,0:00:09.60,Default,,0,0,0,,AI直接控制你的浏览器
+Dialogue: 0,0:00:09.60,0:00:12.00,Default,,0,0,0,,填表单点按钮翻页面
+Dialogue: 0,0:00:12.00,0:00:14.40,Default,,0,0,0,,任何网页任务都能自动化
+Dialogue: 0,0:00:14.40,0:00:16.80,Default,,0,0,0,,Browser Use，解放双手

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face {
+  font-family: 'InterDisplay';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal; font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc');
+  font-weight: bold;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width:1080px; height:1920px; overflow:hidden;
+  background:#06101F; font-family:'NotoSansCJK',sans-serif;
+}
+.scene { position:relative; width:1080px; height:1920px; overflow:hidden; background:#06101F; }
+.bg-orbs { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+.orb { position:absolute; border-radius:50%; filter:blur(120px); opacity:0; }
+.orb-1 { width:500px; height:500px; top:300px; left:-100px; background:radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); }
+.orb-2 { width:450px; height:450px; top:800px; right:-150px; background:radial-gradient(circle, rgba(52,199,89,0.1), transparent 70%); }
+.scanlines { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; opacity:0;
+  background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.02) 3px, rgba(0,212,255,0.02) 4px); }
+.scan-beam { position:absolute; left:0; width:100%; height:200px;
+  background:linear-gradient(180deg, transparent, rgba(0,212,255,0.04), transparent);
+  top:-200px; pointer-events:none; z-index:1; }
+
+.content { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:0 80px; }
+.title { font-family:'InterDisplay','NotoSansCJK',sans-serif; font-size:76px; color:#A2AAAD; text-align:center; opacity:0;
+  text-shadow:0 0 40px rgba(0,212,255,0.2); margin-bottom:80px; }
+
+.compare-row { display:flex; align-items:stretch; justify-content:center; gap:60px; width:100%; }
+.compare-box {
+  flex:1; max-width:400px; padding:50px 40px; border-radius:24px;
+  background:rgba(255,255,255,0.03); border:1px solid rgba(0,212,255,0.1);
+  backdrop-filter:blur(20px); text-align:center; opacity:0;
+}
+.compare-box .icon { font-size:80px; margin-bottom:20px; }
+.compare-box .name { font-family:'InterDisplay','NotoSansCJK',sans-serif; font-size:36px; color:#A2AAAD; margin-bottom:20px; }
+.compare-box .detail { font-size:30px; color:#A2AAAD; line-height:1.8; }
+.badge-bad { color:#FF453A; font-size:40px; }
+.badge-good { color:#34C759; font-size:40px; }
+.price { color:#FF453A; font-size:32px; margin-top:10px; }
+.free { color:#34C759; font-size:32px; margin-top:10px; }
+
+.vs-center { display:flex; align-items:center; justify-content:center; }
+.vs-badge {
+  font-family:'InterDisplay','NotoSansCJK',sans-serif; font-size:60px; color:#00D4FF;
+  text-shadow:0 0 30px rgba(0,212,255,0.5); opacity:0;
+}
+
+.bottom-text { font-family:'NotoSansCJK',sans-serif; font-size:40px; color:#34C759;
+  text-align:center; margin-top:80px; opacity:0; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="bg-orbs">
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+  </div>
+  <div class="scanlines" id="scanlines"></div>
+  <div class="scan-beam" id="scanBeam"></div>
+  <div class="content">
+    <div class="title" id="title">完全开源免费</div>
+    <div class="compare-row">
+      <div class="compare-box" id="boxLeft">
+        <div class="icon">🐳</div>
+        <div class="name">Docker Desktop</div>
+        <div class="detail">
+          <span class="badge-bad">❌</span> 闭源<br>
+          <span class="badge-bad">❌</span> 企业收费<br>
+          <span class="badge-bad">❌</span> 资源占用大
+        </div>
+        <div class="price">$5~$24/月</div>
+      </div>
+      <div class="vs-center">
+        <div class="vs-badge" id="vsBadge">VS</div>
+      </div>
+      <div class="compare-box" id="boxRight">
+        <div class="icon">🍎</div>
+        <div class="name">container</div>
+        <div class="detail">
+          <span class="badge-good">✓</span> 完全开源<br>
+          <span class="badge-good">✓</span> 免费使用<br>
+          <span class="badge-good">✓</span> 原生轻量
+        </div>
+        <div class="free">MIT License · 免费</div>
+      </div>
+    </div>
+    <div class="bottom-text" id="bottomText">不用再忍受Docker Desktop了</div>
+  </div>
+</div>
+
+<script>
+window.__mode2Duration = 4.46;
+window.__mode2Ready = true;
+
+function progress(t, start, dur) {
+  if (dur <= 0) return t >= start ? 1 : 0;
+  return Math.max(0, Math.min(1, (t - start) / dur));
+}
+function mix(a, b, t) { return a + (b - a) * t; }
+function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+function easeOutBack(t) { var s=1.7; return 1+(--t)*t*((s+1)*t+s); }
+
+function seekTo(t) {
+  // 背景
+  var op = easeOutQuart(progress(t, 0, 0.6));
+  document.getElementById('orb1').style.opacity = op * 0.5;
+  document.getElementById('orb1').style.transform = 'translate(' + Math.sin(t*0.3)*30 + 'px,' + Math.cos(t*0.2)*20 + 'px)';
+  document.getElementById('orb2').style.opacity = op * 0.4;
+  document.getElementById('orb2').style.transform = 'translate(' + Math.cos(t*0.25)*25 + 'px,' + Math.sin(t*0.35)*15 + 'px)';
+  document.getElementById('scanlines').style.opacity = op * 0.5;
+  var beamY = ((t*200) % 2200) - 200;
+  document.getElementById('scanBeam').style.transform = 'translateY(' + beamY + 'px)';
+  document.getElementById('scanBeam').style.opacity = 0.6;
+
+  // 标题
+  var titleP = easeOutQuart(progress(t, 0.2, 0.8));
+  document.getElementById('title').style.opacity = titleP;
+  document.getElementById('title').style.transform = 'translateY(' + mix(40,0,titleP) + 'px)';
+
+  // 左侧Docker卡片从左滑入
+  var leftP = easeOutBack(progress(t, 0.8, 0.8));
+  var leftEl = document.getElementById('boxLeft');
+  leftEl.style.opacity = leftP;
+  leftEl.style.transform = 'translateX(' + mix(-400,0,leftP) + 'px) scale(' + mix(0.7,1,leftP) + ')';
+
+  // VS弹出
+  var vsP = easeOutBack(progress(t, 1.2, 0.5));
+  var vsEl = document.getElementById('vsBadge');
+  vsEl.style.opacity = vsP;
+  vsEl.style.transform = 'scale(' + mix(0,1,vsP) + ') rotate(' + mix(20,0,vsP) + 'deg)';
+
+  // 右侧container卡片从右滑入
+  var rightP = easeOutBack(progress(t, 1.0, 0.8));
+  var rightEl = document.getElementById('boxRight');
+  rightEl.style.opacity = rightP;
+  rightEl.style.transform = 'translateX(' + mix(400,0,rightP) + 'px) scale(' + mix(0.7,1,rightP) + ')';
+
+  // 底部文字
+  var botP = easeOutQuart(progress(t, 2.8, 0.8));
+  var botEl = document.getElementById('bottomText');
+  botEl.style.opacity = botP;
+  botEl.style.transform = 'translateY(' + mix(40,0,botP) + 'px)';
+}
+seekTo(0);
+</script>
+</body>
+</html>

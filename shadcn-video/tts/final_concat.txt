@@ -1,0 +1,6 @@
+file '/home/chris47634/tmp_premium/shadcn-video/tts/intro_seg.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/scene1_seg.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/scene2_seg.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/scene3_seg.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/scene4_seg.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/outro_seg.mp3'

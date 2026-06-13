@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 1 - 全模态世界模型</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 500px; height: 500px;
+  background: #76B900;
+  opacity: 0.2;
+  top: 100px; right: -100px;
+}
+.bg-orb.orb2 {
+  width: 400px; height: 400px;
+  background: #00D4FF;
+  opacity: 0.12;
+  bottom: 200px; left: -80px;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    rgba(118,185,0,0.03) 4px,
+    rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.scene-content {
+  position: relative;
+  z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 160px 80px;
+}
+.title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 80px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 8px;
+}
+.icons-ring {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  margin-top: 120px;
+}
+.icon-item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.icon-item .emoji {
+  width: 140px; height: 140px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(118,185,0,0.3);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  backdrop-filter: blur(10px);
+}
+.icon-item .label {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 36px;
+  color: rgba(255,255,255,0.8);
+}
+.icon-top { top: 0; left: 50%; transform: translateX(-50%); }
+.icon-right { top: 50%; right: 0; transform: translateY(-50%); }
+.icon-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+.icon-left { top: 50%; left: 0; transform: translateY(-50%); }
+.bottom-text {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 48px;
+  color: #76B900;
+  margin-top: 120px;
+  letter-spacing: 4px;
+  font-weight: bold;
+}
+.glass-ring {
+  position: absolute;
+  width: 480px; height: 480px;
+  border: 1px solid rgba(118,185,0,0.15);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(4px);
+  background: rgba(118,185,0,0.03);
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title" id="title">全模态世界模型</div>
+    <div class="icons-ring" id="ring">
+      <div class="glass-ring" id="glassRing"></div>
+      <div class="icon-item icon-top" id="icon0">
+        <div class="emoji">👁️</div>
+        <div class="label">看</div>
+      </div>
+      <div class="icon-item icon-right" id="icon1">
+        <div class="emoji">👂</div>
+        <div class="label">听</div>
+      </div>
+      <div class="icon-item icon-bottom" id="icon2">
+        <div class="emoji">🗣️</div>
+        <div class="label">说</div>
+      </div>
+      <div class="icon-item icon-left" id="icon3">
+        <div class="emoji">🦾</div>
+        <div class="label">动</div>
+      </div>
+    </div>
+    <div class="bottom-text" id="bottomText">一个模型，全都能</div>
+  </div>
+<script>
+(function() {
+  var D = 5.59;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var icons = [
+    document.getElementById('icon0'),
+    document.getElementById('icon1'),
+    document.getElementById('icon2'),
+    document.getElementById('icon3')
+  ];
+  var bottomText = document.getElementById('bottomText');
+  var glassRing = document.getElementById('glassRing');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+  var positions = [
+    { top: '0px', left: '50%', tx: '-50%', ty: '0' },
+    { top: '50%', right: '0px', tx: '0', ty: '-50%' },
+    { bottom: '0px', left: '50%', tx: '-50%', ty: '0' },
+    { top: '50%', left: '0px', tx: '0', ty: '-50%' }
+  ];
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translate(' + (p * 60) + 'px,' + (p * 40) + 'px)';
+    orb2.style.transform = 'translate(' + (-p * 50) + 'px,' + (-p * 30) + 'px)';
+
+    // Title fade in 0-1s
+    var tAlpha = Math.min(1, t / 1.0);
+    title.style.opacity = tAlpha;
+    title.style.transform = 'translateY(' + (40 * (1 - tAlpha)) + 'px)';
+
+    // Glass ring
+    var grAlpha = Math.min(1, Math.max(0, (t - 0.5) / 0.8));
+    glassRing.style.opacity = grAlpha;
+    glassRing.style.transform = 'translate(-50%,-50%) scale(' + (0.5 + 0.5 * grAlpha) + ') rotate(' + (p * 60) + 'deg)';
+
+    // Icons: staggered bounce-in with rotation
+    for (var i = 0; i < 4; i++) {
+      var delay = 0.8 + i * 0.3;
+      var iconT = Math.max(0, t - delay);
+      var iconProgress = Math.min(1, iconT / 0.6);
+      // Bounce ease
+      var ease = iconProgress < 1 ? 1 - Math.pow(1 - iconProgress, 3) * Math.cos(iconProgress * Math.PI * 1.5) : 1;
+      var scale = ease;
+      var rotation = (1 - ease) * 360;
+      var el = icons[i];
+      el.style.opacity = iconProgress;
+      // Combine base positioning with animation transform
+      var base = positions[i];
+      el.style.transform = 'translate(' + base.tx + ',' + base.ty + ') scale(' + scale + ') rotate(' + rotation + 'deg)';
+    }
+
+    // Bottom text 3.5-4.5s
+    var btAlpha = Math.min(1, Math.max(0, (t - 3.5) / 0.8));
+    bottomText.style.opacity = btAlpha;
+    bottomText.style.transform = 'translateY(' + (30 * (1 - btAlpha)) + 'px)';
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1920px; background:#0a0a0a; font-family:'Noto Sans SC',sans-serif; overflow:hidden; position:relative; }
+body::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; 
+  background: repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,212,255,0.03) 79px, rgba(0,212,255,0.03) 80px),
+              repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,212,255,0.03) 79px, rgba(0,212,255,0.03) 80px); }
+.orb1 { position:absolute; top:30%; right:15%; width:300px; height:300px; background:radial-gradient(circle, rgba(0,255,136,0.1), transparent 70%); filter:blur(60px); }
+.content { position:relative; z-index:2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px; }
+
+.section-label { font-size:24px; color:rgba(0,255,136,0.6); letter-spacing:8px; text-transform:uppercase; margin-bottom:40px;
+  opacity:0; animation:fadeUp 0.6s 0.2s forwards; }
+
+/* Feature card */
+.feature-card { width:900px; padding:60px; background:rgba(255,255,255,0.03); border:1px solid rgba(0,255,136,0.15); border-radius:24px; 
+  box-shadow:0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(0,255,136,0.05);
+  opacity:0; animation:scaleIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards; }
+
+.feature-icon { width:80px; height:80px; border-radius:20px; background:rgba(0,255,136,0.1); border:2px solid rgba(0,255,136,0.3); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:30px; }
+.feature-title { font-size:56px; font-weight:900; color:#00FF88; margin-bottom:20px; }
+.feature-desc { font-size:32px; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:30px; }
+
+/* Visual: Browser automation illustration */
+.auto-visual { display:flex; gap:20px; align-items:center; justify-content:center; margin-top:20px; }
+.auto-step { padding:16px 24px; background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.2); border-radius:12px; font-size:20px; color:#00D4FF; }
+.auto-arrow { font-size:24px; color:rgba(0,212,255,0.4); }
+.auto-step:nth-child(1) { opacity:0; animation:fadeUp 0.6s 0.8s forwards; }
+.auto-arrow:nth-child(2) { opacity:0; animation:fadeUp 0.4s 1.0s forwards; }
+.auto-step:nth-child(3) { opacity:0; animation:fadeUp 0.6s 1.0s forwards; }
+.auto-arrow:nth-child(4) { opacity:0; animation:fadeUp 0.4s 1.2s forwards; }
+.auto-step:nth-child(5) { opacity:0; animation:fadeUp 0.6s 1.2s forwards; }
+
+@keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+.corner-tr { position:absolute; top:6%; right:6%; width:40px; height:40px; border-top:2px solid #00FF88; border-right:2px solid #00FF88; opacity:0; animation:fadeUp 0.6s 1.6s forwards; }
+.corner-bl { position:absolute; bottom:6%; left:6%; width:40px; height:40px; border-bottom:2px solid #00D4FF; border-left:2px solid #00D4FF; opacity:0; animation:fadeUp 0.6s 1.8s forwards; }
+</style>
+</head><body>
+<div class="orb1"></div>
+<div class="content">
+  <div class="section-label">核心特性</div>
+  <div class="feature-card">
+    <div class="feature-icon">🤖</div>
+    <div class="feature-title">AI直接控制浏览器</div>
+    <div class="feature-desc">不需要API，不需要爬虫。AI像人一样操作浏览器——打开网页、点击按钮、填写表单、滚动页面。</div>
+    <div class="auto-visual">
+      <div class="auto-step">🧠 AI理解任务</div>
+      <div class="auto-arrow">→</div>
+      <div class="auto-step">🌐 操作浏览器</div>
+      <div class="auto-arrow">→</div>
+      <div class="auto-step">✅ 完成任务</div>
+    </div>
+  </div>
+</div>
+<div class="corner-tr"></div>
+<div class="corner-bl"></div>
+</body></html>

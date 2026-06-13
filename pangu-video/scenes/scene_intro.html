@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Intro - 盘古大模型</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+@font-face { font-family: 'ZCOOL KuaiLe'; src: url('file:///home/chris47634/.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype'); font-weight: normal; }
+:root { --bg:#06101F;--red:#CF0A2C;--blue:#00D4FF;--gold:#FFD700;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
+}
+.glass-accent {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(207,10,44,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.glass-badge {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.glass-item {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);opacity:0.08}
+.bg-orb-1{width:700px;height:700px;background:var(--red);top:-200px;left:-200px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:500px;height:500px;background:var(--blue);bottom:-150px;right:-150px;animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:400px;height:400px;background:var(--red);top:40%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.3)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--red);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:10%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:25%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:40%;animation-duration:12s;animation-delay:4s}
+.particle:nth-child(4){left:55%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:70%;animation-duration:13s;animation-delay:3s}
+.particle:nth-child(6){left:85%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:95%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.5}90%{opacity:0.5}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0.1;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:80px 60px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--red);border-left:2px solid var(--red)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--red);border-right:2px solid var(--red)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:15%;left:10%;width:6px;height:6px;background:var(--red);box-shadow:0 0 20px var(--red)}
+.light-dot-2{bottom:15%;right:10%;width:8px;height:8px;background:var(--blue);box-shadow:0 0 20px var(--blue)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.title-box{padding:50px 60px;text-align:center;margin-bottom:50px}
+.main-title{font-size:120px;font-weight:bold;opacity:0;text-align:center;background:linear-gradient(135deg,#CF0A2C,#FF3355,#CF0A2C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 0 40px rgba(207,10,44,0.4));font-family:'ZCOOL KuaiLe',cursive;clip-path:inset(0 100% 0 0)}
+.subtitle-box{padding:16px 40px;margin-bottom:60px}
+.subtitle{font-size:44px;opacity:0;color:var(--blue);letter-spacing:12px;font-family:'NotoSansCJK',sans-serif;font-weight:bold;transform:translateY(60px)}
+.hook{font-size:48px;opacity:0;color:var(--text-dim);text-align:center;line-height:1.8;font-family:'NotoSansCJK',sans-serif}
+.deco-line{width:200px;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0;margin-bottom:40px}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <div class="title-box" data-el="title-box">
+    <div class="main-title" data-el="title">盘古大模型</div>
+  </div>
+  <div class="deco-line" data-el="line"></div>
+  <div class="subtitle-box glass-badge" data-el="sub-box">
+    <div class="subtitle" data-el="sub">华为 · 行业AI · 开天辟地</div>
+  </div>
+  <div class="hook" data-el="hook">当中国AI<br>不写诗聊天...</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const easeOutCubic=t=>1-Math.pow(1-t,3);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  /* 打字机效果：通过clip-path逐字显示 */
+  function typewriterReveal(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=1.0}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p>0.05?1:0;
+    el.style.clipPath='inset(0 '+(100-p*100)+'% 0 0)';
+    el.style.filter='blur('+mix(8,0,p)+'px)';
+  }
+
+  /* 从下方滑入 */
+  function slideUp(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.65,y=60,blur=14}=opts;
+    const p=easeOutCubic(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform='translate3d(0,'+mix(y,0,p)+'px,0)';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  function seekTo(t) {
+    typewriterReveal(document.querySelector('[data-el="title"]'),t,{start:0.2,duration:1.2});
+    slideUp(document.querySelector('[data-el="title-box"]'),t,{start:0.2,duration:0.8,y:40,blur:10});
+    slideUp(document.querySelector('[data-el="line"]'),t,{start:1.0,duration:0.4,y:0,blur:8});
+    slideUp(document.querySelector('[data-el="sub-box"]'),t,{start:1.2,duration:0.6,y:60,blur:10});
+    slideUp(document.querySelector('[data-el="sub"]'),t,{start:1.2,duration:0.6,y:60,blur:10});
+    slideUp(document.querySelector('[data-el="hook"]'),t,{start:2.5,duration:0.7,y:40,blur:12});
+
+    const cp=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-tl"]').style.opacity=cp;
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=6.48;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,6.48));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

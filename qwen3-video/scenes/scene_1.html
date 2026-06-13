@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 1 - 235B MoE</title>
+<style>
+@font-face {
+  font-family: 'ZCOOL KuaiLe';
+  src: url('../../.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Noto Sans CJK';
+  src: url('../../.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Sans CJK Bold';
+  src: url('../../.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px;
+  height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Noto Sans CJK', sans-serif;
+}
+
+/* === 背景三层 === */
+.bg-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.3;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #8B5CF6 0%, transparent 70%);
+  top: 600px; left: -150px;
+  animation: orbFloat1 9s ease-in-out infinite;
+}
+.orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, #00D4FF 0%, transparent 70%);
+  top: 400px; right: -80px;
+  animation: orbFloat2 11s ease-in-out infinite;
+}
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(60px, 40px); }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-50px, -30px); }
+}
+
+.particle-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(139, 92, 246, 0.03) 3px, rgba(139, 92, 246, 0.03) 4px
+  );
+  z-index: 1;
+}
+
+/* === 内容 === */
+.content {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 300px;
+}
+
+.scene-title {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 80px;
+  color: #ffffff;
+  letter-spacing: 8px;
+  opacity: 0;
+  transform: translateY(-40px);
+  transition: all 0.6s ease-out;
+  margin-bottom: 200px;
+}
+
+.scene-title.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.numbers-row {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.numbers-row.visible {
+  opacity: 1;
+}
+
+/* 左边大数字 */
+.big-num-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0) rotateX(90deg);
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.big-num-wrap.visible {
+  transform: scale(1) rotateX(0deg);
+}
+
+.big-num {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 200px;
+  color: #8B5CF6;
+  text-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+  line-height: 1;
+}
+
+.big-num-label {
+  font-size: 36px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 10px;
+}
+
+/* 箭头 */
+.arrow {
+  font-size: 80px;
+  color: #00D4FF;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.5s ease-out;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.arrow.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 右边小数字 */
+.small-num-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0) rotateX(90deg);
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: 0.2s;
+}
+
+.small-num-wrap.visible {
+  transform: scale(1) rotateX(0deg);
+}
+
+.small-num {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 120px;
+  color: #00D4FF;
+  text-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+  line-height: 1;
+}
+
+.small-num-label {
+  font-size: 36px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 10px;
+}
+
+/* glass 标注 */
+.glass {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 24px;
+  padding: 30px 60px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-size: 44px;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 4px;
+  margin-top: 160px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.glass.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <canvas class="particle-canvas" id="particles"></canvas>
+  <div class="scanline"></div>
+</div>
+
+<div class="content">
+  <div class="scene-title" id="title">235B参数</div>
+  <div class="numbers-row" id="numRow">
+    <div class="big-num-wrap" id="bigWrap">
+      <div class="big-num">235B</div>
+      <div class="big-num-label">总参数</div>
+    </div>
+    <div class="arrow" id="arrow">→</div>
+    <div class="small-num-wrap" id="smallWrap">
+      <div class="small-num">22B</div>
+      <div class="small-num-label">激活参数</div>
+    </div>
+  </div>
+  <div class="glass" id="note">MoE架构 推理成本砍九成</div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const particles = [];
+  for (let i = 0; i < 50; i++) {
+    particles.push({
+      x: Math.random() * 1080, y: Math.random() * 1920,
+      r: Math.random() * 2 + 0.5, vx: (Math.random() - 0.5) * 0.6,
+      vy: (Math.random() - 0.5) * 0.6, alpha: Math.random() * 0.3 + 0.1
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, 1080, 1920);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = 1080; if (p.x > 1080) p.x = 0;
+      if (p.y < 0) p.y = 1920; if (p.y > 1920) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 212, 255, ${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+const DURATION = 3.90;
+window.__mode2Duration = DURATION;
+window.__mode2Ready = true;
+
+let lastT = -1;
+
+function seekTo(t) {
+  if (Math.abs(t - lastT) < 0.01) return;
+  lastT = t;
+
+  // 0.0-0.5s: 标题滑入
+  const title = document.getElementById('title');
+  if (t >= 0.0) title.classList.add('visible');
+
+  // 0.5-1.5s: 数字行出现，数字翻转+缩放
+  const numRow = document.getElementById('numRow');
+  const bigWrap = document.getElementById('bigWrap');
+  const smallWrap = document.getElementById('smallWrap');
+  const arrow = document.getElementById('arrow');
+
+  if (t >= 0.5) {
+    numRow.classList.add('visible');
+    bigWrap.classList.add('visible');
+  }
+  if (t >= 0.9) {
+    arrow.classList.add('visible');
+  }
+  if (t >= 1.1) {
+    smallWrap.classList.add('visible');
+  }
+
+  // 2.0-2.8s: 标注文字
+  const note = document.getElementById('note');
+  if (t >= 2.0) note.classList.add('visible');
+
+  // 3.3-3.9s: 淡出
+  if (t >= 3.3) {
+    const fp = Math.min((t - 3.3) / 0.6, 1);
+    document.querySelector('.content').style.opacity = 1 - fp;
+  }
+}
+
+seekTo(0);
+</script>
+</body>
+</html>

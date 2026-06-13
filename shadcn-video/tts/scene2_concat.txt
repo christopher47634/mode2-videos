@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/shadcn-video/tts/scene2.mp3'
+file '/home/chris47634/tmp_premium/shadcn-video/tts/scene2_gap.mp3'

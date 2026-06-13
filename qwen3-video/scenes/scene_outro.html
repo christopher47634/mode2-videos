@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene Outro</title>
+<style>
+@font-face {
+  font-family: 'ZCOOL KuaiLe';
+  src: url('../../.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype');
+  font-weight: normal; font-style: normal;
+}
+@font-face {
+  font-family: 'Noto Sans CJK';
+  src: url('../../.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Sans CJK Bold';
+  src: url('../../.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden; position: relative;
+  font-family: 'Noto Sans CJK', sans-serif;
+}
+
+.bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+.orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3; }
+.orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, #8B5CF6, transparent 70%); top: 600px; left: -150px; animation: of1 9s ease-in-out infinite; }
+.orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #00D4FF, transparent 70%); top: 800px; right: -150px; animation: of2 11s ease-in-out infinite; }
+@keyframes of1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(60px,40px) scale(1.1)} }
+@keyframes of2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-50px,-30px) scale(1.15)} }
+
+.particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.scanline { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(139,92,246,0.03) 3px, rgba(139,92,246,0.03) 4px); z-index: 1; }
+
+.content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 200px; }
+
+/* 金句 */
+.quote {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 72px;
+  color: #fff;
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 6px;
+  max-width: 900px;
+  min-height: 240px;
+}
+
+.quote .cursor {
+  display: inline-block;
+  width: 4px;
+  height: 68px;
+  background: #8B5CF6;
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: blink 0.5s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* URL */
+.url-wrap {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+.url-wrap.visible { opacity: 1; transform: translateY(0); }
+
+.url {
+  font-family: 'Noto Sans CJK', sans-serif;
+  font-size: 38px;
+  color: #00D4FF;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <canvas class="particle-canvas" id="particles"></canvas>
+  <div class="scanline"></div>
+</div>
+
+<div class="content">
+  <div class="quote" id="quote"></div>
+  <div class="url-wrap" id="urlWrap">
+    <div class="url">github.com/QwenLM/Qwen3</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 1080; canvas.height = 1920;
+  const ps = [];
+  for (let i = 0; i < 60; i++) { ps.push({ x:Math.random()*1080, y:Math.random()*1920, r:Math.random()*2+0.5, vx:(Math.random()-0.5)*0.7, vy:(Math.random()-0.5)*0.7, a:Math.random()*0.35+0.1 }); }
+  function draw() { ctx.clearRect(0,0,1080,1920); ps.forEach(p=>{ p.x+=p.vx;p.y+=p.vy; if(p.x<0)p.x=1080;if(p.x>1080)p.x=0;if(p.y<0)p.y=1920;if(p.y>1920)p.y=0; ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(139,92,246,${p.a})`;ctx.fill(); }); requestAnimationFrame(draw); }
+  draw();
+})();
+
+const DURATION = 3.05;
+window.__mode2Duration = DURATION;
+window.__mode2Ready = true;
+
+const fullText = '大模型这场仗，\n阿里是真不想输';
+let lastT = -1;
+
+function seekTo(t) {
+  if (Math.abs(t - lastT) < 0.01) return;
+  lastT = t;
+
+  const quote = document.getElementById('quote');
+
+  // 打字机效果
+  if (t >= 0.0 && t < 2.2) {
+    const progress = Math.min(t / 2.0, 1);
+    const chars = Math.floor(progress * fullText.length);
+    let display = fullText.substring(0, chars);
+    display = display.replace('\n', '<br>');
+    quote.innerHTML = display + '<span class="cursor"></span>';
+  } else if (t >= 2.2) {
+    let display = fullText.replace('\n', '<br>');
+    quote.innerHTML = display;
+  }
+
+  // URL淡入
+  if (t >= 1.5) {
+    document.getElementById('urlWrap').classList.add('visible');
+  }
+
+  // 淡出
+  if (t >= 2.5) {
+    const fp = Math.min((t - 2.5) / 0.55, 1);
+    document.querySelector('.content').style.opacity = 1 - fp;
+  }
+}
+
+seekTo(0);
+</script>
+</body>
+</html>

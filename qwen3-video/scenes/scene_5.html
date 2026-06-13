@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 5 - 全系列开源</title>
+<style>
+@font-face {
+  font-family: 'ZCOOL KuaiLe';
+  src: url('../../.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype');
+  font-weight: normal; font-style: normal;
+}
+@font-face {
+  font-family: 'Noto Sans CJK';
+  src: url('../../.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Noto Sans CJK Bold';
+  src: url('../../.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden; position: relative;
+  font-family: 'Noto Sans CJK', sans-serif;
+}
+
+.bg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+.orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.25; }
+.orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, #8B5CF6, transparent 70%); top: 800px; left: -200px; animation: of1 10s ease-in-out infinite; }
+.orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #00D4FF, transparent 70%); top: 400px; right: -100px; animation: of2 12s ease-in-out infinite; }
+@keyframes of1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(80px,50px)} }
+@keyframes of2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-60px,-40px)} }
+
+.particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.scanline { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(139,92,246,0.03) 3px, rgba(139,92,246,0.03) 4px); z-index: 1; }
+
+.content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: flex; flex-direction: column; align-items: center; padding-top: 280px; }
+
+.scene-title { font-family: 'ZCOOL KuaiLe', cursive; font-size: 72px; color: #fff; letter-spacing: 6px; opacity: 0; transform: translateY(-30px); transition: all 0.6s ease-out; margin-bottom: 80px; }
+.scene-title.visible { opacity: 1; transform: translateY(0); }
+
+/* 阶梯容器 */
+.stairs { display: flex; flex-direction: column-reverse; align-items: center; gap: 24px; width: 800px; }
+
+.stair {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 20px;
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 40px;
+  color: #fff;
+  letter-spacing: 4px;
+  opacity: 0;
+  transform: translateY(80px);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.stair.visible { opacity: 1; transform: translateY(0); }
+
+/* 6级阶梯，从小到大 */
+.stair-1 { width: 160px; height: 60px; background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(99,102,241,0.1)); border-color: rgba(99,102,241,0.4); font-size: 28px; }
+.stair-2 { width: 240px; height: 70px; background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(139,92,246,0.1)); border-color: rgba(139,92,246,0.4); font-size: 30px; }
+.stair-3 { width: 340px; height: 80px; background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(168,85,247,0.1)); border-color: rgba(168,85,247,0.4); font-size: 34px; }
+.stair-4 { width: 460px; height: 90px; background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(0,212,255,0.1)); border-color: rgba(0,212,255,0.4); font-size: 36px; }
+.stair-5 { width: 580px; height: 100px; background: linear-gradient(135deg, rgba(6,182,212,0.3), rgba(6,182,212,0.1)); border-color: rgba(6,182,212,0.4); font-size: 38px; }
+.stair-6 { width: 720px; height: 110px; background: linear-gradient(135deg, rgba(139,92,246,0.4), rgba(0,212,255,0.2)); border-color: rgba(139,92,246,0.5); font-size: 42px; }
+
+/* 底部文字 */
+.bottom-text {
+  font-family: 'Noto Sans CJK Bold', sans-serif;
+  font-size: 44px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 6px;
+  margin-top: 80px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+.bottom-text.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <canvas class="particle-canvas" id="particles"></canvas>
+  <div class="scanline"></div>
+</div>
+
+<div class="content">
+  <div class="scene-title" id="title">全系列开源</div>
+  <div class="stairs" id="stairs">
+    <div class="stair stair-1" id="s1">0.6B</div>
+    <div class="stair stair-2" id="s2">1.7B</div>
+    <div class="stair stair-3" id="s3">4B</div>
+    <div class="stair stair-4" id="s4">8B</div>
+    <div class="stair stair-5" id="s5">32B</div>
+    <div class="stair stair-6" id="s6">235B</div>
+  </div>
+  <div class="bottom-text" id="bottomText">手机到服务器都能跑</div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 1080; canvas.height = 1920;
+  const ps = [];
+  for (let i = 0; i < 50; i++) { ps.push({ x:Math.random()*1080, y:Math.random()*1920, r:Math.random()*2+0.5, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5, a:Math.random()*0.3+0.1 }); }
+  function draw() { ctx.clearRect(0,0,1080,1920); ps.forEach(p=>{ p.x+=p.vx;p.y+=p.vy; if(p.x<0)p.x=1080;if(p.x>1080)p.x=0;if(p.y<0)p.y=1920;if(p.y>1920)p.y=0; ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(139,92,246,${p.a})`;ctx.fill(); }); requestAnimationFrame(draw); }
+  draw();
+})();
+
+const DURATION = 5.61;
+window.__mode2Duration = DURATION;
+window.__mode2Ready = true;
+
+let lastT = -1;
+
+function seekTo(t) {
+  if (Math.abs(t - lastT) < 0.01) return;
+  lastT = t;
+
+  if (t >= 0.0) document.getElementById('title').classList.add('visible');
+
+  // 阶梯逐级升起，每级间隔0.3s
+  const stairIds = ['s1','s2','s3','s4','s5','s6'];
+  stairIds.forEach((id, i) => {
+    const delay = 0.6 + i * 0.35;
+    if (t >= delay) document.getElementById(id).classList.add('visible');
+  });
+
+  if (t >= 3.2) document.getElementById('bottomText').classList.add('visible');
+
+  if (t >= 4.8) {
+    const fp = Math.min((t - 4.8) / 0.81, 1);
+    document.querySelector('.content').style.opacity = 1 - fp;
+  }
+}
+
+seekTo(0);
+</script>
+</body>
+</html>

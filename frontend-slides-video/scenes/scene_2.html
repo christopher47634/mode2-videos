@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'InterDisplay';src:url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'Inter';src:url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'NotoSansCJK';src:url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');font-weight:bold;font-style:normal;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1920px;background:#1A1B26;overflow:hidden;position:relative;}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;pointer-events:none;}
+.glow1{width:600px;height:600px;background:#BB9AF7;top:400px;left:200px;}
+.glow2{width:400px;height:400px;background:#7AA2F7;bottom:300px;right:100px;}
+.scanline{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(187,154,247,0.03) 4px,rgba(187,154,247,0.03) 5px);pointer-events:none;z-index:1;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;}
+.title{position:absolute;top:300px;width:100%;text-align:center;font-family:'InterDisplay',sans-serif;font-size:96px;color:#BB9AF7;}
+.card-wrap{position:absolute;top:520px;left:50%;transform:translateX(-50%);}
+.demo-card{width:700px;height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.code-text{font-family:'Inter',monospace;font-size:36px;color:#7AA2F7;letter-spacing:2px;}
+.code-val{color:#9ECE6A;}
+.subtitle{position:absolute;top:1020px;width:100%;text-align:center;font-family:'NotoSansCJK','Inter',sans-serif;font-size:44px;color:rgba(255,255,255,0.7);}
+.badge{display:inline-block;margin:0 8px;padding:6px 20px;border-radius:16px;font-size:28px;}
+.b1{background:rgba(122,162,247,0.15);color:#7AA2F7;}
+.b2{background:rgba(187,154,247,0.15);color:#BB9AF7;}
+</style>
+</head><body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="scanline"></div>
+<div id="title" class="title">玻璃拟态美学</div>
+<div id="cardWrap" class="card-wrap">
+  <div id="demoCard" class="demo-card glass">
+    <div class="code-text">backdrop-filter:</div>
+    <div class="code-text" style="margin-top:10px;"><span class="code-val">blur(20px)</span></div>
+  </div>
+</div>
+<div id="subtitle" class="subtitle">
+  毛玻璃效果，颜值拉满
+  <div style="margin-top:20px;">
+    <span class="badge b1">frosted</span>
+    <span class="badge b2">glassmorphism</span>
+  </div>
+</div>
+<script>
+window.__mode2Duration=4.01;
+function seekTo(t){
+  var dur=4.01;
+  var title=document.getElementById('title');
+  var cardWrap=document.getElementById('cardWrap');
+  var demoCard=document.getElementById('demoCard');
+  var subtitle=document.getElementById('subtitle');
+  // Title 0-0.7
+  var tp=Math.min(Math.max(t/0.7,0),1);
+  title.style.opacity=tp;
+  title.style.transform='translateY('+(50-50*tp)+'px)';
+  // Card: from blurry to clear 0.5-2.0
+  var cp=Math.min(Math.max((t-0.5)/1.5,0),1);
+  var blurVal=Math.round(30-20*cp);
+  demoCard.style.filter='blur('+blurVal+'px)';
+  demoCard.style.opacity=Math.min(cp*2,1);
+  cardWrap.style.transform='translateX(-50%) scale('+(0.9+0.1*cp)+')';
+  // Card border glow pulse at end
+  if(cp>=1){
+    var pulse=0.5+0.5*Math.sin((t-2.0)*4);
+    demoCard.style.borderColor='rgba(187,154,247,'+(0.1+0.3*pulse)+')';
+    demoCard.style.boxShadow='0 0 '+(30+pulse*20)+'px rgba(187,154,247,'+(0.1+pulse*0.15)+')';
+  }
+  // Subtitle 2.0-3.0
+  var sp=Math.min(Math.max((t-2.0)/0.8,0),1);
+  subtitle.style.opacity=sp;
+  subtitle.style.transform='translateY('+(30-30*sp)+'px)';
+}
+window.__mode2Ready=true;
+seekTo(0);
+</script>
+</body></html>

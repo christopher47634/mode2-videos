@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro",
+    "text": "ponytail，本周GitHub最有趣的项目，一千星",
+    "duration": 3.750219,
+    "leading_trimmed": 0.17525
+  },
+  {
+    "id": "scene1",
+    "text": "它把一个扎马尾辫的老程序员塞进了你的AI助手",
+    "duration": 3.739313,
+    "leading_trimmed": 0.138437
+  },
+  {
+    "id": "scene2",
+    "text": "你要一个日期选择器，AI装了依赖写了封装加了样式",
+    "duration": 5.0675,
+    "leading_trimmed": 0.215063
+  },
+  {
+    "id": "scene3",
+    "text": "ponytail只说了一句，浏览器自带的，一行搞定",
+    "duration": 4.069594,
+    "leading_trimmed": 0.144844
+  },
+  {
+    "id": "scene4",
+    "text": "六步决策，需要存在吗，标准库能做吗，原生支持吗，一行够吗",
+    "duration": 6.123438,
+    "leading_trimmed": 0.145969
+  },
+  {
+    "id": "scene5",
+    "text": "实测代码量减少百分之八十到九十四，速度快了三到六倍",
+    "duration": 4.92475,
+    "leading_trimmed": 0.148813
+  },
+  {
+    "id": "outro",
+    "text": "你没写的代码，零bug零漏洞，无限扩展，MIT开源",
+    "duration": 4.891906,
+    "leading_trimmed": 0.135219
+  }
+]

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'InterDisplay';src:url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'Inter';src:url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');font-weight:normal;font-style:normal;}
+@font-face{font-family:'NotoSansCJK';src:url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');font-weight:normal;font-style:normal;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1920px;background:#1A1B26;overflow:hidden;position:relative;}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;pointer-events:none;}
+.glow1{width:500px;height:500px;background:#7AA2F7;top:300px;left:100px;}
+.glow2{width:400px;height:400px;background:#9ECE6A;bottom:300px;right:100px;}
+.glow3{width:350px;height:350px;background:#BB9AF7;top:600px;right:200px;}
+.scanline{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(122,162,247,0.03) 4px,rgba(122,162,247,0.03) 5px);pointer-events:none;z-index:1;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;}
+.title{position:absolute;top:300px;width:100%;text-align:center;font-family:'InterDisplay','NotoSansCJK',sans-serif;font-size:88px;color:#7AA2F7;}
+.cards-row{position:absolute;top:550px;width:100%;display:flex;justify-content:center;gap:50px;}
+.stat-card{width:280px;height:360px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.stat-num{font-family:'InterDisplay','NotoSansCJK',sans-serif;font-size:96px;font-weight:bold;}
+.stat-label{font-family:'NotoSansCJK','Inter',sans-serif;font-size:36px;color:rgba(255,255,255,0.7);margin-top:12px;}
+.c-blue .stat-num{color:#7AA2F7;}
+.c-blue{border-color:rgba(122,162,247,0.2);}
+.c-purple .stat-num{color:#BB9AF7;}
+.c-purple{border-color:rgba(187,154,247,0.2);}
+.c-green .stat-num{color:#9ECE6A;}
+.c-green{border-color:rgba(158,206,106,0.2);}
+.bottom{position:absolute;bottom:250px;width:100%;text-align:center;font-family:'NotoSansCJK','Inter',sans-serif;font-size:48px;color:#E0AF68;}
+</style>
+</head><body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="bg-glow glow3"></div>
+<div class="scanline"></div>
+<div id="title" class="title">海量模板</div>
+<div class="cards-row">
+  <div id="cd0" class="stat-card glass c-blue"><div class="stat-num">36</div><div class="stat-label">主题</div></div>
+  <div id="cd1" class="stat-card glass c-purple"><div class="stat-num">27</div><div class="stat-label">动画</div></div>
+  <div id="cd2" class="stat-card glass c-green"><div class="stat-num">31</div><div class="stat-label">布局</div></div>
+</div>
+<div id="bottom" class="bottom">随便挑</div>
+<script>
+window.__mode2Duration=5.35;
+function seekTo(t){
+  var title=document.getElementById('title');
+  var bottom=document.getElementById('bottom');
+  // Title 0-0.7
+  var tp=Math.min(Math.max(t/0.7,0),1);
+  title.style.opacity=tp;
+  title.style.transform='translateY('+(50-50*tp)+'px)';
+  // Cards bounce in one by one (scale+translateY, no rotateY)
+  for(var i=0;i<3;i++){
+    var cd=document.getElementById('cd'+i);
+    var startT=0.8+i*0.5;
+    var cp=Math.min(Math.max((t-startT)/0.6,0),1);
+    // Ease out bounce
+    var ease=1-Math.pow(1-cp,3);
+    var scale=0.3+0.7*ease;
+    var ty=80-80*ease;
+    cd.style.transform='translateY('+ty+'px) scale('+scale+')';
+    cd.style.opacity=cp;
+  }
+  // Bottom 3.5-4.5
+  var bp=Math.min(Math.max((t-3.5)/0.8,0),1);
+  bottom.style.opacity=bp;
+  bottom.style.transform='translateY('+(30-30*bp)+'px)';
+}
+window.__mode2Ready=true;
+seekTo(0);
+</script>
+</body></html>

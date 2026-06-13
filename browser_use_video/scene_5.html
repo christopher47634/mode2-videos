@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&family=Fira+Code:wght@400;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1920px; background:#0a0a0a; font-family:'Noto Sans SC',sans-serif; overflow:hidden; position:relative; }
+body::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; 
+  background: repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,212,255,0.03) 79px, rgba(0,212,255,0.03) 80px),
+              repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,212,255,0.03) 79px, rgba(0,212,255,0.03) 80px); }
+.orb1 { position:absolute; top:15%; left:20%; width:250px; height:250px; background:radial-gradient(circle, rgba(255,215,0,0.08), transparent 70%); filter:blur(50px); }
+.content { position:relative; z-index:2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px; }
+
+.section-label { font-size:24px; color:rgba(255,215,0,0.6); letter-spacing:8px; text-transform:uppercase; margin-bottom:40px;
+  opacity:0; animation:fadeUp 0.6s 0.2s forwards; }
+
+.feature-card { width:900px; padding:60px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,215,0,0.15); border-radius:24px;
+  opacity:0; animation:scaleIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards; }
+.feature-icon { width:80px; height:80px; border-radius:20px; background:rgba(255,215,0,0.1); border:2px solid rgba(255,215,0,0.3); display:flex; align-items:center; justify-content:center; font-size:40px; margin-bottom:30px; }
+.feature-title { font-size:56px; font-weight:900; color:#FFD700; margin-bottom:20px; }
+.feature-desc { font-size:32px; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:30px; }
+
+/* Code block */
+.code-block { background:rgba(0,0,0,0.4); border:1px solid rgba(255,215,0,0.2); border-radius:12px; padding:24px; font-family:'Fira Code',monospace; font-size:20px; line-height:1.8; }
+.code-line { opacity:0; animation:fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+.code-line:nth-child(1) { animation-delay:0.8s; }
+.code-line:nth-child(2) { animation-delay:1.0s; }
+.code-line:nth-child(3) { animation-delay:1.2s; }
+.code-line:nth-child(4) { animation-delay:1.4s; }
+.code-line:nth-child(5) { animation-delay:1.6s; }
+.code-keyword { color:#ff79c6; }
+.code-func { color:#50fa7b; }
+.code-string { color:#f1fa8c; }
+.code-comment { color:#6272a4; }
+
+@keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.corner-tr { position:absolute; top:6%; right:6%; width:40px; height:40px; border-top:2px solid #FFD700; border-right:2px solid #FFD700; opacity:0; animation:fadeUp 0.6s 2.0s forwards; }
+.corner-bl { position:absolute; bottom:6%; left:6%; width:40px; height:40px; border-bottom:2px solid #00D4FF; border-left:2px solid #00D4FF; opacity:0; animation:fadeUp 0.6s 2.2s forwards; }
+</style>
+</head><body>
+<div class="orb1"></div>
+<div class="content">
+  <div class="section-label">技术栈</div>
+  <div class="feature-card">
+    <div class="feature-icon">🐍</div>
+    <div class="feature-title">Python + Playwright</div>
+    <div class="feature-desc">简洁的Python API，底层用Playwright驱动真实浏览器。</div>
+    <div class="code-block">
+      <div class="code-line"><span class="code-keyword">from</span> browser_use <span class="code-keyword">import</span> Agent</div>
+      <div class="code-line">agent = <span class="code-func">Agent</span>(</div>
+      <div class="code-line">    task=<span class="code-string">"搜索最近的航班"</span>,</div>
+      <div class="code-line">    llm=model</div>
+      <div class="code-line">)</div>
+    </div>
+  </div>
+</div>
+<div class="corner-tr"></div>
+<div class="corner-bl"></div>
+</body></html>

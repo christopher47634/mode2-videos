@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/noop-video/tts/scene1_trimmed.mp3'
+file '/home/chris47634/tmp_premium/noop-video/tts/scene1_gap.mp3'

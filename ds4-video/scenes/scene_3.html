@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 3 - ds4 价值总结</title>
+<style>
+@font-face {
+  font-family: 'LXGW WenKai';
+  src: url('file:///mnt/e/Fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'LXGW WenKai';
+  src: url('file:///mnt/e/Fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('file:///mnt/e/Fonts/InterVariable.ttf') format('truetype');
+}
+
+:root {
+  --bg: #06101F;
+  --cyan: #00D4FF;
+  --blue: #0088CC;
+  --purple: #6B3FA0;
+  --gold: #FFD700;
+  --text: #E8ECF1;
+  --text-dim: rgba(255,255,255,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width: 1080px; height: 1920px;
+  background: var(--bg);
+  font-family: 'LXGW WenKai', 'Noto Sans CJK SC', sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+}
+
+/* === 3-Layer Background === */
+.bg-orb {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  z-index: 0; filter: blur(100px); opacity: 0.12;
+}
+.bg-orb-1 {
+  width: 600px; height: 600px; background: var(--gold);
+  top: -100px; left: 50%; transform: translateX(-50%);
+  animation: orbFloat1 20s ease-in-out infinite;
+}
+.bg-orb-2 {
+  width: 400px; height: 400px; background: var(--cyan);
+  bottom: 200px; left: -80px;
+  animation: orbFloat2 24s ease-in-out infinite;
+}
+.bg-orb-3 {
+  width: 350px; height: 350px; background: var(--purple);
+  bottom: -50px; right: -80px;
+  animation: orbFloat3 18s ease-in-out infinite;
+}
+@keyframes orbFloat1 {
+  0%,100% { transform: translateX(-50%) translate(0,0); }
+  50% { transform: translateX(-50%) translate(0,60px); }
+}
+@keyframes orbFloat2 {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(60px,-80px); }
+}
+@keyframes orbFloat3 {
+  0%,100% { transform: translate(0,0); }
+  50% { transform: translate(-60px,-40px); }
+}
+
+.particles {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+}
+.particle {
+  position: absolute; width: 3px; height: 3px;
+  background: var(--gold); border-radius: 50%; opacity: 0;
+  animation: particleRise linear infinite;
+}
+.particle:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+.particle:nth-child(2) { left: 25%; animation-duration: 16s; animation-delay: 1.5s; }
+.particle:nth-child(3) { left: 40%; animation-duration: 10s; animation-delay: 3s; }
+.particle:nth-child(4) { left: 55%; animation-duration: 14s; animation-delay: 0.5s; }
+.particle:nth-child(5) { left: 70%; animation-duration: 11s; animation-delay: 2.5s; }
+.particle:nth-child(6) { left: 85%; animation-duration: 13s; animation-delay: 4s; }
+.particle:nth-child(7) { left: 95%; animation-duration: 15s; animation-delay: 5s; }
+@keyframes particleRise {
+  0% { transform: translateY(1920px); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+.scanline {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.1; z-index: 0;
+  animation: scanDown 8s linear infinite;
+}
+@keyframes scanDown {
+  0% { top: -2px; }
+  100% { top: 1920px; }
+}
+
+/* === Content Layer === */
+.content {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 100px 80px 180px 80px;
+  height: 100%;
+}
+
+/* === L-Corner Decorations === */
+.corner {
+  position: absolute; width: 50px; height: 50px; z-index: 2; opacity: 0;
+}
+.corner-tl {
+  top: 60px; left: 60px;
+  border-top: 2px solid var(--gold);
+  border-left: 2px solid var(--gold);
+}
+.corner-br {
+  bottom: 240px; right: 60px;
+  border-bottom: 2px solid var(--cyan);
+  border-right: 2px solid var(--cyan);
+}
+
+/* === Floating Light Points === */
+.light-dot {
+  position: absolute; border-radius: 50%; z-index: 2; opacity: 0;
+}
+.light-dot-1 {
+  top: 15%; left: 10%; width: 6px; height: 6px;
+  background: var(--gold); box-shadow: 0 0 20px var(--gold);
+}
+.light-dot-2 {
+  bottom: 20%; right: 15%; width: 8px; height: 8px;
+  background: var(--cyan); box-shadow: 0 0 20px var(--cyan);
+}
+
+/* === Star Counter === */
+.star-counter {
+  text-align: center;
+  margin-bottom: 64px;
+  opacity: 0;
+}
+.star-icon-row {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  margin-bottom: 16px;
+}
+.star-icon-row svg {
+  animation: starSpin 4s linear infinite;
+}
+@keyframes starSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg) scale(1); }
+  75% { transform: rotate(270deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+.star-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 160px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  letter-spacing: -4px;
+}
+.star-label {
+  font-size: 36px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  letter-spacing: 4px;
+}
+
+/* === Value Tags === */
+.value-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 64px;
+}
+
+.value-tag {
+  background: rgba(10, 20, 40, 0.55);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 60px;
+  padding: 32px 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+}
+.value-tag.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.value-tag::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent);
+}
+
+.value-tag .tag-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 24px;
+}
+.value-tag:nth-child(1) .tag-icon {
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.2);
+}
+.value-tag:nth-child(2) .tag-icon {
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.2);
+}
+.value-tag:nth-child(3) .tag-icon {
+  background: rgba(255,215,0,0.08);
+  border: 1px solid rgba(255,215,0,0.2);
+}
+
+.value-tag .tag-text {
+  font-size: 42px;
+  font-weight: bold;
+  line-height: 1.3;
+}
+.value-tag:nth-child(1) .tag-text { color: var(--cyan); }
+.value-tag:nth-child(2) .tag-text { color: #00FF88; }
+.value-tag:nth-child(3) .tag-text { color: var(--gold); }
+
+.value-tag .tag-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.value-tag:nth-child(1) .tag-dot { background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+.value-tag:nth-child(2) .tag-dot { background: #00FF88; box-shadow: 0 0 12px #00FF88; }
+.value-tag:nth-child(3) .tag-dot { background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+
+/* === Growing Stars Animation === */
+.growing-stars {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 120px;
+  opacity: 0;
+}
+.growing-stars.show { opacity: 1; }
+
+.star-track {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 100px;
+  background: rgba(10, 20, 40, 0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255,215,0,0.08);
+  overflow: hidden;
+}
+.star-fill {
+  position: absolute;
+  bottom: 0; left: 0; top: 0;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(255,215,0,0.05), rgba(255,215,0,0.15));
+  border-radius: 16px;
+  transition: width 3s cubic-bezier(0.16,1,0.3,1);
+}
+.star-fill.show {
+  width: 100%;
+}
+.star-track-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  z-index: 1;
+  white-space: nowrap;
+}
+.star-track-count {
+  position: absolute;
+  top: 50%; right: 24px;
+  transform: translateY(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold);
+  z-index: 1;
+}
+
+/* === Separator Dots === */
+.separator {
+  display: flex; gap: 12px; justify-content: center;
+  margin: 12px 0;
+  opacity: 0;
+}
+.separator .sep-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text-dim);
+}
+
+/* === Animation Classes === */
+.anim-fade-up {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.anim-fade-up.show { opacity: 1; transform: translateY(0); }
+
+.anim-scale-in {
+  opacity: 0; transform: scale(0.85);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+}
+.anim-scale-in.show { opacity: 1; transform: scale(1); }
+
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, var(--text) 0%, var(--cyan) 50%, var(--text) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- Background Layers -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<div class="particles">
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<div class="scanline"></div>
+
+<!-- L-Corner Decorations -->
+<div class="corner corner-tl anim-scale-in" data-delay="0.3"></div>
+<div class="corner corner-br anim-scale-in" data-delay="0.5"></div>
+
+<!-- Floating Light Points -->
+<div class="light-dot light-dot-1 anim-scale-in" data-delay="0.4" style="animation: float 3s ease-in-out infinite;"></div>
+<div class="light-dot light-dot-2 anim-scale-in" data-delay="0.6" style="animation: float 4s ease-in-out infinite reverse;"></div>
+
+<!-- Content -->
+<div class="content">
+  <!-- Star Counter -->
+  <div class="star-counter anim-scale-in" data-delay="0.3">
+    <div class="star-icon-row">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="#FFD700" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="#FFD700" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="#FFD700" stroke="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    </div>
+    <div class="star-count" id="starCount">0</div>
+    <div class="star-label">GITHUB STARS</div>
+  </div>
+
+  <!-- Value Tags -->
+  <div class="value-tags">
+    <div class="value-tag" data-delay="0.8">
+      <div class="tag-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 10h-4V6"/>
+          <path d="M14 10L22 2"/>
+          <path d="M22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/>
+        </svg>
+      </div>
+      <div class="tag-text">无需云端</div>
+      <div class="tag-dot"></div>
+    </div>
+    <div class="value-tag" data-delay="1.2">
+      <div class="tag-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00FF88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          <circle cx="12" cy="16" r="1"/>
+        </svg>
+      </div>
+      <div class="tag-text">隐私安全</div>
+      <div class="tag-dot"></div>
+    </div>
+    <div class="value-tag" data-delay="1.6">
+      <div class="tag-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <div class="tag-text">MIT 开源许可</div>
+      <div class="tag-dot"></div>
+    </div>
+  </div>
+
+  <!-- Growing Stars Bar -->
+  <div class="growing-stars anim-fade-up" data-delay="2.0">
+    <div class="star-track">
+      <div class="star-fill" id="starFill"></div>
+      <div class="star-track-label">★ Star Growth</div>
+      <div class="star-track-count" id="starTrackCount">0</div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.__mode2Ready = true;
+
+function seekTo(t) {
+  // Handle data-delay elements
+  document.querySelectorAll('[data-delay]').forEach(el => {
+    const delay = parseFloat(el.dataset.delay);
+    if (t >= delay) {
+      el.classList.add('show');
+    } else {
+      el.classList.remove('show');
+    }
+  });
+
+  // Light dots and corners
+  document.querySelectorAll('.light-dot, .corner').forEach(el => {
+    const delay = parseFloat(el.dataset.delay);
+    el.style.opacity = t >= delay ? '1' : '0';
+  });
+
+  // Star count animation (0 → 13000 over 2 seconds, starting at t=0.5)
+  const starCountEl = document.getElementById('starCount');
+  const starTrackCountEl = document.getElementById('starTrackCount');
+  const starStart = 0.5;
+  const starDuration = 2.5;
+  const starTarget = 13000;
+
+  if (t >= starStart) {
+    const progress = Math.min(1, (t - starStart) / starDuration);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * starTarget);
+    starCountEl.textContent = current.toLocaleString();
+    starTrackCountEl.textContent = current.toLocaleString();
+  } else {
+    starCountEl.textContent = '0';
+    starTrackCountEl.textContent = '0';
+  }
+
+  // Star fill bar animation (starts at t=2.0)
+  const starFill = document.getElementById('starFill');
+  if (t >= 2.0) {
+    starFill.classList.add('show');
+  } else {
+    starFill.classList.remove('show');
+  }
+}
+
+// Auto-run for preview (stops when seekTo is called externally)
+let startTime = performance.now();
+let autoRun = true;
+let _origSeekTo = seekTo;
+window.seekTo = function(t) {
+  autoRun = false;
+  _origSeekTo(t);
+};
+function animateElements() {
+  if (!autoRun) return;
+  const elapsed = (performance.now() - startTime) / 1000;
+  _origSeekTo(elapsed);
+  requestAnimationFrame(animateElements);
+}
+animateElements();
+</script>
+</body>
+</html>

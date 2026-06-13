@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/su7-video/tts/scene1_trimmed.mp3'
+file '/home/chris47634/tmp_premium/su7-video/tts/scene1_gap.mp3'

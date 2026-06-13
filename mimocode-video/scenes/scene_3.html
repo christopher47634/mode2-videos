@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 3 - 智能上下文管理</title>
+<style>
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype');
+  font-weight: bold;
+}
+
+:root {
+  --bg: #06101F;
+  --cyan: #00D4FF;
+  --blue: #0088CC;
+  --purple: #6B3FA0;
+  --text: #E8ECF1;
+  --text-dim: rgba(255,255,255,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width: 1080px; height: 1920px;
+  background: var(--bg);
+  font-family: 'NotoSansCJK', 'Noto Sans CJK SC', sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+}
+
+/* === 3-Layer Background === */
+.bg-orb {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  z-index: 0; filter: blur(100px); opacity: 0.1;
+}
+.bg-orb-1 {
+  width: 600px; height: 600px; background: var(--blue);
+  top: -150px; left: -150px;
+  animation: orbFloat1 20s ease-in-out infinite;
+}
+.bg-orb-2 {
+  width: 450px; height: 450px; background: var(--purple);
+  bottom: -100px; right: -100px;
+  animation: orbFloat2 25s ease-in-out infinite;
+}
+.bg-orb-3 {
+  width: 350px; height: 350px; background: var(--cyan);
+  top: 45%; left: 50%; transform: translate(-50%, -50%);
+  animation: orbFloat3 18s ease-in-out infinite;
+}
+@keyframes orbFloat1 {
+  0%,100% { transform: translate(0,0); }
+  33% { transform: translate(120px,80px); }
+  66% { transform: translate(-60px,150px); }
+}
+@keyframes orbFloat2 {
+  0%,100% { transform: translate(0,0); }
+  33% { transform: translate(-100px,-60px); }
+  66% { transform: translate(50px,-120px); }
+}
+@keyframes orbFloat3 {
+  0%,100% { transform: translate(-50%,-50%) scale(1); }
+  50% { transform: translate(-50%,-50%) scale(1.3); }
+}
+
+.particles {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+}
+.particle {
+  position: absolute; width: 3px; height: 3px;
+  background: var(--cyan); border-radius: 50%; opacity: 0;
+  animation: particleRise linear infinite;
+}
+.particle:nth-child(1) { left: 8%; animation-duration: 14s; animation-delay: 0s; }
+.particle:nth-child(2) { left: 22%; animation-duration: 18s; animation-delay: 2s; }
+.particle:nth-child(3) { left: 38%; animation-duration: 12s; animation-delay: 4s; }
+.particle:nth-child(4) { left: 52%; animation-duration: 16s; animation-delay: 1s; }
+.particle:nth-child(5) { left: 68%; animation-duration: 13s; animation-delay: 3s; }
+.particle:nth-child(6) { left: 82%; animation-duration: 15s; animation-delay: 5s; }
+.particle:nth-child(7) { left: 92%; animation-duration: 11s; animation-delay: 7s; }
+@keyframes particleRise {
+  0% { transform: translateY(1920px); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+.scanline {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.12; z-index: 0;
+  animation: scanDown 8s linear infinite;
+}
+@keyframes scanDown {
+  0% { top: -2px; }
+  100% { top: 1920px; }
+}
+
+/* === Content Layer === */
+.content {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 120px 80px 180px 80px;
+  height: 100%;
+}
+
+/* === L-Corner Decorations === */
+.corner {
+  position: absolute; width: 50px; height: 50px; z-index: 2;
+  opacity: 0;
+}
+.corner-tl {
+  top: 60px; left: 60px;
+  border-top: 2px solid var(--cyan);
+  border-left: 2px solid var(--cyan);
+}
+.corner-br {
+  bottom: 240px; right: 60px;
+  border-bottom: 2px solid var(--cyan);
+  border-right: 2px solid var(--cyan);
+}
+
+.light-dot {
+  position: absolute; border-radius: 50%; z-index: 2; opacity: 0;
+}
+.light-dot-1 {
+  top: 12%; left: 8%; width: 6px; height: 6px;
+  background: var(--cyan); box-shadow: 0 0 20px var(--cyan);
+}
+.light-dot-2 {
+  bottom: 22%; right: 12%; width: 8px; height: 8px;
+  background: var(--purple); box-shadow: 0 0 20px var(--purple);
+}
+
+/* === Title === */
+.scene-title {
+  font-size: 80px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #00D4FF, #0099FF, #6B3FA0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 6px;
+  margin-bottom: 60px;
+  opacity: 0;
+}
+
+/* === Flow Diagram === */
+.flow-container {
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  opacity: 0;
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 36px 40px;
+  background: rgba(10, 20, 40, 0.5);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 20px;
+  position: relative;
+  opacity: 0;
+}
+
+.flow-step .step-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: bold;
+  flex-shrink: 0;
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--cyan);
+  border: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.flow-step .step-content {
+  flex: 1;
+}
+
+.flow-step .step-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.flow-step .step-desc {
+  font-size: 28px;
+  color: var(--text-dim);
+}
+
+.flow-arrow {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+  opacity: 0;
+}
+
+.flow-arrow svg {
+  width: 40px; height: 40px;
+}
+
+.flow-arrow svg path {
+  stroke: var(--cyan);
+  stroke-width: 2;
+  fill: none;
+  opacity: 0.6;
+}
+
+/* === Token Budget Visualization === */
+.token-section {
+  width: 100%;
+  max-width: 880px;
+  margin-top: 50px;
+  opacity: 0;
+}
+
+.token-label {
+  font-size: 30px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.token-bar-container {
+  width: 100%;
+  height: 48px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  position: relative;
+}
+
+.token-bar-fill {
+  height: 100%;
+  border-radius: 24px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+  width: 0%;
+  transition: width 0.1s linear;
+  position: relative;
+}
+
+.token-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+}
+
+.token-bar-label {
+  position: absolute;
+  right: 20px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text);
+  z-index: 1;
+}
+
+/* === Bottom Emphasis === */
+.bottom-emphasis {
+  margin-top: auto;
+  font-size: 38px;
+  color: var(--text);
+  text-align: center;
+  opacity: 0;
+  padding-bottom: 20px;
+}
+.bottom-emphasis .glow {
+  color: var(--cyan);
+  font-weight: bold;
+  font-size: 44px;
+}
+</style>
+</head>
+<body>
+
+<!-- Background Layers -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<div class="particles">
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<div class="scanline"></div>
+
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1"></div>
+<div class="light-dot light-dot-2" data-el="dot2"></div>
+
+<!-- Content -->
+<div class="content">
+  <div class="scene-title" data-el="title">上下文智能管理</div>
+
+  <div class="flow-container" data-el="flow">
+    <div class="flow-step" data-el="step1">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">检查点保存</div>
+        <div class="step-desc">自动快照当前任务状态</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow" data-el="arrow1">
+      <svg viewBox="0 0 40 40"><path d="M20 5 L20 30 M12 22 L20 30 L28 22"/></svg>
+    </div>
+
+    <div class="flow-step" data-el="step2">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">上下文重建</div>
+        <div class="step-desc">智能恢复关键对话历史</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow" data-el="arrow2">
+      <svg viewBox="0 0 40 40"><path d="M20 5 L20 30 M12 22 L20 30 L28 22"/></svg>
+    </div>
+
+    <div class="flow-step" data-el="step3">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">关键信息注入</div>
+        <div class="step-desc">精准注入必要上下文片段</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Token Budget -->
+  <div class="token-section" data-el="token-section">
+    <div class="token-label">Token Budget 压缩优化</div>
+    <div class="token-bar-container">
+      <div class="token-bar-fill" data-el="token-bar"></div>
+      <div class="token-bar-label" data-el="token-label">100%</div>
+    </div>
+  </div>
+
+  <div class="bottom-emphasis" data-el="emphasis">
+    <span class="glow">不会丢掉任务进度</span>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp = (v, min=0, max=1) => Math.min(max, Math.max(min, v));
+  const mix = (a, b, t) => a + (b - a) * t;
+  const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+  const easeInOutCubic = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  const progress = (time, start, dur) => clamp((time - start) / Math.max(dur, 0.0001));
+
+  function reveal(el, time, opts) {
+    const { start=0, duration=0.65, x=0, y=42, scale=0.96, blur=14 } = opts;
+    const p = easeOutQuart(progress(time, start, duration));
+    el.style.opacity = p;
+    el.style.transform = `translate3d(${mix(x,0,p)}px, ${mix(y,0,p)}px, 0) scale(${mix(scale,1,p)})`;
+    el.style.filter = `blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    // Title
+    reveal(document.querySelector('[data-el="title"]'), t, { start: 0.2, duration: 0.6, y: 30, blur: 10 });
+
+    // Flow container
+    reveal(document.querySelector('[data-el="flow"]'), t, { start: 0.6, duration: 0.5, y: 20, blur: 6 });
+
+    // Steps with stagger
+    reveal(document.querySelector('[data-el="step1"]'), t, { start: 0.8, duration: 0.6, x: -40, y: 0, blur: 10 });
+    reveal(document.querySelector('[data-el="arrow1"]'), t, { start: 1.2, duration: 0.3, y: 10, blur: 4 });
+    reveal(document.querySelector('[data-el="step2"]'), t, { start: 1.4, duration: 0.6, x: -40, y: 0, blur: 10 });
+    reveal(document.querySelector('[data-el="arrow2"]'), t, { start: 1.8, duration: 0.3, y: 10, blur: 4 });
+    reveal(document.querySelector('[data-el="step3"]'), t, { start: 2.0, duration: 0.6, x: -40, y: 0, blur: 10 });
+
+    // Token section
+    reveal(document.querySelector('[data-el="token-section"]'), t, { start: 2.8, duration: 0.6, y: 30, blur: 8 });
+
+    // Token bar animation: fill from 100% down to ~30% (compression)
+    const barP = easeInOutCubic(progress(t, 3.2, 1.8));
+    const barWidth = mix(100, 28, barP);
+    const bar = document.querySelector('[data-el="token-bar"]');
+    bar.style.width = barWidth + '%';
+    const barLabel = document.querySelector('[data-el="token-label"]');
+    barLabel.textContent = Math.round(barWidth) + '%';
+
+    // Bottom emphasis
+    reveal(document.querySelector('[data-el="emphasis"]'), t, { start: 4.6, duration: 0.6, y: 20, blur: 6 });
+
+    // Corners & dots
+    document.querySelector('[data-el="corner-tl"]').style.opacity = easeOutQuart(progress(t, 0.3, 0.5));
+    document.querySelector('[data-el="corner-br"]').style.opacity = easeOutQuart(progress(t, 0.5, 0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity = easeOutQuart(progress(t, 0.4, 0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity = easeOutQuart(progress(t, 0.6, 0.5));
+  }
+
+  window.seekTo = seekTo;
+  window.__mode2Duration = 6;
+  window.__mode2Ready = true;
+
+  let startTime = performance.now();
+  let autoRun = true;
+  let _origSeekTo = seekTo;
+  window.seekTo = function(t) {
+    autoRun = false;
+    _origSeekTo(t);
+  };
+  function animate() {
+    if (!autoRun) return;
+    const elapsed = (performance.now() - startTime) / 1000;
+    _origSeekTo(Math.min(elapsed, 6));
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>

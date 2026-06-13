@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro",
+    "text": "enableMacosAI，八百四十二星，国行Mac用户的福音",
+    "duration": 5.029781,
+    "leading_trimmed": 0.125062
+  },
+  {
+    "id": "scene1",
+    "text": "你花了两万买的MacBook，Apple Intelligence却用不了，因为你是国行",
+    "duration": 5.305188,
+    "leading_trimmed": 0.151531
+  },
+  {
+    "id": "scene2",
+    "text": "原因很简单，苹果检查了一个区域码，国行是CH，直接给你关了",
+    "duration": 5.753906,
+    "leading_trimmed": 0.167188
+  },
+  {
+    "id": "scene3",
+    "text": "这个项目是一个极简内核扩展，在系统源头把CH改成LL，全系统生效",
+    "duration": 6.485875,
+    "leading_trimmed": 0.120219
+  },
+  {
+    "id": "scene4",
+    "text": "写作工具、图乐园、Genmoji、ChatGPT扩展，端侧加云端全功能解锁",
+    "duration": 7.547375,
+    "leading_trimmed": 0.126844
+  },
+  {
+    "id": "scene5",
+    "text": "一键安装，sudo点一个脚本就搞定，还带体检和诊断功能",
+    "duration": 4.794531,
+    "leading_trimmed": 0.186156
+  },
+  {
+    "id": "outro",
+    "text": "你的硬件你的AI，不应该被区域码锁住，GitHub链接在评论区",
+    "duration": 5.356156,
+    "leading_trimmed": 0.147
+  }
+]

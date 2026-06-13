@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'InterDisplay';src:url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');font-weight:bold;font-style:normal;}
+@font-face{font-family:'Inter';src:url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');font-weight:normal;font-style:normal;}
+@font-face{font-family:'NotoSansCJK';src:url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype');font-weight:normal;font-style:normal;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1080px;height:1920px;background:#1A1B26;overflow:hidden;position:relative;}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;pointer-events:none;}
+.glow1{width:600px;height:600px;background:#7AA2F7;top:-100px;left:-100px;}
+.glow2{width:500px;height:500px;background:#BB9AF7;bottom:100px;right:-80px;}
+.scanline{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(122,162,247,0.03) 4px,rgba(122,162,247,0.03) 5px);pointer-events:none;z-index:1;}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:24px;}
+.title{position:absolute;top:520px;width:100%;text-align:center;font-family:'InterDisplay',sans-serif;font-size:120px;background:linear-gradient(135deg,#E0AF68,#BB9AF7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.subtitle{position:absolute;top:700px;width:100%;text-align:center;font-family:'NotoSansCJK','Inter',sans-serif;font-size:42px;color:rgba(255,255,255,0.7);}
+.hook{position:absolute;top:850px;width:100%;text-align:center;font-family:'NotoSansCJK','Inter',sans-serif;font-size:48px;color:#E0AF68;}
+.cursor{display:inline-block;width:3px;height:56px;background:#E0AF68;margin-left:4px;vertical-align:middle;}
+</style>
+</head><body>
+<div class="bg-glow glow1"></div>
+<div class="bg-glow glow2"></div>
+<div class="scanline"></div>
+<div class="glass" style="position:absolute;top:460px;left:90px;width:900px;height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <div id="title" class="title" style="position:static;margin-top:20px;">Frontend Slides</div>
+  <div id="subtitle" class="subtitle" style="position:static;margin-top:40px;">HTML演示文稿 · 零依赖 · 高颜值</div>
+  <div id="hook" class="hook" style="position:static;margin-top:60px;">当PPT遇上代码...</div>
+</div>
+<script>
+window.__mode2Duration=4.0;
+function seekTo(t){
+  var title=document.getElementById('title');
+  var subtitle=document.getElementById('subtitle');
+  var hook=document.getElementById('hook');
+  var dur=4.0;
+  var p=t/dur;
+  // Title: scale up from 0.5 + fade in 0-0.3
+  var tp=Math.min(Math.max(t/0.8,0),1);
+  title.style.transform='scale('+(0.5+0.5*tp)+')';
+  title.style.opacity=tp;
+  // Typewriter effect on title - reveal characters
+  var fullText='Frontend Slides';
+  var charCount=Math.floor(tp*fullText.length);
+  title.textContent=fullText.substring(0,charCount);
+  if(tp>=1) title.textContent=fullText;
+  // Subtitle fade in 0.4-0.7
+  var sp=Math.min(Math.max((t-0.8)/0.8,0),1);
+  subtitle.style.transform='translateY('+(30-30*sp)+'px)';
+  subtitle.style.opacity=sp;
+  // Hook: typewriter 1.8-3.2
+  var hp=Math.min(Math.max((t-1.8)/1.2,0),1);
+  var hookText='当PPT遇上代码...';
+  var hookChars=Math.floor(hp*hookText.length);
+  hook.textContent=hookText.substring(0,hookChars);
+  hook.style.opacity=hp>0?1:0;
+  hook.style.transform='translateY('+(20-20*hp)+'px)';
+  // Cursor blink
+  if(hp>0&&hp<1){
+    hook.innerHTML=hookText.substring(0,hookChars)+'<span class="cursor"></span>';
+  }
+}
+window.__mode2Ready=true;
+seekTo(0);
+</script>
+</body></html>

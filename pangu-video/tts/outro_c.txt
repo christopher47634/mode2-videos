@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/pangu-video/tts/outro_trimmed.mp3'
+file '/home/chris47634/tmp_premium/pangu-video/tts/outro_gap.mp3'

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1920px; background:#0a0a0a; font-family:'Noto Sans SC',sans-serif; overflow:hidden; position:relative; }
+body::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; 
+  background: repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,212,255,0.03) 79px, rgba(0,212,255,0.03) 80px),
+              repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,212,255,0.03) 79px, rgba(0,212,255,0.03) 80px); }
+.orb1 { position:absolute; top:10%; left:10%; width:200px; height:200px; background:radial-gradient(circle, rgba(0,212,255,0.1), transparent 70%); filter:blur(40px); }
+.content { position:relative; z-index:2; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; padding:60px 40px; }
+
+.section-label { font-size:24px; color:rgba(0,212,255,0.6); letter-spacing:8px; text-transform:uppercase; margin-bottom:30px;
+  opacity:0; animation:fadeUp 0.6s 0.2s forwards; }
+
+/* Browser frame */
+.browser-frame { width:960px; border-radius:16px; overflow:hidden; border:1px solid rgba(0,212,255,0.2); box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,255,0.1);
+  opacity:0; animation:scaleIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s forwards; }
+.browser-bar { height:40px; background:rgba(30,30,30,0.95); display:flex; align-items:center; padding:0 16px; gap:8px; border-bottom:1px solid rgba(255,255,255,0.1); }
+.browser-dot { width:12px; height:12px; border-radius:50%; }
+.browser-dot.r { background:#ff5f57; }
+.browser-dot.y { background:#ffbd2e; }
+.browser-dot.g { background:#28ca41; }
+.browser-url { flex:1; margin-left:16px; padding:4px 12px; background:rgba(255,255,255,0.08); border-radius:6px; font-size:14px; color:rgba(255,255,255,0.5); }
+.browser-content { width:100%; }
+.browser-content img { width:100%; display:block; }
+
+/* Info cards below */
+.info-row { display:flex; gap:20px; margin-top:30px; width:960px; opacity:0; animation:fadeUp 0.8s 0.8s forwards; }
+.info-card { flex:1; padding:20px 24px; background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.15); border-radius:12px; }
+.info-card h3 { font-size:20px; color:#00D4FF; margin-bottom:8px; }
+.info-card p { font-size:18px; color:rgba(255,255,255,0.6); line-height:1.5; }
+
+@keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head><body>
+<div class="orb1"></div>
+<div class="content">
+  <div class="section-label">GitHub 仓库</div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="browser-dot r"></div>
+      <div class="browser-dot y"></div>
+      <div class="browser-dot g"></div>
+      <div class="browser-url">github.com/browser-use/browser-use</div>
+    </div>
+    <div class="browser-content">
+      <img src="/home/chris47634/tmp_premium/browser_use_video/github_main.png" alt="GitHub">
+    </div>
+  </div>
+  <div class="info-row">
+    <div class="info-card">
+      <h3>⭐ 98K Stars</h3>
+      <p>GitHub上最热门的AI浏览器工具</p>
+    </div>
+    <div class="info-card">
+      <h3>🐍 Python</h3>
+      <p>基于Playwright的浏览器自动化</p>
+    </div>
+  </div>
+</div>
+</body></html>

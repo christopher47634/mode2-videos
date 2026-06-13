@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 4 - 气象精度</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+@font-face { font-family: 'ZCOOL KuaiLe'; src: url('file:///home/chris47634/.fonts/ZCOOLKuaiLe-Regular.ttf') format('truetype'); font-weight: normal; }
+:root { --bg:#06101F;--red:#CF0A2C;--blue:#00D4FF;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
+}
+.glass-accent {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(207,10,44,0.1), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.glass-badge {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.glass-item {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);opacity:0.08}
+.bg-orb-1{width:500px;height:500px;background:var(--blue);top:-150px;right:-100px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:400px;height:400px;background:var(--red);bottom:-100px;left:-100px;animation:orbFloat2 25s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(-80px,60px)}66%{transform:translate(40px,120px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(80px,-40px)}66%{transform:translate(-40px,-80px)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--blue);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:20%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:50%;animation-duration:12s;animation-delay:2s}
+.particle:nth-child(3){left:80%;animation-duration:16s;animation-delay:1s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.5}90%{opacity:0.5}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0.1;z-index:0;animation:scanDown 6s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:80px 60px}
+.corner{position:absolute;width:60px;height:60px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--blue);border-left:2px solid var(--blue)}
+.corner-br{bottom:60px;right:60px;border-bottom:2px solid var(--blue);border-right:2px solid var(--blue)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--blue);box-shadow:0 0 20px var(--blue)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.title{font-size:72px;font-weight:bold;opacity:0;text-align:center;color:var(--blue);margin-bottom:80px;text-shadow:0 0 30px rgba(0,212,255,0.3);font-family:'ZCOOL KuaiLe',cursive}
+.compare{display:flex;flex-direction:column;gap:40px;width:100%}
+.compare-item{padding:40px;opacity:0;position:relative;overflow:hidden}
+.compare-label{font-size:28px;color:var(--text-dim);margin-bottom:16px;font-family:'NotoSansCJK',sans-serif;font-weight:bold}
+.compare-name{font-size:44px;font-weight:bold;margin-bottom:12px}
+.compare-old .compare-name{color:var(--text-dim)}
+.compare-new .compare-name{color:var(--blue)}
+.compare-time{font-size:60px;font-weight:bold;font-family:'Courier New','NotoSansCJK',monospace}
+.compare-old .compare-time{color:rgba(255,255,255,0.3)}
+.compare-new .compare-time{color:var(--blue);text-shadow:0 0 20px rgba(0,212,255,0.3)}
+.typhoon{opacity:0;text-align:center;margin:40px 0}
+.typhoon-icon{font-size:100px;animation:spin 4s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.typhoon-label{font-size:28px;color:var(--text-dim);margin-top:10px;font-family:'NotoSansCJK',sans-serif;font-weight:bold}
+.bottom-tag{font-size:36px;opacity:0;color:var(--red);margin-top:40px;letter-spacing:4px;font-family:'NotoSansCJK',sans-serif;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+
+<div class="content">
+  <div class="title" data-el="title">超越传统方法</div>
+  <div class="compare">
+    <div class="compare-item compare-old glass" data-el="old">
+      <div class="compare-label">传统数值预报</div>
+      <div class="compare-name">超级计算机求解</div>
+      <div class="compare-time">小时级 ⏱️</div>
+    </div>
+    <div class="compare-item compare-new glass" data-el="new">
+      <div class="compare-label">盘古气象大模型</div>
+      <div class="compare-name">AI推理预测</div>
+      <div class="compare-time">秒级 ⚡</div>
+    </div>
+  </div>
+  <div class="typhoon" data-el="typhoon">
+    <div class="typhoon-icon">🌀</div>
+    <div class="typhoon-label">台风路径预测</div>
+  </div>
+  <div class="bottom-tag" data-el="tag">精度更高 速度更快</div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const easeOutCubic=t=>1-Math.pow(1-t,3);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  /* 从左侧飞入 */
+  function flyInLeft(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.5,x=500,blur=10}=opts;
+    const p=easeOutCubic(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform='translate3d('+mix(-x,0,p)+'px,0,0)';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  /* 从右侧飞入 */
+  function flyInRight(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.5,x=500,blur=10}=opts;
+    const p=easeOutCubic(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform='translate3d('+mix(x,0,p)+'px,0,0)';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  /* 数字跳动效果：用scale做弹性缩放 */
+  function numberBounce(el,time,opts){
+    if(!el)return;
+    const{start=0,duration=0.5,scale=0.8,blur=10}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    let s=mix(scale,1,p);
+    /* 数字出现后做微小弹性 */
+    if(p>0.8&&p<1.0){
+      s=1+0.03*Math.sin((p-0.8)*50*Math.PI);
+    }
+    el.style.transform='translate3d(0,'+mix(20,0,p)+'px,0) scale('+s+')';
+    el.style.filter='blur('+mix(blur,0,p)+'px)';
+  }
+
+  /* 通用reveal */
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    reveal(document.querySelector('[data-el="title"]'),t,{start:0.1,duration:0.4,y:30,blur:10});
+    flyInLeft(document.querySelector('[data-el="old"]'),t,{start:0.6,duration:0.5,x:500,blur:10});
+    flyInRight(document.querySelector('[data-el="new"]'),t,{start:1.2,duration:0.5,x:500,blur:10});
+    numberBounce(document.querySelector('[data-el="typhoon"]'),t,{start:1.8,duration:0.4,scale:0.8,blur:8});
+    reveal(document.querySelector('[data-el="tag"]'),t,{start:2.2,duration:0.3,y:15,blur:6});
+
+    document.querySelector('[data-el="corner-tl"]').style.opacity=easeOutQuart(progress(t,0.2,0.3));
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.4,0.3));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.3,0.3));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=2.82;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,2.82));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

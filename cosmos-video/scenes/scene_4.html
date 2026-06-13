@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 4 - 一段文字→一个世界</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 600px; height: 600px;
+  background: #76B900;
+  opacity: 0.15;
+  top: -100px; right: -150px;
+}
+.bg-orb.orb2 {
+  width: 400px; height: 400px;
+  background: #00D4FF;
+  opacity: 0.1;
+  bottom: 100px; left: -80px;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(118,185,0,0.03) 4px, rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none; z-index: 1;
+}
+.scene-content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 180px 80px;
+}
+.title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 68px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 4px;
+}
+.title .arrow {
+  color: #76B900;
+  margin: 0 8px;
+}
+.flow-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin-top: 80px;
+  width: 100%;
+}
+.terminal-box {
+  width: 900px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(118,185,0,0.3);
+  padding: 32px 40px;
+  backdrop-filter: blur(8px);
+}
+.terminal-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.terminal-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+}
+.terminal-dot.r { background: #ff5f57; }
+.terminal-dot.y { background: #febc2e; }
+.terminal-dot.g { background: #28c840; }
+.terminal-text {
+  font-family: 'Inter-Regular', monospace;
+  font-size: 32px;
+  color: #76B900;
+  line-height: 1.6;
+}
+.terminal-text .prompt {
+  color: #00D4FF;
+}
+.arrow-down {
+  font-size: 64px;
+  color: #76B900;
+  text-align: center;
+}
+.output-cards {
+  display: flex;
+  gap: 24px;
+  width: 900px;
+  justify-content: center;
+}
+.output-card {
+  flex: 1;
+  padding: 30px 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0,212,255,0.25);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.output-card .emoji { font-size: 48px; }
+.output-card .label {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 30px;
+  color: rgba(255,255,255,0.8);
+}
+.output-card .sub {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 22px;
+  color: #00D4FF;
+}
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title" id="title">一段文字 <span class="arrow">→</span> 一个世界</div>
+    <div class="flow-area">
+      <div class="terminal-box" id="termInput">
+        <div class="terminal-header">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+        </div>
+        <div class="terminal-text" id="termText">
+          <span class="prompt">&gt; </span><span id="typedInput"></span>
+        </div>
+      </div>
+      <div class="arrow-down" id="arrowDown">⬇</div>
+      <div class="output-cards">
+        <div class="output-card" id="outVideo">
+          <div class="emoji">🎬</div>
+          <div class="label">视频</div>
+          <div class="sub">高清生成</div>
+        </div>
+        <div class="output-card" id="outAudio">
+          <div class="emoji">🔊</div>
+          <div class="label">音频</div>
+          <div class="sub">环境音效</div>
+        </div>
+        <div class="output-card" id="outAction">
+          <div class="emoji">🦾</div>
+          <div class="label">动作</div>
+          <div class="sub">机器人指令</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var D = 5.15;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var termInput = document.getElementById('termInput');
+  var typedInput = document.getElementById('typedInput');
+  var arrowDown = document.getElementById('arrowDown');
+  var outVideo = document.getElementById('outVideo');
+  var outAudio = document.getElementById('outAudio');
+  var outAction = document.getElementById('outAction');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  var inputText = '一个机器人在厨房里做早餐，阳光从窗户照进来';
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translate(' + (p * 50) + 'px,' + (p * 30) + 'px)';
+    orb2.style.transform = 'translate(' + (-p * 40) + 'px,' + (-p * 25) + 'px)';
+
+    // Title 0-0.8s
+    var tA = Math.min(1, t / 0.8);
+    title.style.opacity = tA;
+    title.style.transform = 'translateY(' + (30 * (1 - tA)) + 'px)';
+
+    // Terminal box 0.5-1.5s
+    var termA = Math.min(1, Math.max(0, (t - 0.5) / 0.6));
+    termInput.style.opacity = termA;
+    termInput.style.transform = 'translateY(' + (40 * (1 - termA)) + 'px)';
+
+    // Typewriter 1.0-3.0s
+    var typeP = Math.min(1, Math.max(0, (t - 1.0) / 2.0));
+    var charCount = Math.floor(typeP * inputText.length);
+    typedInput.textContent = inputText.substring(0, charCount);
+    if (charCount < inputText.length && t > 1.0) {
+      typedInput.textContent += '▌';
+    }
+
+    // Arrow 3.0-3.6s
+    var aA = Math.min(1, Math.max(0, (t - 3.0) / 0.5));
+    arrowDown.style.opacity = aA;
+    arrowDown.style.transform = 'translateY(' + (20 * (1 - aA)) + 'px)';
+    arrowDown.style.fontSize = (40 + 24 * aA) + 'px';
+
+    // Output cards 3.5-4.5s staggered
+    var outputs = [outVideo, outAudio, outAction];
+    for (var i = 0; i < 3; i++) {
+      var delay = 3.5 + i * 0.2;
+      var oA = Math.min(1, Math.max(0, (t - delay) / 0.5));
+      var oE = 1 - Math.pow(1 - oA, 3);
+      outputs[i].style.opacity = oA;
+      outputs[i].style.transform = 'scale(' + (0.5 + 0.5 * oE) + ') translateY(' + ((1 - oE) * 30) + 'px)';
+    }
+  };
+})();
+</script>
+</body>
+</html>

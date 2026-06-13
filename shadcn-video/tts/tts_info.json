@@ -1,0 +1,32 @@
+[
+  {
+    "id": "intro",
+    "text": "shadcn的新项目improve，三天两千五百星",
+    "duration": 4.260875
+  },
+  {
+    "id": "scene1",
+    "text": "核心思路很简单，用最贵的模型审代码写方案，再让便宜的模型去执行",
+    "duration": 6.141688
+  },
+  {
+    "id": "scene2",
+    "text": "它会并行扫描九大类问题，安全、性能、测试覆盖、技术债一个不漏",
+    "duration": 6.606094
+  },
+  {
+    "id": "scene3",
+    "text": "每个方案都是自包含的，带验证门和停止条件，给最弱的模型也能跑",
+    "duration": 5.967531
+  },
+  {
+    "id": "scene4",
+    "text": "执行完还会像tech lead一样审查diff，approve或者打回修改",
+    "duration": 5.584406
+  },
+  {
+    "id": "outro",
+    "text": "装一行命令就能用，MIT开源，链接在评论区",
+    "duration": 4.179594
+  }
+]

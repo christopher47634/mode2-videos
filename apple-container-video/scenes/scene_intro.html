@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face {
+  font-family: 'InterDisplay';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal; font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc');
+  font-weight: bold;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width: 1080px; height: 1920px; overflow: hidden;
+  background: #06101F; font-family: 'NotoSansCJK', sans-serif;
+}
+.scene {
+  position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  background: #06101F;
+}
+
+/* 背景光球层 */
+.bg-orbs {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0;
+}
+.orb-1 {
+  width: 600px; height: 600px; top: 200px; left: -100px;
+  background: radial-gradient(circle, rgba(0,212,255,0.15), transparent 70%);
+}
+.orb-2 {
+  width: 500px; height: 500px; top: 900px; right: -150px;
+  background: radial-gradient(circle, rgba(52,199,89,0.1), transparent 70%);
+}
+.orb-3 {
+  width: 400px; height: 400px; top: 600px; left: 300px;
+  background: radial-gradient(circle, rgba(162,170,173,0.08), transparent 70%);
+}
+
+/* 扫描线 */
+.scanlines {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1; opacity: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,212,255,0.02) 3px,
+    rgba(0,212,255,0.02) 4px
+  );
+}
+.scan-beam {
+  position: absolute; left: 0; width: 100%; height: 200px;
+  background: linear-gradient(180deg, transparent, rgba(0,212,255,0.04), transparent);
+  top: -200px; pointer-events: none; z-index: 1;
+}
+
+/* 内容层 */
+.content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%; padding: 0 80px;
+}
+
+/* 标题 container */
+.main-title {
+  font-family: 'InterDisplay', 'NotoSansCJK', sans-serif;
+  font-size: 160px; color: #A2AAAD;
+  text-align: center; opacity: 0;
+  text-shadow: 0 0 60px rgba(0,212,255,0.3), 0 0 120px rgba(0,212,255,0.1);
+  letter-spacing: 8px;
+}
+
+/* 副标题 */
+.subtitle {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 42px; color: #00D4FF;
+  text-align: center; margin-top: 40px;
+  letter-spacing: 12px; opacity: 0;
+}
+
+/* 钩子 */
+.hook {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 52px; color: #A2AAAD;
+  text-align: center; margin-top: 120px;
+  line-height: 1.6; opacity: 0;
+  padding: 40px 60px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+}
+
+/* 光标 */
+.cursor {
+  display: inline-block; width: 4px; height: 60px;
+  background: #00D4FF; margin-left: 8px;
+  vertical-align: middle; opacity: 0;
+}
+
+/* 装饰线 */
+.deco-line {
+  position: absolute; bottom: 300px; left: 50%;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #00D4FF, transparent);
+  transform: translateX(-50%); opacity: 0;
+}
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="bg-orbs">
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+    <div class="orb orb-3" id="orb3"></div>
+  </div>
+  <div class="scanlines" id="scanlines"></div>
+  <div class="scan-beam" id="scanBeam"></div>
+  <div class="content">
+    <div class="main-title" id="mainTitle">container</div>
+    <div class="subtitle" id="subtitle">Apple · 开源 · 容器工具</div>
+    <div class="hook" id="hook">当苹果决定<br>自己做一个Docker...</div>
+    <div class="deco-line" id="decoLine"></div>
+  </div>
+</div>
+
+<script>
+window.__mode2Duration = 4.0;
+window.__mode2Ready = true;
+
+function progress(t, start, dur) {
+  if (dur <= 0) return t >= start ? 1 : 0;
+  return Math.max(0, Math.min(1, (t - start) / dur));
+}
+function mix(a, b, t) { return a + (b - a) * t; }
+function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+function seekTo(t) {
+  // 背景光球
+  var op = easeOutQuart(progress(t, 0, 0.8));
+  document.getElementById('orb1').style.opacity = op * 0.6;
+  document.getElementById('orb1').style.transform = 'translate(' + Math.sin(t * 0.3) * 30 + 'px, ' + Math.cos(t * 0.2) * 20 + 'px)';
+  document.getElementById('orb2').style.opacity = op * 0.5;
+  document.getElementById('orb2').style.transform = 'translate(' + Math.cos(t * 0.25) * 25 + 'px, ' + Math.sin(t * 0.35) * 15 + 'px)';
+  document.getElementById('orb3').style.opacity = op * 0.4;
+  document.getElementById('orb3').style.transform = 'translate(' + Math.sin(t * 0.4) * 20 + 'px, ' + Math.cos(t * 0.15) * 25 + 'px)';
+
+  // 扫描线
+  document.getElementById('scanlines').style.opacity = op * 0.5;
+  var beamY = ((t * 200) % 2200) - 200;
+  document.getElementById('scanBeam').style.transform = 'translateY(' + beamY + 'px)';
+  document.getElementById('scanBeam').style.opacity = 0.6;
+
+  // 标题打字机+缩放
+  var titleProg = easeOutQuart(progress(t, 0.3, 1.2));
+  var titleEl = document.getElementById('mainTitle');
+  var chars = 'container';
+  var visibleChars = Math.floor(titleProg * chars.length);
+  titleEl.textContent = chars.substring(0, visibleChars);
+  titleEl.style.opacity = titleProg;
+  var scale = mix(0.5, 1.0, titleProg);
+  titleEl.style.transform = 'scale(' + scale + ')';
+
+  // 副标题淡入
+  var subProg = easeOutCubic(progress(t, 1.8, 0.8));
+  var subEl = document.getElementById('subtitle');
+  subEl.style.opacity = subProg;
+  subEl.style.transform = 'translateY(' + mix(30, 0, subProg) + 'px)';
+
+  // 钩子淡入
+  var hookProg = easeOutQuart(progress(t, 2.5, 1.0));
+  var hookEl = document.getElementById('hook');
+  hookEl.style.opacity = hookProg;
+  hookEl.style.transform = 'translateY(' + mix(50, 0, hookProg) + 'px) scale(' + mix(0.9, 1.0, hookProg) + ')';
+
+  // 装饰线
+  var lineProg = easeOutCubic(progress(t, 2.8, 1.0));
+  document.getElementById('decoLine').style.opacity = lineProg * 0.6;
+  document.getElementById('decoLine').style.width = (lineProg * 400) + 'px';
+}
+seekTo(0);
+</script>
+</body>
+</html>

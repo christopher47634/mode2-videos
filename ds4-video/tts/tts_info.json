@@ -1,0 +1,32 @@
+[
+  {
+    "id": "intro",
+    "text": "本周高分新项目推荐",
+    "duration": 2.043375,
+    "path": "/home/chris47634/tmp_premium/ds4-video/tts/intro.mp3"
+  },
+  {
+    "id": "scene1",
+    "text": "第一位，antirez的ds4，Redis之父的新作，五周拿下一万三千星",
+    "duration": 6.269406,
+    "path": "/home/chris47634/tmp_premium/ds4-video/tts/scene1.mp3"
+  },
+  {
+    "id": "scene2",
+    "text": "DeepSeek 4本地推理引擎，纯C实现，支持Metal、CUDA和ROCm三大平台",
+    "duration": 6.907938,
+    "path": "/home/chris47634/tmp_premium/ds4-video/tts/scene2.mp3"
+  },
+  {
+    "id": "scene3",
+    "text": "无需云端，隐私安全，采用MIT开源许可",
+    "duration": 4.005469,
+    "path": "/home/chris47634/tmp_premium/ds4-video/tts/scene3.mp3"
+  },
+  {
+    "id": "outro",
+    "text": "关注我，每周发现值得收藏的开源项目",
+    "duration": 3.239188,
+    "path": "/home/chris47634/tmp_premium/ds4-video/tts/outro.mp3"
+  }
+]

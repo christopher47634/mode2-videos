@@ -1,0 +1,2 @@
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene2_trimmed.mp3'
+file '/home/chris47634/tmp_premium/ponytail-video/tts/scene2_gap.mp3'

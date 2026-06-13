@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face {
+  font-family: 'InterDisplay';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold; font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal; font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc');
+  font-weight: bold;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width:1080px; height:1920px; overflow:hidden;
+  background:#06101F; font-family:'NotoSansCJK',sans-serif;
+}
+.scene { position:relative; width:1080px; height:1920px; overflow:hidden; background:#06101F; }
+.bg-orbs { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+.orb { position:absolute; border-radius:50%; filter:blur(120px); opacity:0; }
+.orb-1 { width:400px; height:400px; top:200px; left:0; background:radial-gradient(circle, rgba(52,199,89,0.1), transparent 70%); }
+.orb-2 { width:500px; height:500px; top:800px; right:-100px; background:radial-gradient(circle, rgba(0,212,255,0.08), transparent 70%); }
+.scanlines { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; opacity:0;
+  background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.02) 3px, rgba(0,212,255,0.02) 4px); }
+.scan-beam { position:absolute; left:0; width:100%; height:200px;
+  background:linear-gradient(180deg, transparent, rgba(0,212,255,0.04), transparent);
+  top:-200px; pointer-events:none; z-index:1; }
+
+.content { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:0 80px; }
+.title { font-family:'InterDisplay','NotoSansCJK',sans-serif; font-size:72px; color:#A2AAAD; text-align:center; opacity:0;
+  text-shadow:0 0 40px rgba(0,212,255,0.2); margin-bottom:80px; }
+
+/* Terminal模拟 */
+.terminal {
+  width: 900px; border-radius: 20px; overflow: hidden;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(0,212,255,0.15);
+  backdrop-filter: blur(20px);
+  opacity: 0;
+}
+.terminal-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 18px 24px;
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.terminal-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+}
+.dot-red { background: #FF453A; }
+.dot-yellow { background: #FFD60A; }
+.dot-green { background: #34C759; }
+.terminal-title {
+  font-size: 24px; color: rgba(255,255,255,0.4);
+  margin-left: 20px;
+}
+.terminal-body {
+  padding: 40px 35px;
+  font-family: 'Courier New', monospace;
+  font-size: 32px;
+  line-height: 2.2;
+}
+.term-line { opacity: 0; }
+.term-prompt { color: #34C759; }
+.term-cmd { color: #00D4FF; }
+.term-output { color: rgba(255,255,255,0.5); font-size: 26px; }
+.cursor-blink {
+  display: inline-block; width: 16px; height: 34px;
+  background: #34C759; vertical-align: middle;
+  opacity: 0;
+}
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="bg-orbs">
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+  </div>
+  <div class="scanlines" id="scanlines"></div>
+  <div class="scan-beam" id="scanBeam"></div>
+  <div class="content">
+    <div class="title" id="title">容器工具也能这么优雅</div>
+    <div class="terminal" id="terminal">
+      <div class="terminal-bar">
+        <div class="terminal-dot dot-red"></div>
+        <div class="terminal-dot dot-yellow"></div>
+        <div class="terminal-dot dot-green"></div>
+        <div class="terminal-title">Terminal — zsh</div>
+      </div>
+      <div class="terminal-body">
+        <div class="term-line" id="line1">
+          <span class="term-prompt">❯ </span><span class="term-cmd" id="cmd1"></span>
+        </div>
+        <div class="term-line" id="line1out">
+          <span class="term-output">✓ container system started</span>
+        </div>
+        <div class="term-line" id="line2">
+          <span class="term-prompt">❯ </span><span class="term-cmd" id="cmd2"></span>
+        </div>
+        <div class="term-line" id="line2out">
+          <span class="term-output">✓ nginx container running</span>
+        </div>
+        <div class="term-line" id="line3">
+          <span class="term-prompt">❯ </span><span class="term-cmd" id="cmd3"></span>
+          <span class="cursor-blink" id="cursor">|</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+window.__mode2Duration = 4.36;
+window.__mode2Ready = true;
+
+function progress(t, start, dur) {
+  if (dur <= 0) return t >= start ? 1 : 0;
+  return Math.max(0, Math.min(1, (t - start) / dur));
+}
+function mix(a, b, t) { return a + (b - a) * t; }
+function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+var cmd1Text = 'container system start';
+var cmd2Text = 'container run nginx';
+var cmd3Text = 'container list';
+
+function typeText(el, text, prog) {
+  var chars = Math.floor(prog * text.length);
+  el.textContent = text.substring(0, chars);
+}
+
+function seekTo(t) {
+  // 背景
+  var op = easeOutQuart(progress(t, 0, 0.6));
+  document.getElementById('orb1').style.opacity = op * 0.5;
+  document.getElementById('orb1').style.transform = 'translate(' + Math.sin(t*0.3)*30 + 'px,' + Math.cos(t*0.2)*20 + 'px)';
+  document.getElementById('orb2').style.opacity = op * 0.4;
+  document.getElementById('orb2').style.transform = 'translate(' + Math.cos(t*0.25)*25 + 'px,' + Math.sin(t*0.35)*15 + 'px)';
+  document.getElementById('scanlines').style.opacity = op * 0.5;
+  var beamY = ((t*200) % 2200) - 200;
+  document.getElementById('scanBeam').style.transform = 'translateY(' + beamY + 'px)';
+  document.getElementById('scanBeam').style.opacity = 0.6;
+
+  // 标题
+  var titleP = easeOutQuart(progress(t, 0.1, 0.6));
+  document.getElementById('title').style.opacity = titleP;
+  document.getElementById('title').style.transform = 'translateY(' + mix(30,0,titleP) + 'px)';
+
+  // Terminal窗口
+  var termP = easeOutQuart(progress(t, 0.5, 0.6));
+  var termEl = document.getElementById('terminal');
+  termEl.style.opacity = termP;
+  termEl.style.transform = 'translateY(' + mix(60,0,termP) + 'px) scale(' + mix(0.95,1,termP) + ')';
+
+  // 第1行打字机
+  var cmd1P = easeOutCubic(progress(t, 1.0, 0.6));
+  document.getElementById('line1').style.opacity = cmd1P > 0 ? 1 : 0;
+  typeText(document.getElementById('cmd1'), cmd1Text, cmd1P);
+
+  // 第1行输出
+  var out1P = easeOutCubic(progress(t, 1.6, 0.3));
+  document.getElementById('line1out').style.opacity = out1P;
+
+  // 第2行打字机
+  var cmd2P = easeOutCubic(progress(t, 2.0, 0.6));
+  document.getElementById('line2').style.opacity = cmd2P > 0 ? 1 : 0;
+  typeText(document.getElementById('cmd2'), cmd2Text, cmd2P);
+
+  // 第2行输出
+  var out2P = easeOutCubic(progress(t, 2.6, 0.3));
+  document.getElementById('line2out').style.opacity = out2P;
+
+  // 第3行打字机
+  var cmd3P = easeOutCubic(progress(t, 3.0, 0.5));
+  document.getElementById('line3').style.opacity = cmd3P > 0 ? 1 : 0;
+  typeText(document.getElementById('cmd3'), cmd3Text, cmd3P);
+
+  // 光标闪烁
+  var cursorP = progress(t, 3.5, 1.0);
+  var blink = Math.sin(t * 8) > 0 ? 1 : 0.2;
+  document.getElementById('cursor').style.opacity = cursorP > 0 ? blink : 0;
+}
+seekTo(0);
+</script>
+</body>
+</html>

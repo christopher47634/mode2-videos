@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 3 - 两个模式</title>
+<style>
+@font-face {
+  font-family: 'InterDisplay-Bold';
+  src: url('file:///home/chris47634/.fonts/InterDisplay-Bold.otf') format('opentype');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('file:///home/chris47634/.fonts/Inter-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype-collection');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'NotoSansCJK';
+  src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype-collection');
+  font-weight: normal;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1080px; height: 1920px;
+  background: #06101F;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter-Regular', 'NotoSansCJK', sans-serif;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.bg-orb.orb1 {
+  width: 500px; height: 500px;
+  background: #76B900;
+  opacity: 0.2;
+  top: 300px; left: -100px;
+}
+.bg-orb.orb2 {
+  width: 400px; height: 400px;
+  background: #00D4FF;
+  opacity: 0.15;
+  top: 500px; right: -80px;
+}
+.scanline {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(118,185,0,0.03) 4px, rgba(118,185,0,0.03) 5px
+  );
+  pointer-events: none; z-index: 1;
+}
+.scene-content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 180px 60px;
+}
+.title {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 80px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  letter-spacing: 8px;
+}
+.cards-area {
+  display: flex;
+  gap: 40px;
+  margin-top: 120px;
+  perspective: 1200px;
+}
+.mode-card {
+  width: 440px;
+  padding: 50px 40px;
+  border-radius: 32px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transform-style: preserve-3d;
+}
+.mode-card.green {
+  border: 1.5px solid rgba(118,185,0,0.4);
+}
+.mode-card.blue {
+  border: 1.5px solid rgba(0,212,255,0.4);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.card-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+}
+.card-dot.green { background: #76B900; box-shadow: 0 0 20px #76B900; }
+.card-dot.blue { background: #00D4FF; box-shadow: 0 0 20px #00D4FF; }
+.card-name {
+  font-family: 'InterDisplay-Bold', sans-serif;
+  font-size: 44px;
+  font-weight: bold;
+}
+.card-name.green { color: #76B900; }
+.card-name.blue { color: #00D4FF; }
+.card-items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 10px;
+}
+.card-item {
+  font-family: 'NotoSansCJK', sans-serif;
+  font-size: 34px;
+  color: rgba(255,255,255,0.75);
+  padding-left: 20px;
+  border-left: 3px solid rgba(255,255,255,0.15);
+}
+.card-item.g { border-left-color: #76B900; }
+.card-item.b { border-left-color: #00D4FF; }
+</style>
+</head>
+<body>
+  <div class="bg-orb orb1" id="orb1"></div>
+  <div class="bg-orb orb2" id="orb2"></div>
+  <div class="scanline"></div>
+  <div class="scene-content">
+    <div class="title" id="title">两个模式</div>
+    <div class="cards-area">
+      <div class="mode-card green" id="cardGreen">
+        <div class="card-header">
+          <div class="card-dot green"></div>
+          <div class="card-name green">Reasoner</div>
+        </div>
+        <div class="card-items">
+          <div class="card-item g">理解世界</div>
+          <div class="card-item g">物理推理</div>
+          <div class="card-item g">任务规划</div>
+        </div>
+      </div>
+      <div class="mode-card blue" id="cardBlue">
+        <div class="card-header">
+          <div class="card-dot blue"></div>
+          <div class="card-name blue">Generator</div>
+        </div>
+        <div class="card-items">
+          <div class="card-item b">生成视频</div>
+          <div class="card-item b">生成音频</div>
+          <div class="card-item b">生成动作</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var D = 5.06;
+  window.__mode2Duration = D;
+  window.__mode2Ready = true;
+
+  var title = document.getElementById('title');
+  var cardGreen = document.getElementById('cardGreen');
+  var cardBlue = document.getElementById('cardBlue');
+  var orb1 = document.getElementById('orb1');
+  var orb2 = document.getElementById('orb2');
+
+  window.seekTo = function(t) {
+    var p = t / D;
+    orb1.style.transform = 'translate(' + (p * 60) + 'px,' + (p * 30) + 'px)';
+    orb2.style.transform = 'translate(' + (-p * 40) + 'px,' + (-p * 25) + 'px)';
+
+    // Title 0-0.8s
+    var tA = Math.min(1, t / 0.8);
+    title.style.opacity = tA;
+    title.style.transform = 'translateY(' + (40 * (1 - tA)) + 'px)';
+
+    // Green card: flip in from left 0.8-2.0s
+    var gP = Math.min(1, Math.max(0, (t - 0.8) / 1.0));
+    var gE = 1 - Math.pow(1 - gP, 3);
+    var gRotY = (1 - gE) * -90;
+    cardGreen.style.opacity = gP;
+    cardGreen.style.transform = 'rotateY(' + gRotY + 'deg) translateX(' + ((1 - gE) * -100) + 'px)';
+
+    // Blue card: flip in from right 1.4-2.6s
+    var bP = Math.min(1, Math.max(0, (t - 1.4) / 1.0));
+    var bE = 1 - Math.pow(1 - bP, 3);
+    var bRotY = (1 - bE) * 90;
+    cardBlue.style.opacity = bP;
+    cardBlue.style.transform = 'rotateY(' + bRotY + 'deg) translateX(' + ((1 - bE) * 100) + 'px)';
+  };
+})();
+</script>
+</body>
+</html>

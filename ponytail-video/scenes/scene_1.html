@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>Scene 1 - 老程序员人设</title>
+<style>
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Regular.ttc') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'NotoSansCJK'; src: url('file:///home/chris47634/.fonts/NotoSansCJK-Bold.ttc') format('truetype'); font-weight: bold; }
+:root { --bg:#06101F;--cyan:#00D4FF;--blue:#0088CC;--purple:#6B3FA0;--text:#E8ECF1;--text-dim:rgba(255,255,255,0.5); }
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:var(--bg);font-family:'NotoSansCJK',sans-serif;color:var(--text);overflow:hidden;position:relative}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);opacity:0.1}
+.bg-orb-1{width:600px;height:600px;background:var(--blue);top:-150px;left:-150px;animation:orbFloat1 20s ease-in-out infinite}
+.bg-orb-2{width:450px;height:450px;background:var(--purple);bottom:-100px;right:-100px;animation:orbFloat2 25s ease-in-out infinite}
+.bg-orb-3{width:350px;height:350px;background:var(--cyan);top:45%;left:50%;transform:translate(-50%,-50%);animation:orbFloat3 18s ease-in-out infinite}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(120px,80px)}66%{transform:translate(-60px,150px)}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0)}33%{transform:translate(-100px,-60px)}66%{transform:translate(50px,-120px)}}
+@keyframes orbFloat3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.3)}}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;width:3px;height:3px;background:var(--cyan);border-radius:50%;opacity:0;animation:particleRise linear infinite}
+.particle:nth-child(1){left:8%;animation-duration:14s;animation-delay:0s}
+.particle:nth-child(2){left:22%;animation-duration:18s;animation-delay:2s}
+.particle:nth-child(3){left:38%;animation-duration:12s;animation-delay:4s}
+.particle:nth-child(4){left:52%;animation-duration:16s;animation-delay:1s}
+.particle:nth-child(5){left:68%;animation-duration:13s;animation-delay:3s}
+.particle:nth-child(6){left:82%;animation-duration:15s;animation-delay:5s}
+.particle:nth-child(7){left:92%;animation-duration:11s;animation-delay:7s}
+@keyframes particleRise{0%{transform:translateY(1920px);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-20px);opacity:0}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.12;z-index:0;animation:scanDown 8s linear infinite}
+@keyframes scanDown{0%{top:-2px}100%{top:1920px}}
+.content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 80px 180px 80px;height:100%}
+.corner{position:absolute;width:50px;height:50px;z-index:2;opacity:0}
+.corner-tl{top:60px;left:60px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
+.corner-br{bottom:240px;right:60px;border-bottom:2px solid var(--cyan);border-right:2px solid var(--cyan)}
+.light-dot{position:absolute;border-radius:50%;z-index:2;opacity:0}
+.light-dot-1{top:12%;left:8%;width:6px;height:6px;background:var(--cyan);box-shadow:0 0 20px var(--cyan)}
+.light-dot-2{bottom:22%;right:12%;width:8px;height:8px;background:#ff0040;box-shadow:0 0 20px #ff0040}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* === Silhouette === */
+.silhouette-wrap {
+  width: 280px; height: 280px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(0,212,255,0.12), transparent 70%);
+  border: 2px solid rgba(0,212,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 40px;
+  box-shadow: 0 0 80px rgba(0,212,255,0.08);
+}
+.silhouette-svg { width: 160px; height: 200px; }
+
+/* === Glass Card with typewriter === */
+.glass-card {
+  background: rgba(10,20,40,0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(0,212,255,0.12);
+  border-radius: 24px; padding: 56px 48px;
+  text-align: center; opacity: 0;
+  position: relative; overflow: hidden;
+  width: 880px;
+}
+.glass-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent);
+}
+.typewriter-line {
+  font-size: 48px; line-height: 1.8; opacity: 0;
+  color: var(--text);
+}
+.typewriter-line .dim { color: var(--text-dim); }
+.typewriter-line .cyan { color: var(--cyan); font-weight: bold; }
+.typewriter-line .gold { color: #FFD700; }
+/* Cursor blink */
+.cursor {
+  display: inline-block; width: 3px; height: 48px;
+  background: var(--cyan); margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>
+</head>
+<body>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+<div class="scanline"></div>
+<div class="corner corner-tl" data-el="corner-tl"></div>
+<div class="corner corner-br" data-el="corner-br"></div>
+<div class="light-dot light-dot-1" data-el="dot1" style="animation:float 3s ease-in-out infinite"></div>
+<div class="light-dot light-dot-2" data-el="dot2" style="animation:float 4s ease-in-out infinite reverse"></div>
+
+<div class="content">
+  <!-- Silhouette: ponytail programmer -->
+  <div class="silhouette-wrap" data-el="silhouette">
+    <svg class="silhouette-svg" viewBox="0 0 160 200" fill="none">
+      <!-- Head -->
+      <circle cx="80" cy="50" r="30" fill="rgba(0,212,255,0.3)" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/>
+      <!-- Ponytail -->
+      <path d="M80 20 Q120 10 130 50 Q135 70 110 65" stroke="rgba(0,212,255,0.5)" stroke-width="2" fill="none"/>
+      <path d="M110 65 Q125 75 115 95" stroke="rgba(0,212,255,0.4)" stroke-width="2" fill="none"/>
+      <!-- Body -->
+      <path d="M55 80 L55 160 M105 80 L105 160" stroke="rgba(0,212,255,0.3)" stroke-width="2"/>
+      <rect x="50" y="78" width="60" height="90" rx="8" fill="rgba(0,212,255,0.1)" stroke="rgba(0,212,255,0.3)" stroke-width="1.5"/>
+      <!-- Keyboard -->
+      <rect x="30" y="140" width="100" height="12" rx="3" fill="rgba(0,212,255,0.15)" stroke="rgba(0,212,255,0.3)" stroke-width="1"/>
+      <!-- Arms to keyboard -->
+      <path d="M55 110 Q40 130 35 140" stroke="rgba(0,212,255,0.3)" stroke-width="1.5" fill="none"/>
+      <path d="M105 110 Q120 130 125 140" stroke="rgba(0,212,255,0.3)" stroke-width="1.5" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- Glass Card with typewriter text -->
+  <div class="glass-card" data-el="card">
+    <div class="typewriter-line" data-el="line1">
+      <span class="dim">He says</span> <span class="cyan">nothing.</span>
+    </div>
+    <div class="typewriter-line" data-el="line2">
+      <span class="dim">He writes</span> <span class="gold">one line.</span>
+    </div>
+    <div class="typewriter-line" data-el="line3">
+      <span class="cyan">It works.</span><span class="cursor"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  "use strict";
+  const clamp=(v,min=0,max=1)=>Math.min(max,Math.max(min,v));
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const easeOutQuart=t=>1-Math.pow(1-t,4);
+  const easeOutCubic=t=>1-Math.pow(1-t,3);
+  const progress=(time,start,dur)=>clamp((time-start)/Math.max(dur,0.0001));
+
+  function reveal(el,time,opts) {
+    if(!el)return;
+    const{start=0,duration=0.65,x=0,y=42,scale=0.96,blur=14}=opts;
+    const p=easeOutQuart(progress(time,start,duration));
+    el.style.opacity=p;
+    el.style.transform=`translate3d(${mix(x,0,p)}px,${mix(y,0,p)}px,0) scale(${mix(scale,1,p)})`;
+    el.style.filter=`blur(${mix(blur,0,p)}px)`;
+  }
+
+  function seekTo(t) {
+    // Silhouette
+    reveal(document.querySelector('[data-el="silhouette"]'),t,{start:0.1,duration:0.8,y:30,scale:0.92,blur:10});
+    // Glass card
+    reveal(document.querySelector('[data-el="card"]'),t,{start:0.6,duration:0.7,y:40,blur:12});
+    // Typewriter lines staggered
+    reveal(document.querySelector('[data-el="line1"]'),t,{start:1.2,duration:0.5,y:15,blur:6,scale:1});
+    reveal(document.querySelector('[data-el="line2"]'),t,{start:2.0,duration:0.5,y:15,blur:6,scale:1});
+    reveal(document.querySelector('[data-el="line3"]'),t,{start:2.8,duration:0.5,y:15,blur:6,scale:1});
+    // Corners
+    const cp=easeOutQuart(progress(t,0.3,0.5));
+    document.querySelector('[data-el="corner-tl"]').style.opacity=cp;
+    document.querySelector('[data-el="corner-br"]').style.opacity=easeOutQuart(progress(t,0.5,0.5));
+    document.querySelector('[data-el="dot1"]').style.opacity=easeOutQuart(progress(t,0.4,0.5));
+    document.querySelector('[data-el="dot2"]').style.opacity=easeOutQuart(progress(t,0.6,0.5));
+  }
+  window.seekTo=seekTo;
+  window.__mode2Duration=4.04;
+  window.__mode2Ready=true;
+  let startTime=performance.now(),autoRun=true;
+  let _orig=seekTo;
+  window.seekTo=function(t){autoRun=false;_orig(t)};
+  function animate(){if(!autoRun)return;const e=(performance.now()-startTime)/1000;_orig(Math.min(e,4.04));requestAnimationFrame(animate)}
+  animate();
+})();
+</script>
+</body>
+</html>

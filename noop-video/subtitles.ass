@@ -1,0 +1,31 @@
+﻿[Script Info]
+Title: noop
+ScriptType: v4.00+
+WrapStyle: 0
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,ZCOOL KuaiLe,58,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,3,2,2,20,20,393,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.28,Default,,0,0,0,,noop，
+Dialogue: 0,0:00:01.28,0:00:02.57,Default,,0,0,0,,本周GitHub最火的硬件项目，
+Dialogue: 0,0:00:02.57,0:00:03.85,Default,,0,0,0,,一千五百星
+Dialogue: 0,0:00:03.85,0:00:05.67,Default,,0,0,0,,你花三百刀买了个WHOOP手环，
+Dialogue: 0,0:00:05.67,0:00:07.49,Default,,0,0,0,,每个月还要交三十刀订阅费
+Dialogue: 0,0:00:07.49,0:00:09.30,Default,,0,0,0,,才能看自己的数据
+Dialogue: 0,0:00:09.30,0:00:11.18,Default,,0,0,0,,noop说不用了，
+Dialogue: 0,0:00:11.18,0:00:13.05,Default,,0,0,0,,蓝牙直连你的手环，
+Dialogue: 0,0:00:13.05,0:00:14.92,Default,,0,0,0,,数据全部存本地，不经过任何云端
+Dialogue: 0,0:00:14.92,0:00:17.52,Default,,0,0,0,,恢复值、压力、心率变异性、睡眠，
+Dialogue: 0,0:00:17.52,0:00:20.12,Default,,0,0,0,,全部在你的设备上算
+Dialogue: 0,0:00:20.12,0:00:22.33,Default,,0,0,0,,不需要账号，不需要订阅，
+Dialogue: 0,0:00:22.33,0:00:24.53,Default,,0,0,0,,不需要网络，免费永久免费
+Dialogue: 0,0:00:24.53,0:00:26.45,Default,,0,0,0,,macOS安卓iOS全平台支持，
+Dialogue: 0,0:00:26.45,0:00:28.36,Default,,0,0,0,,还带AI教练，
+Dialogue: 0,0:00:28.36,0:00:30.28,Default,,0,0,0,,用自己的API key就行
+Dialogue: 0,0:00:30.28,0:00:32.09,Default,,0,0,0,,你的手环，你的数据，
+Dialogue: 0,0:00:32.09,0:00:33.90,Default,,0,0,0,,你的机器，开源万岁
